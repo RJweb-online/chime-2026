@@ -16,7 +16,7 @@ The prototype is intentionally silent. It does not autoplay music or load extern
 
 ## Files
 
-- `index.html`: page, layered SVG gift, and song link.
+- `index.html`: page, layered SVG gift, embedded ribbon canvas, and song link.
 - `style.css`: responsive presentation, materials, and staged motion.
 - `script.js`: one-click sequence, continuous ribbon surfaces and staged bow geometry, replay, keyboard focus, and reduced-motion support.
 
@@ -24,7 +24,9 @@ To change the song, edit the card text, link URL, and link accessibility label i
 
 ## Ribbon animation
 
-The bow is drawn as two continuous visible runs of the same ribbon, joined behind the box. Cubic centerlines are sampled into broad satin surfaces with matching edges and highlights. The knot collar is part of the ribbon itself, repainted over the underpassing strand to show the crossing.
+The gift uses a shallow three-quarter perspective with separate front, side, and lid planes, a beveled lid rim, fine paper grain, botanical foil detailing, and soft contact shadows. Soft paper reflections and folded side seams give the wrapping an imperfect surface. All materials are generated locally with SVG and Canvas; no photographs, image assets, or dependencies are loaded.
+
+The bow is drawn as two continuous visible runs of the same ribbon, joined behind the box. The existing cubic untying centerlines drive a small Canvas sheet renderer embedded inside the SVG, preserving the gift's layer order and wiggle. Unequal loop shapes, varying projected widths, banked surfaces, small gathered folds, fine silk threads, and warm directional reflections replace the previous uniform shading bands. The knot collar is part of the ribbon itself, repainted over the underpassing strand to show the crossing. The canvas adapts its backing resolution to display density and gift size; it redraws during opening and resize, with no continuous idle loop.
 
 - 0–0.38 s: subtle box wiggle.
 - 0.38–0.83 s: the right end takes up slack and becomes taut.
@@ -34,6 +36,6 @@ The bow is drawn as two continuous visible runs of the same ribbon, joined behin
 - 2.80–3.57 s: the untied wrap peels away and settles below the gift, remaining visible.
 - 3.60–4.90 s: the lid lifts, light and sparkles emerge, and the song card rises.
 
-This is an authored 2.5D illusion, not a cloth simulation: it does not solve exact ribbon length, friction, or self-collision. SVG keeps it lightweight and crisp at this fixed viewing angle. For physically accurate twisting and knot contact from multiple angles, the next step would be a Blender ribbon/cloth animation rendered to video, or a baked 3D ribbon mesh played through WebGL. Those approaches would add assets and complexity.
+This is an authored 2.5D illusion, not a cloth simulation: it does not solve exact ribbon length, friction, or self-collision. The SVG/Canvas combination remains lightweight at this fixed viewing angle. For physically accurate twisting and knot contact from multiple angles, the next step would be a Blender ribbon/cloth animation rendered to video, or a baked 3D ribbon mesh played through WebGL. Those approaches would add assets and complexity.
 
 This directory can later be served directly by GitHub Pages. Nothing has been committed or published as part of this prototype.
