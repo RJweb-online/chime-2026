@@ -1,41 +1,43 @@
-﻿# CHIME 2026 — single present prototype
+# CHIME 2026 — six-present development preview
 
-A standalone Christmas gift-opening study. No build tools, packages, backend, or calendar functionality.
+A standalone wrapping and animation study built on the original crimson present. This is a development prototype; the previous CHIME calendar remains on Google Sites.
 
 ## Preview
 
-Open `index.html` directly in a modern browser (Chrome, Edge, Firefox, or Safari). Everything visual works offline. Internet access is needed only when you choose to open YouTube.
+Open `index.html` in a modern browser. No server, build step, dependencies, or internet connection is needed.
 
-1. Click or tap the gift, or Tab to it and press Enter/Space.
-2. Watch the 4.9-second sequence: wiggle, unfolding silk bow, slipping ribbon, lifting lid, golden light, and rising song card.
-3. Choose **Play on YouTube** to open Nat King Cole's *The Christmas Song* in a new tab.
-4. Choose **Wrap it up & replay** to restart the sequence. Try it several times.
-5. Resize the browser or test on a phone. Enable your system's reduced-motion preference to see the immediate reveal alternative.
+1. Compare the six wrapped-gift thumbnails, then select one for the larger view.
+2. Click or tap the gift to unwrap it. Keyboard: Tab to the gift and press Enter or Space.
+3. Choose **Reset wrapping** to restore the wrapped state, then unwrap again.
+4. Switch designs at any point, including during opening. Each selection starts fully wrapped.
 
-The prototype is intentionally silent. It does not autoplay music or load external fonts, images, or scripts.
+The preview is silent and reveals a neutral study card. There is no calendar, daily unlocking, or music-link management. Reduced-motion preferences provide an immediate reveal. Keyboard focus moves to Reset after a keyboard-triggered reveal; pointer interactions do not move focus.
 
-## Files
+## Design studies
 
-- `index.html`: page, layered SVG gift, embedded ribbon canvas, and song link.
-- `style.css`: responsive presentation, materials, and staged motion.
-- `script.js`: one-click sequence, continuous ribbon surfaces and staged bow geometry, replay, keyboard focus, and reduced-motion support.
+- **Crimson botanical:** original keepsake proportions, burgundy foil botanical paper, broad golden satin and generous loops.
+- **Woodland parcel:** low, wide ivory paper box, branch motif, matte paper reflections, asymmetrical forest woven bow, pine sprig and gift tag.
+- **Midnight stars:** tall, narrow blue lustre box, silver stars and a restrained, slender silver silk bow.
+- **Sugarplum hatbox:** round construction with elliptical lid, fluted plum paper, gilt rims, an embossed label and a four-loop wine velvet rosette.
+- **The long way home:** long, flat folded kraft parcel, diagonal hairline stripes, visible envelope folds, an offset linen tie and a North Pole label. The upper wrapping peels away on the shared reveal cue.
+- **Emerald treasure:** compact octagonal construction, faceted sides, inset gilt rules, a petite champagne silk bow and a bronze seal on the lid.
 
-To change the song, edit the card text, link URL, and link accessibility label in `index.html`. Ribbon geometry and timing are in `script.js`; lid and reveal timing are in `style.css`. The sequence finishes at 4900 ms.
+All materials are local SVG and Canvas artwork. The original paper detail, shadows, perspective and continuous untying curves are retained.
 
-## Ribbon animation
+## Files and shared animation
 
-The gift uses a shallow three-quarter perspective with separate front, side, and lid planes, a beveled lid rim, fine paper grain, botanical foil detailing, and soft contact shadows. Soft paper reflections and folded side seams give the wrapping an imperfect surface. All materials are generated locally with SVG and Canvas; no photographs, image assets, or dependencies are loaded.
+- `index.html`: preview controls, shared layered SVG box and neutral reveal card.
+- `style.css`: responsive preview, material treatments and shared lid/card animations.
+- `script.js`: design configurations, Canvas ribbon renderer, shared opening controller, reset, selection and reduced-motion handling.
 
-The bow is drawn as two continuous visible runs of the same ribbon, joined behind the box. The existing cubic untying centerlines drive a small Canvas sheet renderer embedded inside the SVG, preserving the gift's layer order and wiggle. Unequal loop shapes, varying projected widths, banked surfaces, small gathered folds, fine silk threads, and warm directional reflections replace the previous uniform shading bands. The knot collar is part of the ribbon itself, repainted over the underpassing strand to show the crossing. The canvas adapts its backing resolution to display density and gift size; it redraws during opening and resize, with no continuous idle loop.
+The `designs` configuration supplies paper palettes, material shading, ribbon widths, independent left/right bow shapes, and ribbon attachment coordinates. `constructions` supplies separate SVG lid, body and interior silhouettes for the round hatbox, folded parcel and octagonal box. The three original box studies retain the detailed original geometry. Decorations belong to their lids and move with them during opening.
 
-- 0–0.38 s: subtle box wiggle.
-- 0.38–0.83 s: the right end takes up slack and becomes taut.
-- 0.83–1.53 s: the left bight contracts while the pulled end lengthens.
-- 1.32–1.90 s: the collar loosens into a visibly open curve.
-- 1.90–2.78 s: the remaining bight and collar straighten into the other end.
-- 2.80–3.57 s: the untied wrap peels away and settles below the gift, remaining visible.
-- 3.60–4.90 s: the lid lifts, light and sparkles emerge, and the song card rises.
+`selectDesign()` applies a design to one shared animated present, cancels any in-flight animation and restores the wrapped state. Reset cancels the pending animation frame and removes the CSS animation classes. All six reuse the original ribbon curves and opening controller; additional rosette loops follow the same release timing. Velvet reduces the satin highlight, while woven and linen ribbons use a small cross-grain texture.
 
-This is an authored 2.5D illusion, not a cloth simulation: it does not solve exact ribbon length, friction, or self-collision. The SVG/Canvas combination remains lightweight at this fixed viewing angle. For physically accurate twisting and knot contact from multiple angles, the next step would be a Blender ribbon/cloth animation rendered to video, or a baked 3D ribbon mesh played through WebGL. Those approaches would add assets and complexity.
+The comparison shelf uses static SVG snapshots of the actual gifts, including a raster snapshot of each Canvas bow. Snapshots are created once at startup and stay wrapped for comparison. There is one live ribbon canvas and no idle animation loop. No framework, external image, font or network request is required. These are design studies, not calendar days; future day data can refer to the design keys independently of the preview controls.
 
-This directory can later be served directly by GitHub Pages. Nothing has been committed or published as part of this prototype.
+The 4.9-second sequence is shared: box wiggle; tension and first-loop release (0.38–1.53 s); collar loosening (1.32–1.90 s); remaining loop release (1.90–2.78 s); ribbon peeling and settling (2.80–3.57 s); lid lift, glow and card reveal (3.60–4.90 s). Released ribbon remains visible below the box.
+
+This is an authored 2.5D material animation, not a physical cloth simulation. It is designed for one viewing angle. The six studies establish different constructions and personalities before any future 25-present collection or calendar integration.
+
+Changes in this workspace are not automatically committed, pushed, or deployed.
