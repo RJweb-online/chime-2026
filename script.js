@@ -69,9 +69,17 @@ function geometry(ms) {
  front=blend(front,frontPeel,peel); pull=blend(pull,pullPeel,peel);
  return {front:blend(front,frontRest,fall),pull:blend(pull,pullRest,fall)};
 }
-// The existing untying curves drive a shaded, folded satin sheet. Canvas is
-// embedded in the SVG so it shares the gift's perspective, layers and wiggle.
+// Keep HTML canvas out of foreignObject (WebKit can mis-scale its compositor
+// layer). Map its 600 × 490 coordinates to the rendered SVG present instead.
 const ribbonCanvas = document.getElementById('ribbon-canvas');
+const ribbonPlane = document.querySelector('.ribbon-plane');
+const ribbonPresent = document.querySelector('.gift .present');
+function alignRibbon() {
+ const matrix=ribbonPresent.getScreenCTM();
+ if(!matrix)return;
+ const bounds=stage.getBoundingClientRect();
+ ribbonPlane.style.transform=`matrix(${matrix.a},${matrix.b},${matrix.c},${matrix.d},${matrix.e-bounds.left-stage.clientLeft},${matrix.f-bounds.top-stage.clientTop})`;
+}
 const ribbonContext = ribbonCanvas.getContext('2d', {alpha:true});
 let ribbonTime = 0;
 let ribbonScale = 2;
@@ -198,6 +206,7 @@ function paintRibbon(points, shadow=true, continuous=false) {
 }
 function drawRibbon(ms) {
  ribbonTime=ms;
+ alignRibbon();
  if(designs[selected].arrangement) {drawArrangement(ms); return;}
  const {front,pull}=geometry(ms);
  const variant=designs[selected];
@@ -352,7 +361,8 @@ function selectDesign(key) {
  pattern.innerHTML=key==='crimson'?originalPattern:key==='ivory'?'<g stroke="#6a7955" fill="none" stroke-width=".8" opacity=".3"><path d="M20 60V20m0 8-9 8m9-1 10 9m-10-1-9 9m9-1 10 9"/></g>':'<g fill="#dceaf0" opacity=".55"><path d="M20 18l1.5 5 5 1.5-5 1.5-1.5 5-1.5-5-5-1.5 5-1.5Z"/><circle cx="48" cy="52" r="1"/></g>';
  document.getElementById('design-shape').setAttribute('transform',`translate(${300*(1-design.scale[0])} ${420*(1-design.scale[1])}) scale(${design.scale.join(' ')})`);
  document.getElementById('gift-title').textContent=design.title;
- document.getElementById('design-note').textContent=design.note;
+ const designNote=document.getElementById('design-note');
+ if(designNote)designNote.textContent=design.note;
  stage.dataset.design=key;
  stage.dataset.material=design.material||'satin';
  stage.dataset.shape=design.shape||'box';
@@ -421,7 +431,7 @@ function buildThumbnails() {
   const image=document.createElementNS('http://www.w3.org/2000/svg','image');
   image.setAttribute('href',ribbonCanvas.toDataURL());
   image.setAttribute('width','600'); image.setAttribute('height','490');
-  thumbnail.querySelector('foreignObject').replaceWith(image);
+  thumbnail.querySelector('.ribbon-slot').replaceWith(image);
   const style=document.createElementNS('http://www.w3.org/2000/svg','style');
   // Self-contained SVG images also work when index.html is opened via file://;
   // no stylesheet CSSOM access or external resources are needed.

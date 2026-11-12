@@ -7,6 +7,7 @@ window.ChimeConfetti=(()=>{
  stage.append(canvas);
  const ctx=canvas.getContext('2d');
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ const phone=matchMedia('(max-width:540px)');
  const colors=['#d6bb79','#eee2c6','#a76b69','#54755d','#c9b890'];
  let frame=0,timer=0,particles=[],cue=null;
  function reset(){
@@ -16,7 +17,12 @@ window.ChimeConfetti=(()=>{
  function draw(now){
   const elapsed=now-cue.start,u=Math.max(0,elapsed/cue.duration);
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  if(u>=1||reduced.matches||document.hidden){reset();return;}
+  if(reduced.matches||document.hidden){reset();return;}
+  // Completion belongs to the last particle, including its fade, rather
+  // than a second timer in the card UI. Cancellation never completes a burst.
+  if(particles.every(p=>u>=p.end)){
+   reset();window.dispatchEvent(new Event('chime-confetti-complete'));return;
+  }
   const scale=canvas.width/600;ctx.setTransform(scale,0,0,scale,0,0);
   for(const p of particles){
    const t=Math.max(0,(u-p.delay)/(p.end-p.delay));
@@ -27,6 +33,7 @@ window.ChimeConfetti=(()=>{
    const x=cue.x+p.x+p.spread*lift+Math.sin(t*p.waft+p.phase)*p.sway*float;
    const y=cue.y-p.lift*lift+(p.lift+140)*fall+Math.sin(t*p.waft*1.3+p.phase)*7*float;
    ctx.save();ctx.translate(x,y);ctx.rotate(p.phase+t*p.turn);
+   if(phone.matches)ctx.scale(1.9,1.9);
    const fade=Math.min(1,(1-t)/p.fade);
    ctx.globalAlpha=.9*Math.min(1,t*32)*fade*fade*(3-2*fade);
    ctx.fillStyle=p.color;
@@ -57,5 +64,5 @@ window.ChimeConfetti=(()=>{
  window.addEventListener('chime-reveal-cue',event=>schedule(event.detail));
  document.addEventListener('visibilitychange',()=>{if(document.hidden)reset();});
  reduced.addEventListener('change',()=>{if(reduced.matches)reset();});
- return Object.freeze({schedule,reset});
+ return Object.freeze({schedule,reset,get active(){return cue!==null;}});
 })();

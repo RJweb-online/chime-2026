@@ -1,0 +1,64 @@
+/* Page shell only: approved stage materials and animation rules stay in style.css. */
+.calendar-page header{height:68px}
+.calendar-page .eyebrow{margin:22px 10px 10px;font-size:8px}
+.calendar-page h1{font-size:clamp(31px,5vw,46px)}
+.calendar-page .intro{margin:10px auto 22px;font-size:12px;max-width:none;padding:0 12px}
+.calendar-source{display:none!important}
+.calendar{max-width:760px;margin:auto;padding:0 16px}
+.calendar-heading{display:flex;justify-content:space-between;align-items:center;color:#c5b381;font-size:9px;letter-spacing:2px;padding:0 3px 12px}
+.calendar-heading b{font-weight:normal;color:#93a596;margin-left:5px}
+#calendar-progress{letter-spacing:.3px;font:italic 12px Georgia,serif;color:#b6bfa8}
+.calendar-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.calendar-day{position:relative;min-width:0;min-height:88px;aspect-ratio:1.06;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#cdbd8210,#051d171c);border:1px solid #b9b58a24;border-radius:5px;padding:15px 0 12px;color:#e2d4ac;cursor:pointer;touch-action:manipulation}
+.calendar-day:hover{background-color:#d5c68a12;border-color:#d3bd7970}
+.calendar-day:focus-visible,.calendar-page button:focus-visible{outline:2px solid #e0c787;outline-offset:3px}
+.day-number{position:absolute;top:7px;left:9px;font:12px Georgia,serif;color:#cab98d}
+.calendar-present{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
+.day-state{position:absolute;bottom:5px;font-size:8px;letter-spacing:.5px;color:#a4b298}
+.day-opened{background:linear-gradient(145deg,#c7b47617,#041b1617);border-color:#cbb77c52}
+.day-opened .day-number{color:#f0dbaa}
+.christmas-day{border-color:#cbb77c70}
+.day-placeholder{width:48%;height:58%;min-height:34px;border:1px dashed #c4b78744;border-radius:45% 45% 6px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#c9b47d8c;font:22px Georgia,serif}
+.day-placeholder span{font:5px Arial,sans-serif;letter-spacing:1.5px;margin-top:4px}
+.day-opened .day-placeholder{border-style:solid;transform:rotate(-5deg);color:#deca94}
+.calendar-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 2px}
+.calendar-tools p{font:11px/1.6 Arial,sans-serif;color:#9cad9b;margin:0;text-align:left}
+.calendar-tools p span{display:block;color:#879b89}
+.calendar-tools button,.present-dialog button:not(.open-gift){font:11px Arial,sans-serif;color:#dfcc9b;background:transparent;border:0;border-bottom:1px solid #d3bd7945;padding:10px 2px;cursor:pointer;min-height:40px}
+.calendar-page footer{margin-top:4px;min-height:55px}
+.present-dialog{color:#eee7d7;background:radial-gradient(ellipse at 50% 48%,#294b3c,#102c25 75%);border:1px solid #a99c694f;border-radius:12px;padding:18px 22px;width:min(680px,calc(100% - 24px));max-height:calc(100dvh - 24px);overflow:auto;overscroll-behavior:contain;text-align:center;box-shadow:0 25px 100px #0007}
+.present-dialog::backdrop{background:#061b16d9;backdrop-filter:blur(5px)}
+.calendar-dialog-open{overflow:hidden}
+.dialog-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+#day-date{font-size:9px;letter-spacing:2px;color:#bfb080}
+.present-dialog h2{font:normal clamp(23px,4vw,32px) Georgia,serif;margin:18px 0 0;color:#e6d4a7}
+.present-dialog .design-note{font:italic 12px/1.6 Georgia,serif;color:#aebba5;max-width:400px;min-height:0;margin:10px auto 0;padding:0 12px}
+.present-dialog .stage{width:min(600px,100%,calc((100dvh - 265px)*1.2245));margin:0 auto 4px}
+.present-dialog .under-gift{min-height:70px}
+.present-dialog .under-gift p{margin:12px 0 2px;font-size:12px}
+.prototype-controls{border-top:1px solid #c5bc8f26;margin-top:12px;padding-top:5px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.prototype-controls span{font:9px/1.6 Arial,sans-serif;color:#8fa28e}
+.future-present{padding:38px 15px;color:#bdc7b3}
+.future-emblem{width:112px;height:130px;border:1px dashed #c4b78766;border-radius:50% 50% 9px 9px;margin:0 auto 24px;display:grid;place-items:center;font:50px Georgia,serif;color:#d1bb7f}
+.future-present p{font:italic 19px Georgia,serif}
+.future-present small{display:block;font-size:11px;margin-bottom:16px}
+.present-dialog [hidden]{display:none!important}
+@media(max-width:540px){.calendar{padding:0 10px}.calendar-grid{gap:5px}.calendar-day{min-height:76px;aspect-ratio:.85;padding:17px 0 12px}.day-number{font-size:11px;left:7px;top:6px}.calendar-page header{height:59px}.calendar-page .eyebrow{margin-top:19px;font-size:6.5px;letter-spacing:1.5px}.calendar-page .intro{margin-bottom:18px;font-size:11px}.calendar-heading{font-size:8px}.calendar-tools p{font-size:10px}.calendar-tools button{font-size:10px;white-space:nowrap}.present-dialog{padding:12px}.present-dialog h2{margin-top:12px}.present-dialog .design-note{font-size:11px}.prototype-controls span{font-size:8px;max-width:120px}.calendar-page footer{font-size:7px}.calendar-day .day-state{font-size:7px}}
+@media(max-width:339px){.calendar-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.calendar-day{aspect-ratio:1}.calendar-heading{letter-spacing:1px}.calendar-page .edition{font-size:6px}}
+@media(max-height:550px){.present-dialog .stage{width:min(360px,100%)}.present-dialog .design-note{display:none}}
+/* Phone-only framing and the readable continuation of the SVG reveal. */
+.readable-card{display:none}
+@media(max-width:540px){
+ .present-dialog .live-present{position:relative}
+ .present-dialog h2{margin-top:6px;font-size:23px}
+ .present-dialog .design-note{display:block;margin:6px auto 4px;min-height:0;font-size:11px}
+ .present-dialog .stage{width:100%;aspect-ratio:540/455;margin:0 auto 4px}
+ .readable-card{display:block;position:absolute;z-index:2;left:3%;top:50%;width:94%;padding:24px 18px 20px;translate:0 -50%;transform-origin:0 0;background:#faf2df;color:#274336;border:1px solid #c6aa71;border-radius:7px;box-shadow:0 16px 40px #020d0b66;outline:1px solid #c6aa7166;outline-offset:-8px;overflow-wrap:anywhere}
+ .reveal-kicker{font:9px/1.6 Arial,sans-serif;letter-spacing:1.4px;color:#7b673e;margin:0 0 16px}
+ .readable-card h3{font:normal 27px/1.2 Georgia,serif;margin:0 0 12px}
+ .reveal-artist{font:16px/1.5 Arial,sans-serif;color:#726348;margin:0 0 20px}
+ .present-dialog .readable-card button{min-height:48px;width:100%;padding:12px 16px;border:0;border-radius:4px;background:#274336;color:#faf2df;font:15px/1.4 Arial,sans-serif;touch-action:manipulation}
+ .present-dialog .readable-card button:disabled{cursor:default;opacity:1}
+ .reveal-caption{font:9px/1.6 Arial,sans-serif;letter-spacing:1px;color:#7b673e;margin:16px 0 0}
+ .has-readable-card .song-card{visibility:hidden}
+}

@@ -1,18 +1,20 @@
-# CHIME 2026 — twelve-present development preview
+# CHIME 2026 — 25-day Advent calendar prototype
 
-A standalone wrapping and animation study built on the original crimson present. This is a development prototype; the previous CHIME calendar remains on Google Sites.
+A compact December 1–25 calendar built around the approved twelve-present collection. Days 1–12 use the original designs, animations, sounds and confetti; days 13–25 are explicitly labelled placeholders. This is an interface prototype; the previous CHIME calendar remains on Google Sites.
 
 ## Preview
 
 Open `index.html` in a modern browser. No server, build step, dependencies, or internet connection is needed.
 
-1. Compare the twelve wrapped-gift thumbnails, then select one for the larger view.
-2. Click or tap the gift to unwrap it. Keyboard: Tab to the gift and press Enter or Space.
-3. Choose **Reset wrapping** to restore the wrapped state, then unwrap again.
-4. Switch designs at any point, including during opening. Each selection starts fully wrapped.
-5. Use **View selected present** and **Compare all twelve** to move between the shelf and the larger study. The shelf spans multiple rows; it does not shrink the gifts to fit a single screen.
+1. Select any December day. Days 1–12 open their actual present in a focused dialog; days 13–25 show a future-design placeholder.
+2. Click or tap the large present to unwrap it. Keyboard: Tab to the gift and press Enter or Space.
+3. Return with **Calendar** or Escape. Opened days retain a snapshot of the original gift with its displaced lid and released ribbon. Reopening an opened day displays the final pose silently.
+4. Use **Reset wrapping** to rewrap the selected day, **Preview opened state** to inspect its final pose without sound, or **Rewrap all days** to reset the overview. Placeholder days can also be marked opened and rewrapped.
+5. All 25 days are available for testing, regardless of the current date. Opened states are held in memory and reset on page refresh. No daily unlocking, persistent storage or song links are implemented.
 
-The preview reveals a neutral study card, accompanied by quiet recorded fabric movement, a lid-opening sound and a reveal chime. Sound starts only after an unwrap gesture; resetting or switching designs cancels the previous sounds. Reduced-motion preferences provide an immediate reveal with only the signature reveal recording. Keyboard focus moves to Reset after a keyboard-triggered reveal; pointer interactions do not move focus. There is no calendar, daily unlocking, or music-link management.
+The overview uses five columns, falling back to four below 340 px. Tiles retain at least 44 px tap targets at the tested phone widths. A single live stage serves every real day; the overview uses static snapshots, including raster copies of the original Canvas ribbons. The native dialog provides keyboard focus containment and Escape dismissal, and returning restores focus to the selected day. Closing cancels sound, confetti and any in-flight opening.
+
+The preview reveals a neutral study card, accompanied by quiet recorded fabric movement, a lid-opening sound and the signature reveal recording. Sound starts only after an unwrap gesture; resetting or switching designs cancels the previous sounds. Reduced-motion preferences provide an immediate reveal with only the signature reveal recording and no confetti. Keyboard focus moves to Reset after a keyboard-triggered reveal; pointer interactions do not move focus.
 
 ## Design studies
 
@@ -34,6 +36,8 @@ All materials are local SVG and Canvas artwork. The original paper detail, shado
 ## Files and shared animation
 
 - `index.html`: preview controls, shared layered SVG box and neutral reveal card.
+- `calendar.js`: day-to-design data, calendar tiles, focused dialog, session opened states and static opened snapshots. Assign a new design key in `calendarDays` when a future present is ready.
+- `calendar.css`: compact calendar layout and dialog styling, separate from the approved stage animation rules.
 - `style.css`: responsive preview, material treatments and shared lid/card animations.
 - `script.js`: design configurations, Canvas ribbon renderer, shared opening controller, reset, selection and reduced-motion handling.
 - `studies.js`: the six additional constructions, material patterns and authored ribbon arrangements; extends the original collection and starts the preview after both scripts load.
@@ -55,12 +59,12 @@ The fabric sounds use shared recordings with gain, EQ and playback-rate variatio
 
 The current signature sound is `assets/audio/ivan_luzan-christmas-and-new-year-logo-181244.mp3`, supplied by the project owner and copied unchanged. Its exact bytes are also embedded in `samples.js` for offline previews. It plays at a quiet gain without trimming, EQ or playback-rate changes, including in reduced-motion mode. Resetting or switching designs still cancels playback. No third-party licence is inferred for the supplied recording.
 
-The comparison shelf uses static SVG snapshots of the actual gifts, including a raster snapshot of each Canvas bow. Snapshots are created once at startup and stay wrapped for comparison. There is one live ribbon canvas and no idle animation loop. No framework, external image, font or network request is required. These are design studies, not calendar days; future day data can refer to the design keys independently of the preview controls.
+The calendar overview uses static SVG snapshots of the actual gifts, including a raster snapshot of each Canvas bow. Wrapped snapshots are created once at startup; opened snapshots are captured from the final pose as days are opened. There is one live ribbon canvas and no idle animation loop. No framework, external image, font or network request is required. Calendar day data refers to design keys independently of the approved rendering system.
 
 Studies 01–06 keep their original 4.9-second sequence: box wiggle; tension and first-loop release (0.38–1.53 s); collar loosening (1.32–1.90 s); remaining loop release (1.90–2.78 s); ribbon peeling and settling (2.80–3.57 s); lid lift, glow and card reveal (3.60–4.90 s). Released ribbon remains visible below every gift.
 
-This is an authored 2.5D material animation, not a physical cloth simulation. It is designed for one viewing angle. The twelve studies establish different constructions and personalities before any future 25-present collection or calendar integration.
+This is an authored 2.5D material animation, not a physical cloth simulation. It is designed for one viewing angle. The twelve approved designs establish the first twelve calendar days; the remaining thirteen unique presents will be developed separately.
 
-All twelve current designs have been manually tested and accepted by the project owner. Further automated browser testing was intentionally skipped for this final documentation review. Earlier development validation notes predate the final Peacock keepsake and sound changes and should not be treated as a fresh automated verification of the current version.
+All twelve present designs, sounds and confetti have been manually tested and accepted by the project owner. Calendar browser checks cover all 25 selectable days, the twelve actual designs and their opened snapshots, placeholder state toggles, resetting, interrupted closing, focus restoration, tap targets and horizontal overflow. The same 96 checks passed at desktop width, 390 px, and 320 px with reduced motion enabled. Visual review covered the 390 px overview and the tall copper present's focused reveal. The approved rendering, animation, audio and confetti source files and assets remain unchanged. Browser checks do not replace testing on physical touch devices.
 
 Changes in this workspace are not automatically committed, pushed, or deployed.
