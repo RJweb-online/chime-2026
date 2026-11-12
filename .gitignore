@@ -1,0 +1,16 @@
+# Local inspection pages, backup copies and browser helpers (repository root only).
+/.before-*
+/.audio-inspect.html
+/.audio-waveforms.png
+/.browser-eval.ps1
+/.edit-audio.js
+/.edited-audio.json
+/.evaluate.js
+/.lid-source.html
+/.oval-open.png
+/.oval-wrapped.png
+/.preview-check.html
+/.source-*
+/.test-audio.js
+/.view-oval.js
+/.cleanup-check.*
