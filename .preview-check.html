@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102c27">
+  <title>CHIME 2026 — Present studies</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="assets/audio/samples.js" defer></script>
+  <script src="audio.js" defer></script>
+  <script src="script.js" defer></script>
+  <script src="studies.js" defer></script>
+</head>
+<body>
+  <header><a class="wordmark" href="./" aria-label="CHIME 2026 home">CHIME<span>2026</span></a><span class="edition">DEVELOPMENT PREVIEW</span></header>
+  <main>
+    <p class="eyebrow">THE WRAPPING ROOM · TWELVE PRESENT STUDIES</p>
+    <h1>Christmas, <em>unwrapped.</em></h1>
+    <p class="intro">A collection of little wonders. Find your favourite wrapping.</p>
+    <div class="design-picker" id="present-studies" role="group" aria-label="Choose a present">
+      <button data-design="crimson" aria-pressed="true"><i class="swatch crimson"></i><span><b>01 · Crimson botanical</b><small>Foil paper / gold satin</small></span></button>
+      <button data-design="ivory" aria-pressed="false"><i class="swatch ivory"></i><span><b>02 · Woodland parcel</b><small>Ivory paper / forest weave</small></span></button>
+      <button data-design="midnight" aria-pressed="false"><i class="swatch midnight"></i><span><b>03 · Midnight stars</b><small>Blue lustre / silver silk</small></span></button>
+      <button data-design="plum" aria-pressed="false"><i class="swatch plum"></i><span><b>04 · Sugarplum hatbox</b><small>Round fluted paper / velvet rosette</small></span></button>
+      <button data-design="kraft" aria-pressed="false"><i class="swatch kraft"></i><span><b>05 · The long way home</b><small>Folded kraft / offset linen tie</small></span></button>
+      <button data-design="emerald" aria-pressed="false"><i class="swatch emerald"></i><span><b>06 · Emerald treasure</b><small>Octagonal box / petite silk bow</small></span></button>
+      <button data-design="book" aria-pressed="false"><i class="swatch"></i><span><b>07 · A winter story</b><small>Book parcel / narrow knotted tape</small></span></button>
+      <button data-design="frost" aria-pressed="false"><i class="swatch"></i><span><b>08 · Frost &amp; fold</b><small>Flat square / tailored grosgrain</small></span></button>
+      <button data-design="copper" aria-pressed="false"><i class="swatch"></i><span><b>09 · Copper candlelight</b><small>Slender tower / oversized organza</small></span></button>
+      <button data-design="rose" aria-pressed="false"><i class="swatch"></i><span><b>10 · Rosewood carriage</b><small>Tapered trunk / diagonal corner tie</small></span></button>
+      <button data-design="citrus" aria-pressed="false"><i class="swatch"></i><span><b>11 · Winter pantry</b><small>Hexagonal parcel / rustic twine</small></span></button>
+      <button data-design="oval" aria-pressed="false"><i class="swatch"></i><span><b>12 · Peacock keepsake</b><small>Oval case / ivory butterfly bow</small></span></button>
+    </div>
+    <a class="preview-jump" href="#stage">View selected present ↓</a>
+    <p class="design-note" id="design-note">Crimson botanical · A classic keepsake box with generous satin loops.</p>
+    <div class="stage" id="stage">
+      <div class="halo" aria-hidden="true"></div>
+      <svg class="gift" viewBox="0 0 600 490" role="group" aria-labelledby="gift-title gift-desc">
+        <title id="gift-title">A crimson Christmas present tied with a golden bow</title>
+        <desc id="gift-desc">The bow unties, the ribbon slips away, and the lid lifts to reveal a preview card.</desc>
+        <defs>
+          <linearGradient id="paper-front" x1="0" y1="0" x2="1" y2=".8"><stop stop-color="#bc4752"/><stop offset=".32" stop-color="#9b293b"/><stop offset=".72" stop-color="#7d1c30"/><stop offset="1" stop-color="#541323"/></linearGradient>
+          <linearGradient id="paper-side" x1="0" y1="0" x2="1" y2=".4"><stop stop-color="#631a2b"/><stop offset=".5" stop-color="#481321"/><stop offset="1" stop-color="#6d2130"/></linearGradient>
+          <linearGradient id="lid-top" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#e18a80"/><stop offset=".16" stop-color="#c85c64"/><stop offset=".6" stop-color="#a93849"/><stop offset="1" stop-color="#8f283d"/></linearGradient>
+          <linearGradient id="lid-front" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#cf6871"/><stop offset=".12" stop-color="#b74b59"/><stop offset=".65" stop-color="#9a3043"/><stop offset=".88" stop-color="#762034"/><stop offset="1" stop-color="#bc5662"/></linearGradient>
+          <radialGradient id="paper-bloom" cx=".15" cy=".08" r=".95"><stop stop-color="#ffd3ac" stop-opacity=".14"/><stop offset=".6" stop-color="#ffad8b" stop-opacity="0"/><stop offset="1" stop-color="#210715" stop-opacity=".25"/></radialGradient>
+          <linearGradient id="paper-reflection" x1="0" y1="0" x2="1" y2=".25"><stop stop-color="#fff1d5" stop-opacity="0"/><stop offset=".36" stop-color="#ffe2c1" stop-opacity=".16"/><stop offset=".49" stop-color="#fff4dc" stop-opacity=".25"/><stop offset=".67" stop-color="#ffc99b" stop-opacity=".035"/><stop offset="1" stop-color="#fff1d5" stop-opacity="0"/></linearGradient>
+          <linearGradient id="fold-light"><stop stop-color="#350d22" stop-opacity=".05"/><stop offset=".45" stop-color="#310d1d" stop-opacity=".3"/><stop offset=".5" stop-color="#f5a18f" stop-opacity=".28"/><stop offset=".7" stop-color="#c26562" stop-opacity=".07"/><stop offset="1" stop-color="#962c3b" stop-opacity="0"/></linearGradient>
+          <linearGradient id="lid-reflection" x1="0" y1="0" x2=".2" y2="1"><stop stop-color="#fff1df" stop-opacity=".27"/><stop offset=".3" stop-color="#f2c4ac" stop-opacity=".03"/><stop offset=".8" stop-color="#ffd5a7" stop-opacity=".1"/><stop offset="1" stop-color="#39101c" stop-opacity=".13"/></linearGradient>
+          <filter id="reflection-soft" x="-10%" y="-40%" width="120%" height="180%"><feGaussianBlur stdDeviation="2.4"/></filter>
+          <filter id="paper-fibre" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".92" numOctaves="2" stitchTiles="stitch" result="noise"/><feColorMatrix in="noise" type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".035"/></feComponentTransfer><feBlend in="SourceGraphic" mode="soft-light"/><feComposite in2="SourceGraphic" operator="in"/></filter>
+          <filter id="contact" x="-20%" y="-100%" width="140%" height="300%"><feGaussianBlur stdDeviation="2.8"/></filter>
+          <radialGradient id="ground-light"><stop stop-color="#e0b575" stop-opacity=".12"/><stop offset="1" stop-color="#d9bd82" stop-opacity="0"/></radialGradient>
+          <pattern id="botanical" width="66" height="72" patternUnits="userSpaceOnUse" patternTransform="skewY(4.6)">
+            <g fill="none" stroke="#e6b781" stroke-width=".6" opacity=".28"><path d="M20 52L31 21M24 40l-7-11m9 6-1-12m-3 23-9-8m15-6 9-7m-11 15 12-7m-14 13 11-5"/><path d="M49 12v5m-2.5-2.5h5"/></g><circle cx="49" cy="51" r=".8" fill="#efc690" opacity=".3"/>
+          </pattern>
+          <radialGradient id="light"><stop stop-color="#ffedb1" stop-opacity=".9"/><stop offset=".35" stop-color="#efc976" stop-opacity=".28"/><stop offset="1" stop-color="#e5bb62" stop-opacity="0"/></radialGradient>
+          <filter id="shadow" x="-50%" y="-50%" width="200%" height="220%"><feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#020d0b" flood-opacity=".4"/></filter>
+          <filter id="soft" x="-30%" y="-150%" width="160%" height="400%"><feGaussianBlur stdDeviation="9"/></filter>
+        </defs>
+        <ellipse cx="309" cy="425" rx="200" ry="41" fill="url(#ground-light)"/>
+        <ellipse cx="317" cy="425" rx="156" ry="19" fill="#010c09" opacity=".5" filter="url(#soft)"/>
+        <path d="M173 398L406 417L440 393L422 423L210 420Z" fill="#010a08" opacity=".62" filter="url(#contact)"/>
+        <g id="design-shape"><g class="present">
+          <path d="M173 273L207 243L439 262L405 293V419L173 400Z" fill="#3f1822"/>
+          <path d="M184 273L210 252L426 269L402 288Z" fill="#211715"/>
+          <path d="M178 275L207 249L435 266L405 291Z" fill="none" stroke="#c38e70" stroke-width="2" stroke-opacity=".55"/>
+          <ellipse class="inner-light" cx="300" cy="260" rx="135" ry="100" fill="url(#light)"/>
+          <g class="box-lid" filter="url(#shadow)">
+            <path d="M164 270L413 291L450 258L446 264L413 299L164 277Z" fill="#421421"/>
+            <path d="M163 244L200 211L450 232L413 265Z" fill="url(#lid-top)" filter="url(#paper-fibre)"/>
+            <path d="M163 244L200 211L450 232L413 265Z" fill="url(#botanical)" opacity=".65"/>
+            <path d="M164 244L201 212L449 232L412 264Z" fill="url(#lid-reflection)"/>
+            <path d="M190 239Q239 218 281 222L347 230Q264 231 202 247Z" fill="url(#paper-reflection)" opacity=".5" filter="url(#reflection-soft)"/>
+            <path d="M413 265L450 232V260L413 293Z" fill="url(#paper-side)"/>
+            <path d="M163 244L413 265V293L163 272Z" fill="url(#lid-front)" filter="url(#paper-fibre)"/>
+            <path d="M164 245L413 266L449 234M165 269L412 290" fill="none" stroke="#f4ae9a" stroke-width=".9" stroke-opacity=".63"/>
+            <path d="M413 266V290L448 259" fill="none" stroke="#e68a7d" stroke-width=".7" stroke-opacity=".35"/>
+            <path d="M170 251L408 271M170 265L408 285" stroke="#e6b27f" stroke-width=".6" opacity=".35"/>
+            <path d="M200 212L447 233" stroke="#ffbda5" stroke-width=".7" opacity=".45"/>
+            <path d="M421 260L438 238L449 233L439 253Z" fill="url(#fold-light)" opacity=".7"/>
+            <path d="M164 246L180 251L186 272L176 272Z" fill="url(#fold-light)" opacity=".6"/>
+          </g>
+          <g class="song-card" filter="url(#shadow)">
+            <rect x="197" y="233" width="207" height="181" rx="5" fill="#faf2df"/>
+            <rect x="205" y="241" width="191" height="165" rx="2" fill="none" stroke="#c6aa71" stroke-width=".7"/>
+            <path d="M289 259h23m-18-5 6 5-6 5m12-10-6 5 6 5" fill="none" stroke="#a8874a" stroke-width="1"/>
+            <text x="300" y="283" class="card-kicker">A LITTLE MOMENT OF WONDER</text>
+            <text x="300" y="316" class="card-title">Beautifully unwrapped.</text>
+            <text x="300" y="341" class="card-artist">CHIME 2026 · Present study</text>
+            <text x="300" y="376" class="card-kicker">THE MAGIC IS IN THE MAKING</text>
+          </g>
+          <g class="box-body">
+            <path d="M405 292L439 263V391Q439 394 436 397L405 420Z" fill="url(#paper-side)" filter="url(#paper-fibre)"/>
+            <path d="M173 273L405 292V420L176 401Q173 400 173 397Z" fill="url(#paper-front)" filter="url(#paper-fibre)"/>
+            <path d="M173 273L405 292V420L176 401Q173 400 173 397Z" fill="url(#paper-bloom)"/>
+            <path d="M173 273L405 292V420L176 401Q173 400 173 397Z" fill="url(#botanical)"/>
+            <path d="M405 292L439 263V392L405 420Z" fill="url(#botanical)" opacity=".3"/>
+            <path d="M174 274L404 293V301L174 282Z" fill="#2b0a17" opacity=".35"/>
+            <path d="M183 289L395 306V408L183 390Z" fill="none" stroke="#edbf88" stroke-width=".65" opacity=".12"/>
+            <path d="M186 292L392 309V404L186 387Z" fill="none" stroke="#edbf88" stroke-width=".4" opacity=".06"/>
+            <path d="M176 284L238 289Q220 331 242 405L179 400Q188 358 176 284Z" fill="url(#paper-reflection)" opacity=".65"/>
+            <path d="M175 391Q202 380 240 387L267 408L176 400Z" fill="url(#fold-light)" opacity=".22"/>
+            <path d="M407 294L437 268L426 331L407 358Z" fill="url(#fold-light)" opacity=".35"/>
+            <path d="M408 360L427 332L438 391L407 417Z" fill="url(#fold-light)" opacity=".28"/>
+            <path d="M408 295L426 331L437 272M408 415L426 333L438 390" fill="none" stroke="#e5a78b" stroke-width=".55" opacity=".12"/>
+            <path d="M176 395Q205 386 236 391" fill="none" stroke="#f5ad91" stroke-width=".55" opacity=".12"/>
+            <path d="M174 282V396Q174 399 178 399L402 418M405 298V416" fill="none" stroke="#f6ab91" stroke-width=".8" opacity=".36"/>
+            <path d="M437 273V390L410 413" fill="none" stroke="#e2967d" stroke-width=".6" opacity=".2"/>
+            <path d="M405 298V418" stroke="#330a17" stroke-width="1.2" opacity=".6"/>
+            <path d="M206 247L178 272M418 400L433 387" stroke="#d58c77" stroke-width=".6" opacity=".22"/>
+          </g>
+          <foreignObject x="0" y="0" width="600" height="490" aria-hidden="true" pointer-events="none">
+            <canvas xmlns="http://www.w3.org/1999/xhtml" id="ribbon-canvas" width="1200" height="980" style="display:block;width:600px;height:490px"></canvas>
+          </foreignObject>
+          <g class="sparkles" fill="#f7df9e"><path d="M221 182l2 7 7 2-7 2-2 7-2-7-7-2 7-2Z"/><path d="M388 205l2 5 5 2-5 2-2 5-2-5-5-2 5-2Z"/><path d="M338 146l1 5 5 1-5 2-1 5-2-5-5-2 5-1Z"/><circle cx="245" cy="150" r="1.8"/><circle cx="366" cy="172" r="1.5"/><circle cx="190" cy="235" r="1.4"/></g>
+        </g>
+        </g>
+      </svg>
+      <button class="open-gift" id="open-gift" aria-label="Unwrap the selected present"><span>Click to unwrap <span aria-hidden="true">↗</span></span></button>
+    </div>
+    <div class="under-gift"><p id="status" role="status" aria-live="polite">A little Christmas magic awaits.</p><button id="replay" class="replay"><span aria-hidden="true">↻</span> Reset wrapping</button><a class="preview-jump" href="#present-studies">↑ Compare all twelve</a></div>
+  </main>
+  <footer><span>PRESENT STUDIES · DEVELOPMENT ONLY</span><span>Twelve gifts. A little magic.</span></footer>
+<script>
+window.addEventListener('error',e=>document.getElementById('test-results').textContent+='ERROR '+e.message+'\n');
+window.addEventListener('load',()=>{
+ const out=[],check=(name,ok)=>out.push((ok?'PASS ':'FAIL ')+name);
+ check('twelve loaded snapshots',document.querySelectorAll('.design-thumbnail').length===12&&[...document.querySelectorAll('.design-thumbnail')].every(i=>i.complete&&i.naturalWidth>0));
+ check('stacked gift replaced',!designs.stack&&!!designs.oval&&!document.querySelector('[data-design="stack"]'));
+ for(const key of Object.keys(designs)){
+  selectDesign(key);const image=ribbonCanvas.toDataURL(),duration=designs[key].duration||DURATION;
+  openButton.click();check(key+' opening',stage.classList.contains('is-opening'));
+  const plan=designs[key].arrangement?releasePlans[designs[key].arrangement]:null;
+  if(plan){let finite=true,maxStep=0,previous;for(let ms=0;ms<=plan.settled;ms+=50){const paths=arrangementPose(key,ms);paths.forEach((pts,i)=>pts.forEach((p,j)=>{finite=finite&&Number.isFinite(p.x+p.y+p.width+p.nx+p.ny)&&p.width>0;if(previous)maxStep=Math.max(maxStep,distance(p,previous[i][j]))}));previous=paths}check(key+' continuous finite material',finite&&maxStep<40)}
+  cancelAnimationFrame(frame);tick(started+duration);check(key+' completes',stage.classList.contains('is-open')&&!running);
+  replayButton.click();check(key+' replay restores wrapped',ribbonCanvas.toDataURL()===image&&!stage.classList.contains('is-opening'));
+  openButton.click();selectDesign('crimson');check(key+' interrupted switching',!running&&!openButton.disabled);
+ }
+ selectDesign('oval');const query=new URLSearchParams(location.search);
+ if(query.has('open')){openGift();cancelAnimationFrame(frame);tick(started+designs.oval.duration);document.querySelectorAll('.present,.box-lid,.song-card,.inner-light').forEach(el=>{for(const anim of el.getAnimations())anim.finish()});check('oval card clears box',document.querySelector('.song-card').getBoundingClientRect().bottom<=document.querySelector('.box-body').getBoundingClientRect().top)}
+ check('no horizontal overflow',document.documentElement.scrollWidth<=innerWidth);
+ document.getElementById('test-results').textContent+=out.join('\n');
+});
+</script><pre id="test-results" style="font:10px monospace;white-space:pre-wrap"></pre></body>
+</html>

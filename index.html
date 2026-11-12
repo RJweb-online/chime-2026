@@ -6,22 +6,33 @@
   <meta name="theme-color" content="#102c27">
   <title>CHIME 2026 — Present studies</title>
   <link rel="stylesheet" href="style.css">
+  <script src="assets/audio/samples.js" defer></script>
+  <script src="audio.js" defer></script>
+  <script src="confetti.js" defer></script>
   <script src="script.js" defer></script>
+  <script src="studies.js" defer></script>
 </head>
 <body>
   <header><a class="wordmark" href="./" aria-label="CHIME 2026 home">CHIME<span>2026</span></a><span class="edition">DEVELOPMENT PREVIEW</span></header>
   <main>
-    <p class="eyebrow">THE WRAPPING ROOM · SIX PRESENT STUDIES</p>
+    <p class="eyebrow">THE WRAPPING ROOM · TWELVE PRESENT STUDIES</p>
     <h1>Christmas, <em>unwrapped.</em></h1>
     <p class="intro">A collection of little wonders. Find your favourite wrapping.</p>
-    <div class="design-picker" role="group" aria-label="Choose a present">
+    <div class="design-picker" id="present-studies" role="group" aria-label="Choose a present">
       <button data-design="crimson" aria-pressed="true"><i class="swatch crimson"></i><span><b>01 · Crimson botanical</b><small>Foil paper / gold satin</small></span></button>
       <button data-design="ivory" aria-pressed="false"><i class="swatch ivory"></i><span><b>02 · Woodland parcel</b><small>Ivory paper / forest weave</small></span></button>
       <button data-design="midnight" aria-pressed="false"><i class="swatch midnight"></i><span><b>03 · Midnight stars</b><small>Blue lustre / silver silk</small></span></button>
       <button data-design="plum" aria-pressed="false"><i class="swatch plum"></i><span><b>04 · Sugarplum hatbox</b><small>Round fluted paper / velvet rosette</small></span></button>
       <button data-design="kraft" aria-pressed="false"><i class="swatch kraft"></i><span><b>05 · The long way home</b><small>Folded kraft / offset linen tie</small></span></button>
       <button data-design="emerald" aria-pressed="false"><i class="swatch emerald"></i><span><b>06 · Emerald treasure</b><small>Octagonal box / petite silk bow</small></span></button>
+      <button data-design="book" aria-pressed="false"><i class="swatch"></i><span><b>07 · A winter story</b><small>Book parcel / narrow knotted tape</small></span></button>
+      <button data-design="frost" aria-pressed="false"><i class="swatch"></i><span><b>08 · Frost &amp; fold</b><small>Flat square / tailored grosgrain</small></span></button>
+      <button data-design="copper" aria-pressed="false"><i class="swatch"></i><span><b>09 · Copper candlelight</b><small>Slender tower / oversized organza</small></span></button>
+      <button data-design="rose" aria-pressed="false"><i class="swatch"></i><span><b>10 · Rosewood carriage</b><small>Tapered trunk / diagonal corner tie</small></span></button>
+      <button data-design="citrus" aria-pressed="false"><i class="swatch"></i><span><b>11 · Winter pantry</b><small>Hexagonal parcel / rustic twine</small></span></button>
+      <button data-design="oval" aria-pressed="false"><i class="swatch"></i><span><b>12 · Peacock keepsake</b><small>Oval case / ivory butterfly bow</small></span></button>
     </div>
+    <a class="preview-jump" href="#stage">View selected present ↓</a>
     <p class="design-note" id="design-note">Crimson botanical · A classic keepsake box with generous satin loops.</p>
     <div class="stage" id="stage">
       <div class="halo" aria-hidden="true"></div>
@@ -109,8 +120,8 @@
       </svg>
       <button class="open-gift" id="open-gift" aria-label="Unwrap the selected present"><span>Click to unwrap <span aria-hidden="true">↗</span></span></button>
     </div>
-    <div class="under-gift"><p id="status" role="status" aria-live="polite">A little Christmas magic awaits.</p><button id="replay" class="replay"><span aria-hidden="true">↻</span> Reset wrapping</button></div>
+    <div class="under-gift"><p id="status" role="status" aria-live="polite">A little Christmas magic awaits.</p><button id="replay" class="replay"><span aria-hidden="true">↻</span> Reset wrapping</button><a class="preview-jump" href="#present-studies">↑ Compare all twelve</a></div>
   </main>
-  <footer><span>PRESENT STUDIES · DEVELOPMENT ONLY</span><span>Six gifts. A little magic.</span></footer>
+  <footer><span>PRESENT STUDIES · DEVELOPMENT ONLY</span><span>Twelve gifts. A little magic.</span></footer>
 </body>
 </html>

@@ -1,0 +1,1 @@
+new Promise(resolve=>setTimeout(()=>resolve(document.getElementById("report").textContent),1500))

@@ -132,11 +132,11 @@ function satinColor(p,v) {
  const diffuse=Math.max(0,nx*-.42+ny*-.48+nz*.77);
  // A broad, warm reflection, interrupted by the folds and turned-back edges.
  const material=designs[selected].material;
- const shine=Math.pow(Math.max(0,nx*-.24+ny*-.27+nz*.932),24)*(material==='velvet'?.18:material==='linen'?.25:1);
+ const shine=Math.pow(Math.max(0,nx*-.24+ny*-.27+nz*.932),24)*(material==='velvet'?.18:material==='linen'?.25:material==='grosgrain'?.4:1);
  const weave=1+.008*Math.sin(v*220+p.grain*4);
  const shade=(p.segment===2?.91:1)*weave;
  const tones=designs[selected].ribbon;
- const texture=material==='woven'||material==='linen'? .92+.08*Math.sin(p.grain*150)*Math.cos(v*180):material==='velvet'?.96+.04*Math.sin(p.grain*260+v*300):1;
+ const texture=material==='woven'||material==='linen'? .92+.08*Math.sin(p.grain*150)*Math.cos(v*180):material==='grosgrain'?.92+.08*Math.cos(p.grain*95):material==='velvet'?.96+.04*Math.sin(p.grain*260+v*300):1;
  return `rgb(${tones.map(c=>Math.min(255,(c[0]+c[1]*diffuse+c[2]*shine)*shade*texture)|0).join(',')})`;
 }
 function traceRibbon(ctx,points) {
@@ -146,7 +146,7 @@ function traceRibbon(ctx,points) {
  left.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));
  right.forEach(p=>ctx.lineTo(p.x,p.y));ctx.closePath();
 }
-function paintRibbon(points, shadow=true) {
+function paintRibbon(points, shadow=true, continuous=false) {
  const ctx=ribbonContext;
  ctx.save();
  if(shadow){
@@ -154,6 +154,19 @@ function paintRibbon(points, shadow=true) {
   ctx.shadowBlur=4*ribbonScale;ctx.shadowOffsetX=2*ribbonScale;ctx.shadowOffsetY=4*ribbonScale;
   ctx.fillStyle=selected==='plum'?'#71324c':selected==='kraft'?'#b5a17b':'#9d7438';ctx.fill();
   ctx.shadowColor='transparent';
+ }
+ if(continuous){
+  // A narrow, round-joined underpaint closes raster cracks where neighbouring
+  // sheet quads turn through a tight fold. It stays inside their projected
+  // widths; the existing shaded cloth remains the visible surface.
+  ctx.lineCap='round';ctx.lineJoin='round';
+  for(let i=1;i<points.length;i++){
+   const a=points[i-1],b=points[i];
+   const al=fabricPoint(a,-.5),ar=fabricPoint(a,.5),bl=fabricPoint(b,-.5),br=fabricPoint(b,.5);
+   ctx.beginPath();ctx.moveTo((al.x+ar.x)/2,(al.y+ar.y)/2);ctx.lineTo((bl.x+br.x)/2,(bl.y+br.y)/2);
+   ctx.lineWidth=Math.max(.5,Math.min(Math.hypot(al.x-ar.x,al.y-ar.y),Math.hypot(bl.x-br.x,bl.y-br.y))*.82);
+   ctx.strokeStyle=satinColor(b,0);ctx.stroke();
+  }
  }
  for(let i=1;i<points.length;i++) {
   const a=points[i-1],b=points[i];
@@ -185,6 +198,7 @@ function paintRibbon(points, shadow=true) {
 }
 function drawRibbon(ms) {
  ribbonTime=ms;
+ if(designs[selected].arrangement) {drawArrangement(ms); return;}
  const {front,pull}=geometry(ms);
  const variant=designs[selected];
  for(const rows of [front,pull]) rows.forEach((row,i)=>{
@@ -225,9 +239,9 @@ function drawRibbon(ms) {
    paintRibbon(extra);
   }
  }
- paintRibbon(frontPoints);paintRibbon(pullPoints);
+ paintRibbon(frontPoints,true,ms>=2800);paintRibbon(pullPoints,true,ms>=2800);
  // Same material collar over the pulled strand's underpass; same topology.
- paintRibbon(frontPoints.filter(p=>p.segment>=3));
+ paintRibbon(frontPoints.filter(p=>p.segment>=3),true,ms>=2800);
  stage.dataset.phase=ms<830?'tension':ms<1530?'first-loop':ms<1900?'knot-opening':ms<2800?'last-loop':ms<3570?'ribbon-slipping':'reveal';
 }
 function sizeRibbon() {
@@ -342,13 +356,19 @@ function selectDesign(key) {
  stage.dataset.design=key;
  stage.dataset.material=design.material||'satin';
  stage.dataset.shape=design.shape||'box';
+ stage.dataset.arrangement=design.arrangement||'';
+ if(design.arrangement) {
+  stage.style.setProperty('--lid-delay',`${design.lidDelay}ms`);
+  stage.style.setProperty('--card-delay',`${design.lidDelay+250}ms`);
+  stage.style.setProperty('--sparkle-delay',`${design.lidDelay+100}ms`);
+ }
  document.querySelectorAll('.design-picker [data-design]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.design===key)));
  replay();
 }
 document.querySelectorAll('.design-picker [data-design]').forEach(button=>button.addEventListener('click',()=>selectDesign(button.dataset.design)));
 new ResizeObserver(sizeRibbon).observe(stage);
 function finish() {
- drawRibbon(DURATION); stage.classList.add('is-open'); running=false;
+ drawRibbon(designs[selected].duration||DURATION); stage.classList.add('is-open'); running=false;
  document.querySelector('.song-card').setAttribute('aria-hidden','false');
  replayButton.disabled=false;
  status.textContent='Unwrapped. Reset to inspect the wrapping, or choose another present.';
@@ -356,24 +376,32 @@ function finish() {
 }
 function tick(now) {
  const elapsed=now-started; drawRibbon(elapsed);
- if(elapsed<DURATION) frame=requestAnimationFrame(tick); else finish();
+ if(elapsed<(designs[selected].duration||DURATION)) frame=requestAnimationFrame(tick); else finish();
 }
 function openGift() {
  if(running||stage.classList.contains('is-open')) return;
  keyboardOpening=openButton.matches(':focus-visible'); running=true;
  replayButton.disabled=false; openButton.disabled=true;
  status.textContent='Unwrapping a little Christmas magic…';
- stage.classList.add('is-opening'); started=performance.now();
+ started=performance.now();
+ const design=designs[selected];
+ const plan=design.arrangement?releasePlans[design.arrangement]:null;
+ window.ChimeSound?.begin({material:design.material||'satin',reduced:reducedMotion.matches,arranged:!!plan,loopEnd:plan?.loopEnd,slide:plan?.peel,edge:plan?.edge,lid:design.lidDelay||3600},()=>started);
+ stage.classList.add('is-opening');started=performance.now();
+ if(!reducedMotion.matches)window.ChimeConfetti?.schedule({start:started+(design.lidDelay||3600)+250,duration:8000});
  if(reducedMotion.matches) finish(); else frame=requestAnimationFrame(tick);
 }
 function replay() {
+ window.ChimeConfetti?.reset();
+ window.ChimeSound?.stop();
  cancelAnimationFrame(frame); stage.classList.remove('is-opening','is-open');
  running=false; openButton.disabled=false; replayButton.disabled=false;
  document.querySelector('.song-card').setAttribute('aria-hidden','true');
  drawRibbon(0); status.textContent='Fully wrapped. Click or tap the present to unwrap.';
 }
 reducedMotion.addEventListener('change',()=>{
- if(running&&reducedMotion.matches) {cancelAnimationFrame(frame);finish();}
+ if(reducedMotion.matches)window.ChimeConfetti?.reset();
+ if(running&&reducedMotion.matches) {cancelAnimationFrame(frame);window.ChimeSound?.reduce();finish();}
 });
 openButton.addEventListener('click',openGift);
 replayButton.addEventListener('click',replay);
@@ -409,5 +437,4 @@ function buildThumbnails() {
   button.querySelector('.swatch').replaceWith(preview);
  }
 }
-buildThumbnails();
-selectDesign('crimson');
+// Collection setup follows the original six definitions above.
