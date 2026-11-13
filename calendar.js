@@ -1,4 +1,6 @@
 'use strict';
+// RELEASE SWITCH: false = public test version; true = daily midnight Japan-time unlocks.
+const ENABLE_DATE_SCHEDULE = false;
 // Calendar data is independent of the twelve approved present renderers.
 // Temporary day assignments reuse the approved collection in its original order.
 const approvedPresentOrder=['crimson','ivory','midnight','plum','kraft','emerald','book','frost','copper','rose','citrus','oval'];
@@ -14,12 +16,10 @@ const calendarDays=Array.from({length:25},(_,index)=>({
  // Include home-network addresses so phone previews get the same local controls.
  const privateIPv4=/^(?:10\.\d{1,3}|192\.168|172\.(?:1[6-9]|2\d|3[01]))(?:\.\d{1,3}){2}$/;
  const local=['localhost','127.0.0.1','[::1]'].includes(location.hostname)||privateIPv4.test(location.hostname);
- // TEMPORARY LOCAL UNLOCK: set to false before publishing to restore date checks locally.
- const temporarilyUnlockLocalDecember1=true;
  const requestedPreview=new URLSearchParams(location.search).get('preview');
  const preview=local&&['locked','unlocked'].includes(requestedPreview)?requestedPreview:null;
- const unlockAt=Date.parse('2026-12-01T00:00:00+09:00');
- const unlocked=()=>preview!=='locked'&&(preview==='unlocked'||(local&&temporarilyUnlockLocalDecember1)||Date.now()>=unlockAt);
+ const unlockAt=day=>Date.parse(`2026-12-${String(day.day).padStart(2,'0')}T00:00:00+09:00`);
+ const unlocked=day=>preview!=='locked'&&(preview==='unlocked'||!ENABLE_DATE_SCHEDULE||Date.now()>=unlockAt(day));
  const storageKey=preview?'chime:2026:december-1:preview':'chime:2026:december-1:opened';
  let saved=false,storageAvailable=true;
  try{saved=localStorage.getItem(storageKey)==='opened';}catch{storageAvailable=false;}
@@ -33,26 +33,26 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   return songUrl?`<a class="watch-youtube" href="${songUrl.replaceAll('&','&amp;').replaceAll('"','&quot;')}" target="_blank" rel="noopener noreferrer">Watch on YouTube <span aria-hidden="true">↗</span></a>`:`<p class="song-pending" role="status">${songState==='loading'?'Loading your December 1 song…':'Your song couldn’t load. Please reload to try again.'}</p>`;
  }
  document.body.classList.add('calendar-page');
- document.querySelector('.edition').textContent='AN ADVENT OF LITTLE WONDERS';
+ document.querySelector('.edition').textContent=ENABLE_DATE_SCHEDULE?'AN ADVENT OF LITTLE WONDERS':'PUBLIC TEST VERSION';
  document.querySelector('.eyebrow').textContent='DECEMBER 1–25 · A LITTLE WONDER EVERY DAY';
  document.querySelector('.intro').textContent='Twenty-five little moments. Yours to unwrap.';
- document.querySelector('footer').innerHTML='<span>CHIME 2026 · DECEMBER 1</span><span>Made for a little Christmas wonder.</span>';
+ document.querySelector('footer').innerHTML='<span>CHIME 2026 · TWELVE PRESENTS</span><span>Made for a little Christmas wonder.</span>';
  source.hidden=true;source.classList.add('calendar-source');
  document.querySelectorAll('.preview-jump').forEach(link=>link.remove());
  const section=document.createElement('section');section.className='calendar';
  section.setAttribute('aria-label','December Advent calendar');
- section.innerHTML='<div class="calendar-heading"><span>DECEMBER <b>2026</b></span><span id="calendar-progress" role="status">December 1</span></div><div class="calendar-grid"></div><div class="calendar-tools"><p><strong id="unlock-status"></strong> <span>Days 1–12: approved presents. Only December 1 opens in this preview. Days 13–25: designs to come.</span></p></div>';
+ section.innerHTML='<div class="calendar-heading"><span>DECEMBER <b>2026</b></span><span id="calendar-progress" role="status">December 1</span></div><div class="calendar-grid"></div><div class="calendar-tools"><p><strong id="unlock-status"></strong> <span>Days 1–12: unwrap and replay the approved presents. Days 13–25: designs to come.</span></p></div>';
  main.insertBefore(section,source);
  if(local){
   const tools=document.createElement('nav');tools.className='local-preview';tools.setAttribute('aria-label','Local preview controls');
-  tools.innerHTML=`<strong>Local preview: ${preview||(temporarilyUnlockLocalDecember1?'date lock temporarily off':'real date')}</strong><a href="?preview=locked">Locked</a><a href="?preview=unlocked">Unlocked</a><a href="?">Calendar</a><button type="button">Reset this opening</button>`;
+  tools.innerHTML=`<strong>Local preview: ${preview||(ENABLE_DATE_SCHEDULE?'real date':'date schedule off')}</strong><a href="?preview=locked">Locked</a><a href="?preview=unlocked">Unlocked</a><a href="?">Calendar</a><button type="button">Reset this opening</button>`;
   section.before(tools);
   tools.querySelector('button').addEventListener('click',()=>{saveOpened(false);location.reload();});
  }
  const grid=section.querySelector('.calendar-grid');
  const dialog=document.createElement('dialog');dialog.className='present-dialog';
  dialog.setAttribute('aria-labelledby','day-title');
- dialog.innerHTML='<div class="dialog-top"><button type="button" class="return-calendar" autofocus>← Calendar</button><span id="day-date"></span></div><h2 id="day-title"></h2><div class="live-present"></div><div class="future-present" hidden><div class="future-emblem" aria-hidden="true">✧</div><p>A little wonder in the making.</p><small>This day is ready for a future present design.</small><button type="button" class="placeholder-toggle">Mark as opened</button></div><div class="prototype-controls"><button type="button" class="preview-opened">Preview opened state</button><span>Local preview · December 1</span></div>';
+ dialog.innerHTML='<div class="dialog-top"><button type="button" class="return-calendar" autofocus>← Calendar</button><span id="day-date"></span></div><h2 id="day-title"></h2><div class="live-present"></div><div class="future-present" hidden><div class="future-emblem" aria-hidden="true">✧</div><p>A little wonder in the making.</p><small>This day is ready for a future present design.</small><button type="button" class="placeholder-toggle">Mark as opened</button></div><div class="prototype-controls"><button type="button" class="preview-opened">Preview opened state</button><span>Local preview</span></div>';
  document.body.append(dialog);
  const live=dialog.querySelector('.live-present'),future=dialog.querySelector('.future-present');
  // Review copy stays in normal flow, outside the gift/card positioning area.
@@ -68,20 +68,30 @@ const calendarDays=Array.from({length:25},(_,index)=>({
  readable.innerHTML='<p class="reveal-kicker">A LITTLE MOMENT OF WONDER</p><h3>Your December 1 song</h3><p class="reveal-artist">CHIME 2026 · December 1</p><div class="card-song"></div><p class="reveal-caption">THE MAGIC IS IN THE MAKING</p>';
  live.append(readable);
  const cardSong=readable.querySelector('.card-song');
- cardSong.innerHTML=songAction();
+ function updateCard(){
+  const isSong=activeDay?.day===1;
+  const title=isSong?'Your December 1 song':'Beautifully unwrapped.';
+  const artist=`CHIME 2026 · December ${activeDay?.day||1}`;
+  readable.querySelector('h3').textContent=title;
+  readable.querySelector('.reveal-artist').textContent=artist;
+  readable.setAttribute('aria-label',isSong?'Your December 1 song':`Your December ${activeDay?.day} card`);
+  cardSong.hidden=!isSong;cardSong.innerHTML=isSong?songAction():'';
+  stage.querySelector('.card-title').textContent=title;
+  stage.querySelector('.card-artist').textContent=artist;
+ }
  window.ChimeDecember1Song.load().then(url=>{
-  songUrl=url;songState='ready';cardSong.innerHTML=songAction();
-  if(stage.classList.contains('is-open'))status.textContent='Your December 1 song is ready.';
+  songUrl=url;songState='ready';
+  if(activeDay?.day===1){
+   updateCard();
+   if(stage.classList.contains('is-open'))status.textContent='Your December 1 song is ready.';
+  }
  }).catch(error=>{
-  songState='error';cardSong.innerHTML=songAction();
+  songState='error';if(activeDay?.day===1)updateCard();
   console.warn('CHIME December 1:',error.message);
  });
- stage.querySelector('.card-title').textContent='Your December 1 song';
- stage.querySelector('.card-artist').textContent='CHIME 2026 · December 1';
- document.getElementById('gift-desc').textContent='The bow unties, the ribbon slips away, and the lid lifts to reveal your December 1 song.';
- openButton.setAttribute('aria-label','Unwrap your December 1 present');
  openButton.querySelector('span').innerHTML='Tap to unwrap <span aria-hidden="true">↗</span>';
- replayButton.hidden=!local;
+ replayButton.hidden=false;
+ replayButton.innerHTML='<span aria-hidden="true">↻</span> Replay opening';
  dialog.querySelector('.prototype-controls').hidden=!local;
  let cardAnimation=null,instantCard=false;
  function clearCard(){
@@ -124,12 +134,12 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   const button=grid.querySelector(`[data-day="${day.day}"]`),isOpen=opened.has(day.day);
   button.classList.toggle('day-opened',isOpen);
   const name=day.design?wrapped.get(day.design).name:'Coming later';
-  const locked=day.day===1&&!unlocked();
-  button.disabled=day.day!==1||locked;
-  button.setAttribute('aria-label',`December ${day.day}, ${name}, ${isOpen?'opened':'wrapped'}${locked?', locked until December 1 at midnight Japan time':day.day===1?'':day.design?', reveal coming later':', design coming later'}`);
+  const locked=!!day.design&&!unlocked(day);
+  button.disabled=!day.design||locked;
+  button.setAttribute('aria-label',`December ${day.day}, ${name}, ${isOpen?'opened':'wrapped'}${locked?`, locked until December ${day.day} at midnight Japan time`:day.design?'':', design coming later'}`);
   const image=button.querySelector('img');if(image)image.src=isOpen?opened.get(day.day):wrapped.get(day.design).image;
-  button.querySelector('.day-state').textContent=locked?'Locked':isOpen?'Opened':day.day===1?'Tap to open':day.design?'Reveal later':'Design to come';
-  document.getElementById('calendar-progress').textContent=opened.has(1)?'December 1 · opened':'December 1 · a song awaits';
+  button.querySelector('.day-state').textContent=locked?'Locked':isOpen?'Opened':day.design?'Tap to open':'Design to come';
+  document.getElementById('calendar-progress').textContent=`${opened.size} of 12 unwrapped`;
  }
  function openedSnapshot(){
   // Reuse the original snapshot, retaining its exact paper and construction.
@@ -144,8 +154,8 @@ const calendarDays=Array.from({length:25},(_,index)=>({
  }
  function rememberOpened(){
   if(!dialog.open||!activeDay?.design||!stage.classList.contains('is-open'))return;
-  opened.set(activeDay.day,openedSnapshot());saveOpened(true);update(activeDay);
-  status.textContent=(songUrl?'Your December 1 song is ready.':'Your December 1 present is unwrapped.')+(storageAvailable?'':' Browser storage is unavailable; this opening cannot be remembered.');
+  opened.set(activeDay.day,openedSnapshot());if(activeDay.day===1)saveOpened(true);update(activeDay);
+  status.textContent=activeDay.day===1?(songUrl?'Your December 1 song is ready.':'Your December 1 present is unwrapped.')+(storageAvailable?'':' Browser storage is unavailable; this opening cannot be remembered.'):`December ${activeDay.day}, unwrapped. Replay the opening whenever you like.`;
  }
  new MutationObserver(()=>{
   rememberOpened();
@@ -164,7 +174,7 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   showCard(false);instantCard=false;
  }
  function showDay(day,button){
-  if(day.day!==1||!day.design||!unlocked())return;
+  if(!day.design||!unlocked(day))return;
   clearCard();
   activeDay=day;returnTarget=button;
   live.hidden=!day.design;future.hidden=!!day.design;
@@ -174,7 +184,12 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   if(title)title.textContent=day.design?wrapped.get(day.design).name:'A wonder yet to come';
   dialog.setAttribute('aria-labelledby',title&&!title.hidden?'day-date day-title':'day-date');
   dialog.showModal();document.body.classList.add('calendar-dialog-open');
-  if(day.design){selectDesign(day.design);sizeRibbon();if(saved||opened.has(day.day))previewOpened();}
+  if(day.design){
+   selectDesign(day.design);updateCard();sizeRibbon();
+   openButton.setAttribute('aria-label',`Unwrap your December ${day.day} present`);
+   document.getElementById('gift-desc').textContent=`The bow unties, the ribbon slips away, and the lid lifts to reveal your December ${day.day} card.`;
+   if((day.day===1&&saved)||opened.has(day.day))previewOpened();
+  }
   else dialog.querySelector('.placeholder-toggle').textContent=opened.has(day.day)?'Rewrap this day':'Mark as opened';
  }
  for(const day of calendarDays){
@@ -186,19 +201,27 @@ const calendarDays=Array.from({length:25},(_,index)=>({
  dialog.querySelector('.return-calendar').addEventListener('click',()=>dialog.close());
  dialog.addEventListener('close',()=>{clearCard();replay();activeDay=null;document.body.classList.remove('calendar-dialog-open');returnTarget?.focus({preventScroll:true});});
  dialog.querySelector('.preview-opened').addEventListener('click',previewOpened);
- replayButton.addEventListener('click',()=>{clearCard();if(activeDay){opened.delete(activeDay.day);saveOpened(false);update(activeDay);}});
+ replayButton.addEventListener('click',()=>{
+  clearCard();
+  if(activeDay){
+   opened.delete(activeDay.day);if(activeDay.day===1)saveOpened(false);update(activeDay);
+   // script.js's existing replay listener resets the renderer before this listener.
+   openGift();
+  }
+ });
  dialog.querySelector('.placeholder-toggle').addEventListener('click',()=>{
   if(opened.has(activeDay.day))opened.delete(activeDay.day);else opened.set(activeDay.day,true);
   update(activeDay);dialog.querySelector('.placeholder-toggle').textContent=opened.has(activeDay.day)?'Rewrap this day':'Mark as opened';
  });
  let previousUnlock=null;
  function refreshLock(){
-  if(previousUnlock===unlocked())return;
-  previousUnlock=unlocked();
-  document.getElementById('unlock-status').textContent=unlocked()?'December 1 is ready to unwrap.':'Unlocks December 1, 2026 · 00:00 Japan time.';
-  update(calendarDays[0]);
+  const available=calendarDays.map(day=>unlocked(day)).join(',');
+  if(previousUnlock===available)return;
+  previousUnlock=available;
+  document.getElementById('unlock-status').textContent=preview==='locked'?'Local preview · presents locked.':!ENABLE_DATE_SCHEDULE?'Test version · all 12 presents are unlocked.':'Presents unlock daily at midnight Japan time, December 1–25, 2026.';
+  calendarDays.forEach(update);
  }
  refreshLock();setInterval(refreshLock,1000);
  document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshLock();});
- if(saved&&unlocked())showDay(calendarDays[0],grid.querySelector('[data-day="1"]'));
+ if(saved&&unlocked(calendarDays[0]))showDay(calendarDays[0],grid.querySelector('[data-day="1"]'));
 })();

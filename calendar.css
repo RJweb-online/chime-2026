@@ -65,7 +65,7 @@
 .present-dialog{overflow-x:hidden}
 .calendar-day:disabled{cursor:default}
 .calendar-day:disabled:hover{background-color:transparent;border-color:#b9b58a24}
-.calendar-day[data-day="1"]:disabled .calendar-present{opacity:.65}
+.calendar-day:disabled .calendar-present{opacity:.65}
 .local-preview{max-width:760px;margin:0 auto 22px;padding:12px 16px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 16px;border:1px dashed #c4b78766;border-radius:5px;color:#c5b381;font:11px/1.5 Arial,sans-serif}
 .local-preview strong{flex-basis:100%}
 .local-preview a,.local-preview button{color:#e2d4ac;background:none;border:0;padding:12px 4px;min-height:44px;font:inherit;cursor:pointer}

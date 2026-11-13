@@ -1,38 +1,43 @@
-# CHIME 2026 — December 1 reveal
+# CHIME 2026 — public test calendar
 
-December 1 uses the approved **Crimson botanical** present. Its existing wrapping animation, card rise, sound and confetti remain intact. After the confetti, the card moves forward with its Watch on YouTube button on the card face on both phone and desktop. The existing 25-day layout shows all twelve approved designs on days 1–12 in their original order, using temporary day assignments. Only December 1 opens; days 2–12 show their wrapped designs with “Reveal later”. Only days 13–25 use placeholders.
+The 25-day calendar shows the twelve approved presents on **days 1–12** in their original order. All twelve can be opened and replayed in the public test version. **Days 13–25** remain disabled design placeholders. The approved wrapping animations, sound, confetti and card timing are unchanged.
+
+December 1 keeps its live Google Sheets song and Watch on YouTube button on the card face. After the confetti, the card moves forward with the button attached. Other finished days reveal their own neutral cards without borrowing December 1's song.
+
+Public test calendar: **https://rjweb-online.github.io/chime-2026/**
+
+## Release schedule switch
+
+At the top of **`calendar.js`**, the single release switch is:
+
+```js
+const ENABLE_DATE_SCHEDULE = false;
+```
+
+- **`false` (current):** all twelve finished presents are unlocked on the normal public URL. No preview link or local-network address is required.
+- **`true`:** each finished present unlocks on its own December date in 2026 at **00:00 Japan time**. For example, December 1 unlocks at `2026-12-01T00:00:00+09:00` and December 2 one day later. The device timezone does not change those instants. The page updates when a boundary passes, using the device clock.
+
+When ready to distribute CHIME, change this switch to `true`, commit and push `main`, and wait for GitHub Pages to deploy. Days 13–25 remain unavailable until their designs are assigned.
+
+Choose a day and tap the wrapped present. **Replay opening** restarts that present's full original sequence with one tap and remains available on the public page. December 1 is remembered across browser reloads and restores its opened card silently. Other days keep their opened poses during the current page session. A saved December 1 never opens a different day automatically or gives it the December 1 song. A new private browsing session starts fresh.
 
 ## Local preview
 
-**Temporary local unlock is enabled.** The plain calendar at <http://127.0.0.1:8000/> lets you open day 01 today, without a query string. In `calendar.js`, set `temporarilyUnlockLocalDecember1` from `true` to `false` before publishing to restore the normal local date check. The temporary override applies to localhost / loopback and private home-network IPv4 addresses; other hosts still use the Japan-time unlock.
-
-From this folder, run:
-
-```sh
-python3 -m http.server 8000 --bind 127.0.0.1
-```
-
-For iPhone testing over the same Wi-Fi, bind the server to all interfaces instead:
+The same buildless files run locally:
 
 ```sh
 python3 -m http.server 8000 --bind 0.0.0.0
 ```
 
-The running Wi-Fi preview is **http://172.22.1.46:8000/** (the Mac's current Wi-Fi IP; it may change when reconnecting). December 1 stays temporarily unlocked at this address. Keep the Mac awake and connected to the same Wi-Fi as the phone. The phone stores its opening separately from the Mac browser.
+Open <http://127.0.0.1:8000/> on the Mac. For the iPhone on the same Wi-Fi, the current Mac address is **http://172.22.1.46:8000/**; that address can change when reconnecting. Keep the Mac awake while using its server. The public test site does not depend on the Mac server.
 
-Open these in your browser (use the same hostname and port for remembered openings):
+Local-only toolbar controls remain available for inspecting locked and unlocked layouts:
 
-- Locked today: <http://127.0.0.1:8000/?preview=locked>
-- Unlocked today: <http://127.0.0.1:8000/?preview=unlocked>
-- Regular local calendar (temporarily unlocked): <http://127.0.0.1:8000/>
+- Locked: <http://127.0.0.1:8000/?preview=locked>
+- Unlocked: <http://127.0.0.1:8000/?preview=unlocked>
+- Normal calendar: <http://127.0.0.1:8000/>
 
-The local toolbar switches states and **Reset this opening** clears only the current mode's saved opening. The normal date and simulated previews use separate storage keys. Preview overrides and controls are accepted on localhost / loopback and private home-network IPv4 addresses. Use HTTP rather than opening the HTML file directly so browser storage behaves consistently. Stop the server with Ctrl+C.
-
-On the unlocked page, choose **01**, then tap the wrapped gift. The original sequence plays. After the last confetti fades, the card moves forward with **Watch on YouTube** attached to its face. The button travels with the card, uses a 48px tap target, and has no separate copy below the present. The song opens in a new tab only when the button is tapped. The opening is remembered when the original sequence finishes. Reloading or revisiting then shows the opened present and the same button on the card immediately and silently. Closing the dialog before the opening finishes leaves the gift wrapped.
-
-A new private browsing session starts wrapped. Reloading inside that private session still remembers its opening until that session closes. Local storage is specific to browser profile, hostname and port; blocked storage cannot retain openings.
-
-With the temporary local override off, the actual unlock is **December 1, 2026 at 00:00 Japan time**, equivalent to November 30 at 15:00 UTC. The page checks the explicit `+09:00` instant, independent of the viewer's timezone, and updates automatically at the boundary. This local static site uses the device clock.
+Those overrides work only on loopback and private home-network IPv4 addresses. Public visitors use `ENABLE_DATE_SCHEDULE` regardless of query-string preview flags. Local **Reset this opening** clears the December 1 saved opening for the current mode; the normal and simulated preview modes use separate keys. Storage is specific to browser profile, hostname and port.
 
 ## Change the December 1 song in Google Sheets
 
@@ -60,17 +65,9 @@ This enables a read-only song feed without requiring visitors to sign in. Anyone
 
 The present opens on its original schedule while the song loads separately. The button remains part of the forward card after confetti. On a slow connection it shows a loading message; an inaccessible sheet or invalid/missing day 1 URL shows a retry-by-reloading message instead of an obsolete song. Only a valid HTTPS YouTube link can become a Watch button. No YouTube embed or autoplay is used.
 
-For a full check: reset the unlocked preview, tap to unwrap, tap the song button, return and reload, then open the same preview URL in a new private window. Verify the locked preview cannot open. Local toolbar controls also let you inspect the final pose without waiting or reset the wrapping. Test sound on your phone; browser/device audio settings still apply.
+For a full check, open day 01, tap the present, wait for the confetti and forward card, then tap Watch. Return to the calendar and open day 02: it should start wrapped, reveal its own card and offer Replay opening. Reload to confirm December 1's saved card and fresh sheet song. Test sound on a physical phone; browser/device audio settings still apply.
 
-Browser validation confirmed all 25 tiles, twelve distinct approved designs on days 1–12, placeholders only on days 13–25, and disabled reveals on days 2–25. It also covered emulated phone touch, the original 3.85-second card cue and 4.9-second opening, sound/confetti invocation, 390px and 320px layouts, desktop, saved reloads, a fresh private context, reduced motion, blocked storage, and both sides of midnight Japan time in a different browser timezone. A follow-up browser check used the supplied December 1 URL, verified the phone Watch button opens it in a new tab, and confirmed the same URL after reload. Physical-device audio and YouTube playback still need a listening check.
-
-The temporary-unlock pass was tested from the exact regular URL `http://127.0.0.1:8000/`, without a preview query: day 01 was enabled, all twelve designs remained visible, the full opening and original sound/confetti calls ran, the phone card appeared, no song tab opened during the reveal, and tapping Watch opened the configured URL. Reload restored the opened gift and link.
-
-The card-button pass was verified on first opening and saved reloads: the only song button stays inside the forward card, remains hidden during confetti, and opens the configured URL when tapped. Checks covered 390px and 320px phone layouts, desktop first opening and reload, and reduced motion.
-
-The sheet integration was tested at the Wi-Fi calendar URL against the real Viewer-shared sheet. Fresh openings and saved reloads used the exact current B2 URL, and card taps opened it. Additional browser checks covered delayed responses, invalid/missing/duplicate day 1 rows, access failures and network failures without changing any sheet values.
-
-All work stays local: nothing has been committed, pushed or deployed.
+Browser validation covered all twelve design selections and replay controls, full day 1/day 2 opening sequences with sound/confetti calls, the live sheet song and saved December 1 card, 320px phone and desktop layouts, and the schedule switch enabled at Japan-time boundaries while the browser used a different timezone. The schedule-on checks used a temporary served copy, leaving the release switch off in the shipped source.
 
 ## Design studies
 
@@ -93,7 +90,7 @@ All materials are local SVG and Canvas artwork. The original paper detail, shado
 
 - `december-1.js`: the sheet connection and read-only December 1 song loader. Edit the song in Sheet1!B2.
 - `index.html`: shared layered SVG box and reveal card.
-- `calendar.js`: day-to-design data, calendar tiles, focused dialog, persistent December 1 opened state and static opened snapshots. Days 1–12 use the approved collection; days 13–25 stay unassigned. Only December 1 has an enabled reveal.
+- `calendar.js`: day-to-design data, calendar tiles, focused dialog, persistent December 1 opened state and static opened snapshots. Days 1–12 use the approved collection; days 13–25 stay unassigned. All twelve finished designs have enabled reveals while the schedule switch is off.
 - `calendar.css`: compact calendar layout and dialog styling, separate from the approved stage animation rules.
 - `style.css`: responsive preview, material treatments and shared lid/card animations.
 - `script.js`: design configurations, Canvas ribbon renderer, shared opening controller, reset, selection and reduced-motion handling.
@@ -120,7 +117,7 @@ The calendar overview uses static SVG snapshots of the actual gifts, including a
 
 Studies 01–06 keep their original 4.9-second sequence: box wiggle; tension and first-loop release (0.38–1.53 s); collar loosening (1.32–1.90 s); remaining loop release (1.90–2.78 s); ribbon peeling and settling (2.80–3.57 s); lid lift, glow and card reveal (3.60–4.90 s). Released ribbon remains visible below every gift.
 
-This is an authored 2.5D material animation, not a physical cloth simulation. It is designed for one viewing angle. The twelve approved designs remain available in the rendering collection; days 1–12 have temporary assignments and only December 1 has an enabled reveal.
+This is an authored 2.5D material animation, not a physical cloth simulation. It is designed for one viewing angle. The twelve approved designs remain available in the rendering collection; days 1–12 have temporary assignments with openable, replayable reveals in public test mode.
 
 All twelve present designs, sounds and confetti have been manually tested and accepted by the project owner. The earlier calendar prototype browser checks covered all 25 selectable days, the twelve actual designs and their opened snapshots, placeholder state toggles, resetting, interrupted closing, focus restoration, tap targets and horizontal overflow. The same 96 checks passed at desktop width, 390 px, and 320 px with reduced motion enabled. Visual review covered the 390 px overview and the tall copper present's focused reveal. The approved rendering, animation, audio and confetti source files and assets remain unchanged. Browser checks do not replace testing on physical touch devices.
 
