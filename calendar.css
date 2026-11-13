@@ -46,19 +46,34 @@
 @media(max-width:540px){.calendar{padding:0 10px}.calendar-grid{gap:5px}.calendar-day{min-height:76px;aspect-ratio:.85;padding:17px 0 12px}.day-number{font-size:11px;left:7px;top:6px}.calendar-page header{height:59px}.calendar-page .eyebrow{margin-top:19px;font-size:6.5px;letter-spacing:1.5px}.calendar-page .intro{margin-bottom:18px;font-size:11px}.calendar-heading{font-size:8px}.calendar-tools p{font-size:10px}.calendar-tools button{font-size:10px;white-space:nowrap}.present-dialog{padding:12px}.present-dialog h2{margin-top:12px}.present-dialog .design-note{font-size:11px}.prototype-controls span{font-size:8px;max-width:120px}.calendar-page footer{font-size:7px}.calendar-day .day-state{font-size:7px}}
 @media(max-width:339px){.calendar-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.calendar-day{aspect-ratio:1}.calendar-heading{letter-spacing:1px}.calendar-page .edition{font-size:6px}}
 @media(max-height:550px){.present-dialog .stage{width:min(360px,100%)}.present-dialog .design-note{display:none}}
-/* Phone-only framing and the readable continuation of the SVG reveal. */
-.readable-card{display:none}
+/* The forward card and its link share one animated surface on every screen. */
+.present-dialog .live-present{position:relative}
+.readable-card{display:block;position:absolute;z-index:3;left:50%;top:50%;width:min(380px,94%);padding:24px 18px 20px;translate:-50% -50%;transform-origin:0 0;background:#faf2df;color:#274336;border:1px solid #c6aa71;border-radius:7px;box-shadow:0 16px 40px #020d0b66;outline:1px solid #c6aa7166;outline-offset:-8px;overflow-wrap:anywhere}
+.reveal-kicker{font:9px/1.6 Arial,sans-serif;letter-spacing:1.4px;color:#7b673e;margin:0 0 16px}
+.readable-card h3{font:normal 27px/1.2 Georgia,serif;margin:0 0 12px}
+.reveal-artist{font:16px/1.5 Arial,sans-serif;color:#726348;margin:0 0 20px}
+.readable-card .watch-youtube{width:100%}
+.reveal-caption{font:9px/1.6 Arial,sans-serif;letter-spacing:1px;color:#7b673e;margin:16px 0 0}
+.has-readable-card .song-card{visibility:hidden}
 @media(max-width:540px){
- .present-dialog .live-present{position:relative}
  .present-dialog h2{margin-top:6px;font-size:23px}
  .present-dialog .design-note{display:block;margin:6px auto 4px;min-height:0;font-size:11px}
  .present-dialog .stage{width:100%;aspect-ratio:540/455;margin:0 auto 4px}
- .readable-card{display:block;position:absolute;z-index:2;left:3%;top:50%;width:94%;padding:24px 18px 20px;translate:0 -50%;transform-origin:0 0;background:#faf2df;color:#274336;border:1px solid #c6aa71;border-radius:7px;box-shadow:0 16px 40px #020d0b66;outline:1px solid #c6aa7166;outline-offset:-8px;overflow-wrap:anywhere}
- .reveal-kicker{font:9px/1.6 Arial,sans-serif;letter-spacing:1.4px;color:#7b673e;margin:0 0 16px}
- .readable-card h3{font:normal 27px/1.2 Georgia,serif;margin:0 0 12px}
- .reveal-artist{font:16px/1.5 Arial,sans-serif;color:#726348;margin:0 0 20px}
- .present-dialog .readable-card button{min-height:48px;width:100%;padding:12px 16px;border:0;border-radius:4px;background:#274336;color:#faf2df;font:15px/1.4 Arial,sans-serif;touch-action:manipulation}
- .present-dialog .readable-card button:disabled{cursor:default;opacity:1}
- .reveal-caption{font:9px/1.6 Arial,sans-serif;letter-spacing:1px;color:#7b673e;margin:16px 0 0}
- .has-readable-card .song-card{visibility:hidden}
+}
+
+/* December 1 reveal and local-only preview controls. */
+.present-dialog{overflow-x:hidden}
+.calendar-day:disabled{cursor:default}
+.calendar-day:disabled:hover{background-color:transparent;border-color:#b9b58a24}
+.calendar-day[data-day="1"]:disabled .calendar-present{opacity:.65}
+.local-preview{max-width:760px;margin:0 auto 22px;padding:12px 16px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 16px;border:1px dashed #c4b78766;border-radius:5px;color:#c5b381;font:11px/1.5 Arial,sans-serif}
+.local-preview strong{flex-basis:100%}
+.local-preview a,.local-preview button{color:#e2d4ac;background:none;border:0;padding:12px 4px;min-height:44px;font:inherit;cursor:pointer}
+.watch-youtube{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:12px 20px;border:1px solid #c6aa71;border-radius:4px;background:#274336;color:#faf2df;text-decoration:none;font:15px/1.4 Arial,sans-serif;touch-action:manipulation}
+.watch-youtube:hover{background:#345d49}
+.song-pending{font:14px/1.5 Arial,sans-serif;color:inherit}
+.calendar-page [hidden]{display:none!important}
+@media(max-width:540px){
+ .calendar-heading{letter-spacing:1px;gap:8px}
+ #calendar-progress{font-size:10px}
 }
