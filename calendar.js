@@ -1,7 +1,5 @@
 'use strict';
-// DISTRIBUTION SWITCH: turn this off once to release finished gifts through the sheet.
-// true = open/replay all finished gifts; false = require each day’s valid YouTube link.
-const ENABLE_TEST_MODE = true;
+// The song sheet is the only release control for finished presents.
 // Calendar data is independent of the twelve approved present renderers.
 // Temporary day assignments reuse the approved collection in its original order.
 const approvedPresentOrder=['crimson','ivory','midnight','plum','kraft','emerald','book','frost','copper','rose','citrus','oval'];
@@ -40,15 +38,14 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   persistOpened();
  }
  let songs=new Map(),songState='loading';
- const unlocked=day=>!!day.design&&(ENABLE_TEST_MODE||!!songs.get(day.day));
+ const unlocked=day=>!!day.design&&songState==='ready'&&!!songs.get(day.day);
  function songAction(){
   const songUrl=songs.get(activeDay?.day);
   if(songUrl)return `<a class="watch-youtube" href="${songUrl.replaceAll('&','&amp;').replaceAll('"','&quot;')}" target="_blank" rel="noopener noreferrer">Watch on YouTube <span aria-hidden="true">↗</span></a>`;
-  const message=songState==='loading'?'Loading this day’s song…':songState==='error'?'Songs couldn’t load. Please reload to try again.':'This day’s song hasn’t been released yet.';
-  return `<p class="song-pending" role="status">${message}</p>`;
+  return ''; // Locked gifts never open a card or an unavailable-song message.
  }
  document.body.classList.add('calendar-page');
- document.querySelector('.edition').textContent=ENABLE_TEST_MODE?'PUBLIC TEST VERSION':'AN ADVENT OF LITTLE WONDERS';
+ document.querySelector('.edition').textContent='AN ADVENT OF LITTLE WONDERS';
  document.querySelector('.eyebrow').textContent='DECEMBER 1–25 · A LITTLE WONDER EVERY DAY';
  document.querySelector('.intro').textContent='Twenty-five little moments. Yours to unwrap.';
  document.querySelector('footer').innerHTML='<span>CHIME 2026 · TWELVE PRESENTS</span><span>Made for a little Christmas wonder.</span>';
@@ -60,18 +57,17 @@ const calendarDays=Array.from({length:25},(_,index)=>({
  main.insertBefore(section,source);
  if(local){
   const tools=document.createElement('nav');tools.className='local-preview';tools.setAttribute('aria-label','Local preview controls');
-  tools.innerHTML=`<strong>${ENABLE_TEST_MODE?'Testing mode · all finished presents open':'Release mode · songs control access'}</strong><button type="button">Reset opened gifts</button>`;
+  tools.innerHTML='<strong>Local preview · sheet-controlled releases</strong><button type="button">Reset opened gifts</button>';
   section.before(tools);
   tools.querySelector('button').addEventListener('click',()=>{savedOpened.clear();opened.clear();lastOpenedDay=null;persistOpened();location.reload();});
  }
  const grid=section.querySelector('.calendar-grid');
  const dialog=document.createElement('dialog');dialog.className='present-dialog';
  dialog.setAttribute('aria-labelledby','day-title');
- dialog.innerHTML='<div class="dialog-top"><button type="button" class="return-calendar" autofocus>← Calendar</button><span id="day-date"></span></div><h2 id="day-title"></h2><div class="live-present"></div><div class="future-present" hidden><div class="future-emblem" aria-hidden="true">✧</div><p>A little wonder in the making.</p><small>This day is ready for a future present design.</small><button type="button" class="placeholder-toggle">Mark as opened</button></div><div class="prototype-controls"><button type="button" class="preview-opened">Preview opened state</button><span>Local preview</span></div>';
+ dialog.innerHTML='<div class="dialog-top"><button type="button" class="return-calendar" autofocus>← Calendar</button><span id="day-date"></span></div><h2 id="day-title"></h2><div class="live-present"></div>';
  document.body.append(dialog);
- const live=dialog.querySelector('.live-present'),future=dialog.querySelector('.future-present');
- // Review copy stays in normal flow, outside the gift/card positioning area.
- // Removing either prototype label therefore leaves no reserved space.
+ const live=dialog.querySelector('.live-present');
+ // Keep the description outside the gift/card positioning area.
  const designNote=document.getElementById('design-note');
  if(designNote)live.before(designNote);
  const revealStage=document.createElement('div');revealStage.className='reveal-stage';
@@ -109,7 +105,6 @@ const calendarDays=Array.from({length:25},(_,index)=>({
  openButton.querySelector('span').innerHTML='Tap to unwrap <span aria-hidden="true">↗</span>';
  replayButton.hidden=false;
  replayButton.innerHTML='<span aria-hidden="true">↻</span> Replay opening';
- dialog.querySelector('.prototype-controls').hidden=!local;
  let cardAnimation=null,instantCard=false;
  function clearCard(){
   cardAnimation?.cancel();cardAnimation=null;readable.hidden=true;
@@ -185,7 +180,7 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   }
   else clearCard();
  }).observe(stage,{attributes:true,attributeFilter:['class']});
- function previewOpened(){
+ function restoreOpenedPose(){
   if(!activeDay?.design)return;
   clearCard();instantCard=true;
   replay();drawRibbon(designs[selected].duration||DURATION);
@@ -198,8 +193,6 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   if(!day.design||!unlocked(day))return;
   clearCard();
   activeDay=day;returnTarget=button;restoreAttempted=true;
-  live.hidden=!day.design;future.hidden=!!day.design;
-  dialog.querySelector('.preview-opened').hidden=!day.design;
   dialog.querySelector('#day-date').textContent=`DECEMBER ${day.day}`;
   const title=dialog.querySelector('#day-title');
   if(title)title.textContent=day.design?wrapped.get(day.design).name:'A wonder yet to come';
@@ -209,19 +202,17 @@ const calendarDays=Array.from({length:25},(_,index)=>({
    selectDesign(day.design);updateCard();sizeRibbon();
    openButton.setAttribute('aria-label',`Unwrap your December ${day.day} present`);
    document.getElementById('gift-desc').textContent=`The bow unties, the ribbon slips away, and the lid lifts to reveal your December ${day.day} card.`;
-   if(savedOpened.has(day.day))previewOpened();
+   if(savedOpened.has(day.day))restoreOpenedPose();
   }
-  else dialog.querySelector('.placeholder-toggle').textContent=opened.has(day.day)?'Rewrap this day':'Mark as opened';
  }
  for(const day of calendarDays){
   const button=document.createElement('button');button.type='button';button.className='calendar-day';button.dataset.day=day.day;
   if(day.day===25)button.classList.add('christmas-day');
   button.innerHTML=`<span class="day-number">${String(day.day).padStart(2,'0')}</span>${day.design?'<img class="calendar-present" alt="" width="132" height="102">':'<span class="day-placeholder" aria-hidden="true">✧<span>CHIME</span></span>'}<span class="day-state"></span>`;
-  grid.append(button);update(day);button.addEventListener('click',()=>showDay(day,button));
+  grid.append(button);update(day);button.addEventListener('click',()=>{if(!button.disabled)showDay(day,button);});
  }
  dialog.querySelector('.return-calendar').addEventListener('click',()=>dialog.close());
  dialog.addEventListener('close',()=>{clearCard();replay();activeDay=null;document.body.classList.remove('calendar-dialog-open');returnTarget?.focus({preventScroll:true});});
- dialog.querySelector('.preview-opened').addEventListener('click',previewOpened);
  replayButton.addEventListener('click',()=>{
   clearCard();
   if(activeDay){
@@ -231,7 +222,7 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   }
  });
  function refreshLocks(){
-  document.getElementById('unlock-status').textContent=ENABLE_TEST_MODE?'Test version · all 12 finished presents are unlocked.':songState==='loading'?'Checking released songs…':songState==='error'?'Songs couldn’t load. Reload to try again.':'Presents open when their songs are released.';
+  document.getElementById('unlock-status').textContent=songState==='loading'?'Checking released songs…':songState==='error'?'Songs couldn’t load. Reload to try again.':'Presents open when their songs are released.';
   calendarDays.forEach(update);
  }
  function restoreOpenedGift(){

@@ -4,18 +4,13 @@ Public calendar: **https://rjweb-online.github.io/chime-2026/**
 
 The existing layout keeps all twelve approved presents on days **1–12**. Days **13–25** remain disabled placeholders until their designs are built. The original opening animations, sound, confetti and card timing remain unchanged. Songs are now read for **all days 1–25** from the sheet.
 
-## One testing switch
+## The sheet is the only release control
 
-At the top of **`calendar.js`**:
+Each finished present stays disabled until its own Day row contains one valid YouTube video URL. Loading, missing, blank, invalid or duplicate rows keep the gift locked. If the sheet cannot be read, all finished gifts stay disabled. Tapping a disabled tile does nothing: it does not open a dialog, start an animation, reveal a card or display an unavailable-song message.
 
-```js
-const ENABLE_TEST_MODE = true;
-```
+There is no testing bypass, testing switch, calendar-date rule or preview query-string override. Previously opened gifts must pass the same fresh sheet check after every reload. Days 13–25 remain unavailable until their designs are built, even if their song links are already present.
 
-- **`true` (current):** every finished present opens and replays on the regular public URL, even when its song row is blank, invalid or temporarily unavailable. Its card shows Watch on YouTube only when that day's link is valid; otherwise it explains that the song is unreleased or unavailable.
-- **`false` (release mode):** a finished present opens only if its own Day row has one valid YouTube video URL. Missing, blank, invalid or duplicate rows keep that gift locked. While the sheet loads, or if it cannot be read, finished gifts stay locked. Previously opened gifts do not bypass this check.
-
-To distribute CHIME, change this switch to **`false` once**, commit and push `main`, and wait for GitHub Pages to deploy. From then on, release songs by editing the sheet. No calendar-date or clock rule is used, and old preview query strings cannot bypass release mode. A valid song cannot unlock an unfinished design placeholder.
+To release a finished gift, add its link to the sheet and refresh the calendar. Remove the link and refresh to lock it again. You do not need to change or publish any code to release songs.
 
 ## Release or replace songs in Google Sheets
 
@@ -26,7 +21,7 @@ CHIME reads the existing [CHIME 2026 sheet](https://docs.google.com/spreadsheets
 | A | Day | A number from 1 to 25, once per day |
 | B | YouTube URL | That day's full HTTPS YouTube video link, or blank to keep it unreleased |
 
-Keep the header row and one row for each day you want to release within rows 2–26. The Day value determines the gift; row order does not. To release day 2, enter `2` in its Day cell and its song URL in the same row's YouTube URL cell. Wait for Sheets to save, then refresh CHIME. Removing that URL locks the gift again in release mode.
+Keep the header row and one row for each day you want to release within rows 2–26. The Day value determines the gift; row order does not. To release day 2, enter `2` in its Day cell and its song URL in the same row's YouTube URL cell. Wait for Sheets to save, then refresh CHIME. Removing that URL locks the gift again after refresh.
 
 For the current day 1 row, edit **B2** and keep **A2 = 1**. To replace any day's song, replace its URL and refresh the calendar. The revealed card always uses that day's fresh sheet URL, including for visitors who already opened the gift. URLs are never saved in browser storage. Google can briefly delay updated values; reload after the sheet has saved.
 
@@ -44,7 +39,7 @@ Anyone with the sheet link can view it. CHIME receives no edit credentials and n
 
 Select an available day and tap its wrapped present. After the original confetti fades, the card moves forward with its **Watch on YouTube** button attached. The song opens in a new tab only when that button is tapped. The phone button has a 48px tap target. **Replay opening** restarts the original sequence with one tap.
 
-Opened-day flags are saved for all gifts in the same browser. On reload, the most recently opened gift restores its card silently once it is permitted by the current mode and sheet data. A changed URL appears on that card without replaying the gift. Blank or invalid rows still lock previously opened gifts in release mode. Existing December 1 visitors' saved openings are migrated. A fresh private browser session starts wrapped.
+Opened-day flags are saved for all gifts in the same browser. On reload, the most recently opened gift restores its card silently only after its fresh sheet row is verified. A changed URL appears on that card without replaying the gift. Blank or invalid rows still lock previously opened gifts after refresh. Existing December 1 visitors' saved openings are migrated. A fresh private browser session starts wrapped.
 
 ## Local preview
 
@@ -54,9 +49,9 @@ Run from this folder:
 python3 -m http.server 8000 --bind 0.0.0.0
 ```
 
-Open <http://127.0.0.1:8000/> on the Mac. The current Wi-Fi address for an iPhone on the same network is **http://172.22.1.46:8000/**; it may change when the Mac reconnects. The public Pages URL does not depend on the Mac server. Both use the same `ENABLE_TEST_MODE` switch. The local toolbar can **Reset opened gifts**, but does not override sheet-controlled release rules.
+Open <http://127.0.0.1:8000/> on the Mac. The current Wi-Fi address for an iPhone on the same network is **http://172.22.1.46:8000/**; it may change when the Mac reconnects. The public Pages URL does not depend on the Mac server. Both use only the sheet to control releases. The local toolbar can **Reset opened gifts**, which does not override sheet-controlled release rules.
 
-Browser validation used the real sheet read and controlled song-feed responses without changing live sheet values. Release-mode checks covered blank → valid link → refresh, replacement links on already-opened cards, removal/relocking, invalid or duplicate rows, sheet failures, reading day 25, and legacy December 1 openings. Testing-mode checks opened and replayed all twelve designs with blank rows and verified each card selects its own row when links exist. A 320px layout check confirmed the card leaves Replay opening exposed.
+Browser checks cover loading-state taps, valid and blank sheet rows, invalid links, old preview query strings, replacing a link on an already-opened card, and relocking after a link is removed. Controlled sheet-feed responses test changes without editing live sheet values. The live sheet is also read directly for linked and blank days.
 
 ## Design studies
 
@@ -79,7 +74,7 @@ All materials are local SVG and Canvas artwork. The original paper detail, shado
 
 - `sheet-songs.js`: read-only Day / YouTube URL lookup for days 1–25, with per-day video-link validation.
 - `index.html`: shared layered SVG box and reveal card.
-- `calendar.js`: day-to-design data, calendar tiles, focused dialog, persistent opened-day flags and static opened snapshots. Days 1–12 use the approved collection; days 13–25 stay unassigned. The testing switch opens all finished designs; release mode requires each day’s valid sheet link.
+- `calendar.js`: day-to-design data, calendar tiles, focused dialog, persistent opened-day flags and static opened snapshots. Days 1–12 use the approved collection; days 13–25 stay unassigned. Each finished design requires its own valid sheet link.
 - `calendar.css`: compact calendar layout and dialog styling, separate from the approved stage animation rules.
 - `style.css`: responsive preview, material treatments and shared lid/card animations.
 - `script.js`: design configurations, Canvas ribbon renderer, shared opening controller, reset, selection and reduced-motion handling.
@@ -106,7 +101,7 @@ The calendar overview uses static SVG snapshots of the actual gifts, including a
 
 Studies 01–06 keep their original 4.9-second sequence: box wiggle; tension and first-loop release (0.38–1.53 s); collar loosening (1.32–1.90 s); remaining loop release (1.90–2.78 s); ribbon peeling and settling (2.80–3.57 s); lid lift, glow and card reveal (3.60–4.90 s). Released ribbon remains visible below every gift.
 
-This is an authored 2.5D material animation, not a physical cloth simulation. It is designed for one viewing angle. The twelve approved designs remain available in the rendering collection; days 1–12 have temporary assignments with openable, replayable reveals in testing mode.
+This is an authored 2.5D material animation, not a physical cloth simulation. It is designed for one viewing angle. The twelve approved designs remain available in the rendering collection; days 1–12 have temporary assignments with openable, replayable reveals when their sheet rows contain valid song links.
 
 All twelve present designs, sounds and confetti have been manually tested and accepted by the project owner. The earlier calendar prototype browser checks covered all 25 selectable days, the twelve actual designs and their opened snapshots, placeholder state toggles, resetting, interrupted closing, focus restoration, tap targets and horizontal overflow. The same 96 checks passed at desktop width, 390 px, and 320 px with reduced motion enabled. Visual review covered the 390 px overview and the tall copper present's focused reveal. The approved rendering, animation, audio and confetti source files and assets remain unchanged. Browser checks do not replace testing on physical touch devices.
 
