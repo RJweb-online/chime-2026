@@ -48,7 +48,9 @@
 @media(max-height:550px){.present-dialog .stage{width:min(360px,100%)}.present-dialog .design-note{display:none}}
 /* The forward card and its link share one animated surface on every screen. */
 .present-dialog .live-present{position:relative}
-.readable-card{display:block;position:absolute;z-index:3;left:50%;top:50%;width:min(380px,94%);padding:24px 18px 20px;translate:-50% -50%;transform-origin:0 0;background:#faf2df;color:#274336;border:1px solid #c6aa71;border-radius:7px;box-shadow:0 16px 40px #020d0b66;outline:1px solid #c6aa7166;outline-offset:-8px;overflow-wrap:anywhere}
+.reveal-stage{display:grid;grid-template-columns:minmax(0,1fr);min-width:0}
+.reveal-stage>.stage{grid-area:1/1;align-self:start}
+.readable-card{display:block;position:relative;grid-area:1/1;align-self:center;justify-self:center;z-index:3;width:min(380px,94%);padding:24px 18px 20px;transform-origin:0 0;background:#faf2df;color:#274336;border:1px solid #c6aa71;border-radius:7px;box-shadow:0 16px 40px #020d0b66;outline:1px solid #c6aa7166;outline-offset:-8px;overflow-wrap:anywhere}
 .reveal-kicker{font:9px/1.6 Arial,sans-serif;letter-spacing:1.4px;color:#7b673e;margin:0 0 16px}
 .readable-card h3{font:normal 27px/1.2 Georgia,serif;margin:0 0 12px}
 .reveal-artist{font:16px/1.5 Arial,sans-serif;color:#726348;margin:0 0 20px}
