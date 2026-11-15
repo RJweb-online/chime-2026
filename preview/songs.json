@@ -1,5 +1,5 @@
 {
-  "description": "LOCAL SAMPLE SONGS ONLY. Rows 13\u201316 use a previously supplied sample video; these are not final song assignments. Blank rows stay disabled through the normal release parser.",
+  "description": "LOCAL SAMPLE SONGS ONLY. Days 13\u201320 use a previously supplied sample video; these are not final song assignments. Blank/invalid rows stay disabled through the normal release parser.",
   "rows": [
     [
       1,
@@ -67,19 +67,19 @@
     ],
     [
       17,
-      ""
+      "https://youtu.be/yXQViqx6GMY?previewDay=17"
     ],
     [
       18,
-      ""
+      "https://youtu.be/yXQViqx6GMY?previewDay=18"
     ],
     [
       19,
-      ""
+      "https://youtu.be/yXQViqx6GMY?previewDay=19"
     ],
     [
       20,
-      ""
+      "https://youtu.be/yXQViqx6GMY?previewDay=20"
     ],
     [
       21,

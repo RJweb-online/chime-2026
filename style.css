@@ -85,3 +85,12 @@ header,footer{position:relative;display:flex;justify-content:space-between;align
 .stage[data-shape=forest] .present>path{fill:#142b24}
 .stage[data-shape=nocturne] .present>path{fill:#142039}
 .stage[data-shape=cranberry] .present>path{fill:#462332}
+
+/* Days 17–20 use fitted lids and the same release timeline as the collection. */
+.is-opening[data-design=ivoryHatbox] .box-lid{animation-name:round-fitted-lid;transform-origin:300px 224px}
+.is-opening[data-design=ivoryHatbox] .song-card{animation-name:hatbox-card}
+@keyframes hatbox-card{0%{opacity:0;transform:translateY(0)}15%{opacity:1}100%{opacity:1;transform:translateY(-190px)}}
+.stage[data-shape=ivoryHatbox] .present>path{fill:#706b58}
+.stage[data-shape=glacier] .present>path{fill:#3f5964}
+.stage[data-shape=plumStep] .present>path{fill:#2a1b2b}
+.stage[data-shape=evergreen] .present>path{fill:#686d53}

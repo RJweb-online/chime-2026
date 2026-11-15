@@ -1,5 +1,5 @@
 'use strict';
-// Studies 07–16 extend the original collection. Each owns its construction and
+// Studies 07–20 extend the original collection. Each owns its construction and
 // authored ribbon arrangement, while selection, replay and timing stay shared.
 const strand=(width,points,options={})=>({rows:points.map((p,i)=>i?[...p,width]:[...p,width]),...options});
 const band=(x,y,bottom=417,width=18)=>strand(width,[[x,y-19],[x,y+30,x,bottom-25,x,bottom]],{flat:true});
@@ -384,6 +384,105 @@ Object.assign(releasePlans, {
  silverSculpture:{loops:[[1,2],[3,4]],tails:[5,6],collars:[7],cross:[],loopEnd:4300,peel:4520,edge:5650,settled:6500,lid:6700,sides:[164,438]},
  blushAsymmetry:{loops:[[1],[2]],tails:[3,4],collars:[5],cross:[],loopEnd:4600,peel:4800,edge:5800,settled:6600,lid:6800,sides:[143,457]}
 });
+
+// Studies 17–20 extend the fitted-box collection without changing the earlier models.
+Object.assign(constructions, {
+ ivoryHatbox:{base:'M198 245C198 222 244 203 300 203C356 203 402 222 402 245V374C402 401 356 423 300 423C244 423 198 401 198 374Z',
+  lid:`<ellipse cx="300" cy="224" rx="109" ry="42" fill="url(#lid-top)" filter="url(#paper-fibre)"/>
+   <path d="M191 224C191 247 240 266 300 266C360 266 409 247 409 224V242C409 265 360 284 300 284C240 284 191 265 191 242Z" fill="url(#lid-front)"/>
+   <ellipse cx="300" cy="224" rx="101" ry="36" fill="none" stroke="#fff8e8" stroke-width=".8" opacity=".7"/>
+   <path d="M194 243C198 265 242 281 300 281C358 281 402 265 406 243" fill="none" stroke="#c7baa0" stroke-width="1"/>
+   <path d="M213 215Q252 189 316 192Q259 202 239 226Z" fill="url(#paper-reflection)" opacity=".32"/>`,
+  body:`<path d="M198 245C204 266 246 283 300 283C354 283 396 266 402 245V374C402 401 356 423 300 423C244 423 198 401 198 374Z" fill="url(#paper-front)" filter="url(#paper-fibre)"/>
+   <path d="M198 245C204 266 246 283 300 283C354 283 396 266 402 245V374C402 401 356 423 300 423C244 423 198 401 198 374Z" fill="url(#paper-bloom)"/>
+   <path d="M365 273Q395 260 402 245V374Q401 393 365 410Z" fill="#786b53" opacity=".12"/>
+   <path d="M207 278Q220 287 238 291V410Q220 405 207 393Z" fill="url(#paper-reflection)" opacity=".42"/>
+   <path d="M202 374C208 397 249 418 300 418C351 418 392 397 398 374" fill="none" stroke="#beaf94" stroke-width=".9"/>
+   <path d="M202 278C225 293 268 301 300 301C337 301 379 291 398 278" fill="none" stroke="#ede3cc" stroke-width=".7" opacity=".45"/>`},
+ glacier:{base:'M159 326L250 263L434 309L346 369V423L159 382Z',
+  lid:`<path d="M152 307L247 246L443 284L346 353Z" fill="url(#lid-top)" filter="url(#paper-fibre)"/>
+   <path d="M152 307L247 246L443 284L346 353Z" fill="url(#glacier-linen)"/>
+   <path d="M152 307L346 353V369L152 323Z" fill="url(#lid-front)"/>
+   <path d="M346 353L443 284V300L346 369Z" fill="url(#paper-side)"/>
+   <path d="M155 308L346 354L440 286M155 320L346 366L440 299" fill="none" stroke="#e5f0ec" stroke-width=".85" opacity=".75"/>
+   <path d="M168 305L249 254L423 288L345 344Z" fill="url(#paper-reflection)" opacity=".15"/>`,
+  body:`<path d="M159 326L346 371V423L159 382Z" fill="url(#paper-front)" filter="url(#paper-fibre)"/>
+   <path d="M346 371L434 309V362L346 423Z" fill="url(#paper-side)"/>
+   <path d="M159 326L346 371V423L159 382Z" fill="url(#glacier-linen)"/>
+   <path d="M346 371L434 309V362L346 423Z" fill="url(#glacier-linen)" opacity=".65"/>
+   <path d="M161 331L345 375V380L161 336Z" fill="#6a8b98" opacity=".3"/>
+   <path d="M163 379L345 419L431 361M349 376V418" fill="none" stroke="#d2e3e4" stroke-width=".8" opacity=".8"/>
+   <path d="M166 344L337 384V413L166 376Z" fill="none" stroke="#e3ece7" stroke-width=".55" opacity=".35"/>`},
+ plumStep:{base:'M153 279L217 240L455 264L390 306V418L153 391Z',
+  lid:`<path d="M140 251L207 209L465 238L397 282Z" fill="url(#lid-top)" filter="url(#paper-fibre)"/>
+   <path d="M140 251L397 282V303L140 274Z" fill="url(#lid-front)"/>
+   <path d="M397 282L465 238V261L397 303Z" fill="url(#paper-side)"/>
+   <path d="M164 238L214 205L443 231L392 265Z" fill="url(#lid-top)" filter="url(#paper-fibre)"/>
+   <path d="M164 238L392 265V276L164 250Z" fill="url(#lid-front)"/>
+   <path d="M392 265L443 231V242L392 276Z" fill="url(#paper-side)"/>
+   <path d="M166 239L392 266L441 233M142 252L397 283L463 240M142 271L397 300L463 259" fill="none" stroke="#ad8fa2" stroke-width=".8" opacity=".65"/>
+   <path d="M180 235L218 213L426 236L389 259Z" fill="url(#paper-reflection)" opacity=".22"/>`,
+  body:`<path d="M153 279L390 306V418L153 391Z" fill="url(#paper-front)" filter="url(#paper-fibre)"/>
+   <path d="M390 306L455 264V375L390 418Z" fill="url(#paper-side)"/>
+   <path d="M153 279L390 306V418L153 391Z" fill="url(#paper-bloom)"/>
+   <path d="M154 282L389 309V315L154 288Z" fill="#211323" opacity=".4"/>
+   <path d="M160 294L382 319V408L160 383Z" fill="none" stroke="#9b7b91" stroke-width=".65" opacity=".35"/>
+   <path d="M158 302L194 307Q185 346 200 395L158 390Z" fill="url(#paper-reflection)" opacity=".3"/>
+   <path d="M156 386L388 414L452 373M393 311V412" fill="none" stroke="#98768e" stroke-width=".85" opacity=".65"/>`},
+ evergreen:{base:'M192 294L246 255L374 272L417 309V383L365 422L242 409L192 366Z',
+  lid:`<path d="M185 278L244 237L376 251L426 300L370 340L235 326Z" fill="url(#lid-top)" filter="url(#paper-fibre)"/>
+   <path d="M185 278L244 237L376 251L426 300L370 340L235 326Z" fill="url(#evergreen-sprigs)"/>
+   <path d="M185 278L235 326L370 340L426 300V318L370 358L235 344L185 296Z" fill="url(#lid-front)"/>
+   <path d="M370 340L426 300V318L370 358Z" fill="url(#paper-side)"/>
+   <path d="M187 279L236 327L370 341L424 301M187 293L236 341L369 355L423 317" fill="none" stroke="#fff5db" stroke-width=".85" opacity=".85"/>
+   <path d="M197 278L247 246L372 259L414 299L367 331L240 317Z" fill="none" stroke="#b5b493" stroke-width=".65" opacity=".5"/>`,
+  body:`<path d="M192 301L239 344L367 358L417 321V383L365 422L242 409L192 366Z" fill="url(#paper-front)" filter="url(#paper-fibre)"/>
+   <path d="M367 358L417 321V383L365 422Z" fill="url(#paper-side)"/>
+   <path d="M192 301L239 344L367 358L417 321V383L365 422L242 409L192 366Z" fill="url(#evergreen-sprigs)"/>
+   <path d="M192 301L239 344V409L192 366Z" fill="#fff3d2" opacity=".12"/>
+   <path d="M196 364L244 405L364 418L414 382M243 350V401M370 363V414" fill="none" stroke="#c4baa0" stroke-width=".8" opacity=".85"/>
+   <path d="M248 353L275 356V410L248 407Z" fill="url(#paper-reflection)" opacity=".35"/>`}
+});
+Object.assign(designs, {
+ ivoryHatbox:{shape:'ivoryHatbox',scale:[1,1],material:'silk',arrangement:'uprightCranberry',anchor:[300,222],
+  ribbon:[[77,101,20],[14,38,14],[30,50,19]],palette:paper('#dbd2ba','#aa9d83','#f2ecda','#c7b99f'),
+  title:'A tall ivory hatbox with a fitted round lid, narrow cranberry ribbon and a small upright bow',note:'Ivory hatbox · A tall cylindrical box, fitted round lid and narrow cranberry silk in a small upright bow.'},
+ glacier:{shape:'glacier',scale:[1,1],material:'silk',arrangement:'diagonalPearl',anchor:[350,325],
+  ribbon:[[109,113,29],[108,112,30],[100,113,38]],palette:paper('#aac7d1','#6f8c9b','#d8e9eb','#b7d2da'),
+  title:'A shallow glacier-blue linen square box with wide pearl ribbon and a flat diagonal corner bow',note:'Glacier linen · A shallow square box, fine woven texture and wide pearl ribbon laid flat across one corner.'},
+ plumStep:{shape:'plumStep',scale:[1,1],material:'silk',arrangement:'antiqueDouble',anchor:[289,250],
+  ribbon:[[81,112,31],[60,95,43],[23,67,55]],palette:paper('#513149','#2b1b2e','#7b556f','#a88a9e'),
+  title:'A deep dark-plum rectangular box with a stepped fitted lid, two antique-gold bands and a compact double bow',note:'Plum tiered case · A deep rectangular box, stepped fitted lid, twin fine antique-gold bands and a compact double bow.'},
+ evergreen:{shape:'evergreen',scale:[1,1],material:'grosgrain',arrangement:'looseEvergreen',anchor:[294,287],
+  ribbon:[[13,43,13],[40,64,18],[26,43,16]],palette:paper('#ded5b9','#aaa58c','#f4ecd8','#c4b99a'),
+  title:'A cream hexagonal box with subtle evergreen sprigs, green grosgrain and a loose long-tailed bow',note:'Evergreen hexagon · A fitted cream box, subtle sprig print and deep green grosgrain tied loosely with long tails.'}
+});
+Object.assign(arrangements, {
+ uprightCranberry:[strand(12,[[333,194],[322,202,310,214,300,222],[290,235,284,250,280,268],[280,312,280,367,280,416]],{flat:true}),
+  loop(300,222,-25,-48,12),loop(300,222,24,-45,12),tail(297,225,-22,56,11),tail(304,225,23,66,11),
+  strand(10,[[298,215],[307,212,312,225,302,231],[293,231,290,221,298,215]],{flat:true})],
+ diagonalPearl:[strand(29,[[421,282],[396,292,370,310,350,325],[343,335,336,343,329,350],[328,371,326,394,325,418]],{flat:true}),
+  strand(26,[[350,325],[329,327,303,344,306,354],[321,361,344,341,350,325]],{flat:true,bow:true}),
+  strand(26,[[350,325],[365,303,386,289,397,296],[398,311,369,325,350,325]],{flat:true,bow:true}),
+  tail(347,329,-34,42,25),tail(353,325,47,6,25),strand(22,[[344,317],[352,318,358,326,359,334]],{flat:true})],
+ antiqueDouble:[strand(9,[[335,225],[319,234,303,243,289,250],[284,263,278,277,275,294],[275,330,275,368,275,405]],{flat:true}),
+  strand(9,[[290,220],[278,228,265,239,255,251],[246,262,240,274,235,286],[235,322,235,361,235,400]],{flat:true}),
+  loop(289,250,-33,-25,11),loop(289,250,-21,-39,9),loop(289,250,35,-23,11),loop(289,250,23,-37,9),
+  tail(286,253,-25,40,9),tail(293,253,26,44,9),strand(10,[[286,243],[297,240,301,254,291,260],[281,258,279,249,286,243]],{flat:true})],
+ looseEvergreen:[strand(23,[[328,247],[317,260,305,274,294,287],[285,302,280,322,278,346],[278,368,278,392,278,414]],{flat:true}),
+  loop(294,287,-65,-27,23),loop(294,287,70,-40,23),
+  strand(22,[[289,292],[257,315,270,356,230,401]],{bow:true}),strand(22,[[300,292],[333,316,327,365,359,408]],{bow:true}),
+  strand(18,[[289,277],[310,273,320,294,300,306],[280,307,276,285,289,277]],{flat:true})]
+});
+Object.assign(releasePlans, {
+ uprightCranberry:{loops:[[1],[2]],tails:[3,4],collars:[5],cross:[],loopEnd:2900,peel:3100,edge:4250,settled:5250,lid:5450,sides:[180,421]},
+ diagonalPearl:{loops:[[1],[2]],tails:[3,4],collars:[5],cross:[],loopEnd:2700,peel:2900,edge:3900,settled:4850,lid:5050,sides:[132,462]},
+ antiqueDouble:{loops:[[2,3],[4,5]],tails:[6,7],collars:[8],cross:[1],loopEnd:3700,peel:3900,edge:5000,settled:5900,lid:6100,sides:[135,466]},
+ looseEvergreen:{loops:[[1],[2]],tails:[3,4],collars:[5],cross:[],loopEnd:3300,peel:3550,edge:4650,settled:5600,lid:5800,sides:[167,443]}
+});
+document.querySelector('svg defs').insertAdjacentHTML('beforeend',`
+ <pattern id="glacier-linen" width="7" height="7" patternUnits="userSpaceOnUse"><path d="M0 1H7M1 0V7" stroke="#f3f6ed" stroke-width=".65" opacity=".2"/><path d="M0 4H7M4 0V7" stroke="#355f70" stroke-width=".55" opacity=".12"/></pattern>
+ <pattern id="evergreen-sprigs" width="58" height="50" patternUnits="userSpaceOnUse"><g fill="none" stroke="#45684c" stroke-width=".85" opacity=".23" stroke-linecap="round"><path d="M18 11L34 36M22 17l-9-2m12 7-12-2m15 7-12-1m15 6-11-1M23 18l3-9m0 14 4-12m-1 17 5-12m-2 17 6-10"/></g></pattern>`);
 
 // Opening waits for material to clear and settle. The original six retain
 // their existing 4.9-second timing; these six have construction-specific cues.
