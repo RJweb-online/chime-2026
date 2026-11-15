@@ -104,7 +104,7 @@ window.ChimeSound=(()=>{
    cues.push(cloth(options.slide,.72,true,.75),cloth(options.edge-120,.65,true,.55));
   }else cues.push(cloth(1450,.78,false,.7),cloth(2800,.72,true,.75));
   cues.push({at:options.lid,sample:'lid',duration:.50,gain:.48,lowpass:4200,highpass:90});
-  cues.push({at:options.lid+250,sample:'reveal',gain:.24});
+  cues.push({at:options.reveal??options.lid+250,sample:'reveal',gain:.24});
   return cues;
  }
  function begin(options,started){

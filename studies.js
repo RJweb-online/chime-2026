@@ -562,9 +562,14 @@ Object.assign(constructions, {
    <path d="M157 249L218 216L447 241L387 275Z" fill="url(#champagne-stars)"/>
    <path d="M146 251L390 285V307L146 273Z" fill="url(#lid-front)"/><path d="M390 285L460 237V259L390 307Z" fill="url(#paper-side)"/>
    <path d="M148 252L390 286L458 238M149 270L390 303L457 258" fill="none" stroke="#f8e3b4" stroke-width=".9" opacity=".8"/>
+
    <path d="M157 249L218 216L447 241L387 275Z" fill="none" stroke="#ffefc9" stroke-width=".75" opacity=".65"/>
    <path d="M167 247L222 222L432 245L384 269Z" fill="url(#paper-reflection)" opacity=".24"/>`,
-  body:`<path d="M155 278L390 307V421L155 393Z" fill="url(#paper-front)" filter="url(#paper-fibre)"/>
+  body:`<g class="christmas-seam" opacity="0" aria-hidden="true">
+    <path d="M155 267L390 296L451 253V261L390 304L155 275Z" fill="#fff6da"/>
+    <path d="M155 274L390 303L451 260" fill="none" stroke="#fffdf4" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M155 274L390 303L451 260" fill="none" stroke="#ffe7aa" stroke-width="14" opacity=".65" filter="url(#reflection-soft)"/>
+   </g><path d="M155 278L390 307V421L155 393Z" fill="url(#paper-front)" filter="url(#paper-fibre)"/>
    <path d="M390 307L451 265V378L390 421Z" fill="url(#paper-side)"/>
    <path d="M155 278L390 307V421L155 393Z" fill="url(#paper-bloom)"/>
    <path d="M162 284L383 312V412L162 386Z" fill="url(#champagne-stars)"/>
@@ -575,7 +580,7 @@ Object.assign(constructions, {
    <path d="M158 391L389 418L448 377M393 311V414" fill="none" stroke="#f2dfb7" stroke-width=".8" opacity=".75"/>`}
 });
 Object.assign(designs, {
- christmasDay:{shape:'christmasDay',scale:[1,1],material:'velvet',arrangement:'christmasVelvet',anchor:[297,248],ribbon:[[68,83,18],[18,35,16],[33,46,20]],palette:paper('#c4ad7f','#87714f','#e3ce9f','#d6bf8e'),title:'A deep champagne-gold Christmas box with beveled edges, embossed stars and a generous cranberry velvet bow with two long tails',note:'Christmas Day · Embossed champagne gold, a fitted beveled lid and layered cranberry velvet with two long tails.'}
+ christmasDay:{shape:'christmasDay',lidOpenDuration:4200,lidLiftDelay:3200,scale:[1,1],material:'velvet',arrangement:'christmasVelvet',anchor:[297,248],ribbon:[[68,83,18],[18,35,16],[33,46,20]],palette:paper('#c4ad7f','#87714f','#e3ce9f','#d6bf8e'),title:'A deep champagne-gold Christmas box with beveled edges, embossed stars and a generous cranberry velvet bow with two long tails',note:'Christmas Day · Embossed champagne gold, a fitted beveled lid and layered cranberry velvet with two long tails.'}
 });
 Object.assign(arrangements, {
  christmasVelvet:[strand(34,[[336,225],[321,231,308,241,297,248],[286,261,279,275,275,290],[275,331,275,375,275,408]],{flat:true}),
@@ -601,6 +606,13 @@ for(const design of Object.values(designs))if(design.arrangement) {
  const plan=releasePlans[design.arrangement];
  design.duration=plan.lid+1350;
  design.lidDelay=plan.lid;
+ if(design.lidOpenDuration){
+  // Leave one display frame after the fully open lid before the burst.
+  design.revealDelay=plan.lid+design.lidOpenDuration+30;
+  design.cardDelay=design.revealDelay;
+  design.lidSoundDelay=plan.lid+design.lidLiftDelay;
+  design.duration=design.revealDelay+1350;
+ }
 }
 
 document.querySelector('svg defs').insertAdjacentHTML('beforeend',`

@@ -114,3 +114,21 @@ header,footer{position:relative;display:flex;justify-content:space-between;align
 .is-opening[data-design=christmasDay] .inner-light{animation-name:christmas-interior-glow;animation-duration:2.4s}
 @keyframes christmas-interior-glow{0%{opacity:0;transform:translateY(12px) scale(.85,.6)}35%{opacity:.7;transform:translateY(12px) scale(1,.8)}100%{opacity:0;transform:translateY(12px) scale(1.06,.9)}}
 @media(prefers-reduced-motion:reduce){.is-opening[data-design=christmasDay] .inner-light{animation-duration:1ms}}
+
+/* Christmas Day: 200ms crack, 3000ms held seam, then a smooth 1s lift. */
+.christmas-seam,.christmas-light-fan{opacity:0;pointer-events:none}
+.is-opening[data-design=christmasDay] .box-lid{animation-name:christmas-finale-lid;animation-duration:var(--finale-lid-duration);animation-timing-function:linear}
+@keyframes christmas-finale-lid{
+ 0%{transform:translate(0,0);animation-timing-function:ease-out}
+ 4.7619%{transform:translate(0,-13px)}
+ 76.1905%{transform:translate(0,-13px);animation-timing-function:cubic-bezier(.22,.7,.25,1)}
+ 100%{transform:translate(35px,-124px) rotate(-13deg) scaleY(.66)}
+}
+.is-opening[data-design=christmasDay] .christmas-seam{animation:christmas-finale-seam var(--finale-lid-duration) var(--lid-delay) linear both}
+@keyframes christmas-finale-seam{0%{opacity:0}4.7619%,80%{opacity:1}96%,100%{opacity:0}}
+.is-opening[data-design=christmasDay] .christmas-light-fan{transform-origin:300px 322px;animation:christmas-finale-fan 3.2s calc(var(--lid-delay) + var(--finale-lift-delay)) ease-out both}
+@keyframes christmas-finale-fan{0%{opacity:0;transform:scale(.25,.45)}31%{opacity:.9;transform:scale(1,1)}58%{opacity:.7;transform:scale(1.08,1.02)}100%{opacity:0;transform:scale(1.12,1.03)}}
+@media(prefers-reduced-motion:reduce){
+ .is-opening[data-design=christmasDay] .box-lid{animation-duration:1ms}
+ .is-opening[data-design=christmasDay] .christmas-seam,.is-opening[data-design=christmasDay] .christmas-light-fan{animation:none;opacity:0}
+}

@@ -72,6 +72,8 @@
             <g fill="none" stroke="#e6b781" stroke-width=".6" opacity=".28"><path d="M20 52L31 21M24 40l-7-11m9 6-1-12m-3 23-9-8m15-6 9-7m-11 15 12-7m-14 13 11-5"/><path d="M49 12v5m-2.5-2.5h5"/></g><circle cx="49" cy="51" r=".8" fill="#efc690" opacity=".3"/>
           </pattern>
           <radialGradient id="christmas-interior-light"><stop stop-color="#ffe6a6" stop-opacity=".65"/><stop offset=".4" stop-color="#e6bf6b" stop-opacity=".24"/><stop offset="1" stop-color="#d7ac51" stop-opacity="0"/></radialGradient>
+          <linearGradient id="christmas-fan-light" x1="0" y1="1" x2="0" y2="0"><stop stop-color="#fff4d0" stop-opacity=".78"/><stop offset=".45" stop-color="#f9dfa2" stop-opacity=".4"/><stop offset="1" stop-color="#fff3d3" stop-opacity="0"/></linearGradient>
+          <filter id="christmas-fan-soft" x="-25%" y="-25%" width="150%" height="150%"><feGaussianBlur stdDeviation="8"/></filter>
           <radialGradient id="light"><stop stop-color="#ffedb1" stop-opacity=".9"/><stop offset=".35" stop-color="#efc976" stop-opacity=".28"/><stop offset="1" stop-color="#e5bb62" stop-opacity="0"/></radialGradient>
           <filter id="shadow" x="-50%" y="-50%" width="200%" height="220%"><feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#020d0b" flood-opacity=".4"/></filter>
           <filter id="soft" x="-30%" y="-150%" width="160%" height="400%"><feGaussianBlur stdDeviation="9"/></filter>
@@ -79,6 +81,11 @@
         <ellipse cx="309" cy="425" rx="200" ry="41" fill="url(#ground-light)"/>
         <ellipse cx="317" cy="425" rx="156" ry="19" fill="#010c09" opacity=".5" filter="url(#soft)"/>
         <path d="M173 398L406 417L440 393L422 423L210 420Z" fill="#010a08" opacity=".62" filter="url(#contact)"/>
+        <g class="christmas-light-fan" opacity="0" aria-hidden="true" fill="url(#christmas-fan-light)" filter="url(#christmas-fan-soft)">
+          <path d="M300 322L48 60Q300-25 552 60Z"/>
+          <path d="M300 322L137 28Q300-10 463 28Z" opacity=".48"/>
+          <path d="M300 322L232 8H368Z" opacity=".3"/>
+        </g>
         <g id="design-shape"><g class="present">
           <path d="M173 273L207 243L439 262L405 293V419L173 400Z" fill="#3f1822"/>
           <path d="M184 273L210 252L426 269L402 288Z" fill="#211715"/>

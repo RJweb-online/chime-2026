@@ -369,8 +369,10 @@ function selectDesign(key) {
  stage.dataset.arrangement=design.arrangement||'';
  if(design.arrangement) {
   stage.style.setProperty('--lid-delay',`${design.lidDelay}ms`);
-  stage.style.setProperty('--card-delay',`${design.lidDelay+250}ms`);
-  stage.style.setProperty('--sparkle-delay',`${design.lidDelay+100}ms`);
+  stage.style.setProperty('--finale-lid-duration',`${design.lidOpenDuration||0}ms`);
+  stage.style.setProperty('--finale-lift-delay',`${design.lidLiftDelay||0}ms`);
+  stage.style.setProperty('--card-delay',`${design.cardDelay??design.lidDelay+250}ms`);
+  stage.style.setProperty('--sparkle-delay',`${design.revealDelay??design.lidDelay+100}ms`);
  }
  document.querySelectorAll('.design-picker [data-design]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.design===key)));
  replay();
@@ -396,9 +398,9 @@ function openGift() {
  started=performance.now();
  const design=designs[selected];
  const plan=design.arrangement?releasePlans[design.arrangement]:null;
- window.ChimeSound?.begin({material:design.material||'satin',reduced:reducedMotion.matches,arranged:!!plan,loopEnd:plan?.loopEnd,slide:plan?.peel,edge:plan?.edge,lid:design.lidDelay||3600},()=>started);
+ window.ChimeSound?.begin({material:design.material||'satin',reduced:reducedMotion.matches,arranged:!!plan,loopEnd:plan?.loopEnd,slide:plan?.peel,edge:plan?.edge,lid:design.lidSoundDelay??(design.lidDelay||3600),reveal:design.revealDelay},()=>started);
  stage.classList.add('is-opening');started=performance.now();
- if(!reducedMotion.matches)window.ChimeConfetti?.schedule({start:started+(design.lidDelay||3600)+250,duration:8000});
+ if(!reducedMotion.matches)window.ChimeConfetti?.schedule({start:started+(design.revealDelay??(design.lidDelay||3600)+250),duration:8000});
  if(reducedMotion.matches) finish(); else frame=requestAnimationFrame(tick);
 }
 function replay() {

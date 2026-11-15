@@ -79,3 +79,6 @@
  .calendar-heading{letter-spacing:1px;gap:8px}
  #calendar-progress{font-size:10px}
 }
+
+/* Give the Christmas finale's overlay the available space beside the shared gift. */
+@media(min-width:541px){.present-dialog:has(.stage[data-design=christmasDay]){width:min(1100px,calc(100% - 24px))}}

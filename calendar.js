@@ -186,7 +186,7 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   clearCard();instantCard=true;
   replay();drawRibbon(designs[selected].duration||DURATION);
   stage.classList.add('is-opening');finish();
-  stage.querySelectorAll('.present,.box-lid,.song-card,.inner-light,.sparkles').forEach(element=>element.getAnimations().forEach(animation=>animation.finish()));
+  stage.querySelectorAll('.present,.box-lid,.song-card,.inner-light,.sparkles,.christmas-seam,.christmas-light-fan').forEach(element=>element.getAnimations().forEach(animation=>animation.finish()));
   rememberOpened();
   showCard(false);instantCard=false;
  }
