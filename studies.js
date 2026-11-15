@@ -1,5 +1,5 @@
 'use strict';
-// Studies 07–24 extend the original collection. Each owns its construction and
+// Studies 07–25 extend the original collection. Each owns its construction and
 // authored ribbon arrangement, while selection, replay and timing stay shared.
 const strand=(width,points,options={})=>({rows:points.map((p,i)=>i?[...p,width]:[...p,width]),...options});
 const band=(x,y,bottom=417,width=18)=>strand(width,[[x,y-19],[x,y+30,x,bottom-25,x,bottom]],{flat:true});
@@ -228,20 +228,22 @@ function chainPose(chain,model,ms) {
  const loopParts=chain.loops.map((points,i,all)=>{
   // Pull-side bights feed out first. Florist and fan loops release serially,
   // with overlap, rather than six loops shrinking in lockstep.
-  const start=(side?1250:2050)+i*(plan.loopEnd-(side?1250:2050)-650)/Math.max(1,all.length);
+  const start=plan.loopStarts?.[side]?.[i]??(side?1250:2050)+i*(plan.loopEnd-(side?1250:2050)-650)/Math.max(1,all.length);
   const release=phase(ms,start,Math.min(plan.loopEnd,start+1050));
-  return points.map(p=>({...p,x:pin.x+(p.x-root.x)*(1-release),y:pin.y+(p.y-root.y)*(1-release),bank:mix(p.bank,1.1,Math.sin(release*Math.PI))}));
+  // Christmas velvet first softens the outer bights, before either tail moves.
+  const relax=i===0&&plan.outerRelax?phase(ms,...plan.outerRelax):0;
+  return points.map(p=>({...p,x:pin.x+(p.x-root.x)*(1+relax*.12)*(1-release),y:pin.y+(p.y-root.y)*(1-relax*.25)*(1-release),bank:mix(p.bank,1.1,Math.sin(release*Math.PI))}));
  });
  const collarParts=chain.collars.map(points=>{
-  const loosen=phase(ms,750,1350),open=phase(ms,1250,plan.loopEnd);
+  const loosen=phase(ms,...(plan.collarLoosen||[750,1350])),open=phase(ms,...(plan.collarOpen||[1250,plan.loopEnd]));
   return points.map(p=>({...p,x:pin.x+(p.x-root.x)*(1+loosen*.65)*(1-open),y:pin.y+(p.y-root.y)*(1+loosen*.45)*(1-open)}));
  });
  const prefix=connected([bandPoints,...loopParts,...collarParts]);
  const tailStart=chain.tail[0];
  const tailPoints=chain.tail.map((p,i,pts)=>{
   const u=i/(pts.length-1);
-  const tug=phase(ms,350,950)*(side?15:3)*u;
-  return {...p,x:mix(p.x+dx+(side?1:-1)*tug,edge+(side?1:-1)*u*60,drop),y:mix(p.y+dy*(1-u)-6*phase(ms,350,950)*u,432+Math.sin(u*Math.PI)*6,drop)};
+  const tug=phase(ms,...(plan.tailTug||[350,950]))*(side?15:3)*u;
+  return {...p,x:mix(p.x+dx+(side?1:-1)*tug,edge+(side?1:-1)*u*60,drop),y:mix(p.y+dy*(1-u)-6*phase(ms,...(plan.tailTug||[350,950]))*u,432+Math.sin(u*Math.PI)*6,drop)};
  });
  // Weld the tail root to the same knot translation as the preceding material.
  tailPoints[0]={...tailStart,x:tailStart.x+dx,y:tailStart.y+dy};
@@ -551,6 +553,47 @@ document.querySelector('svg defs').insertAdjacentHTML('beforeend',`
  <linearGradient id="brass-rim"><stop stop-color="#7b633e"/><stop offset=".27" stop-color="#d1bc87"/><stop offset=".53" stop-color="#ac8f58"/><stop offset=".76" stop-color="#c2aa70"/><stop offset="1" stop-color="#6c5736"/></linearGradient>
  <pattern id="brass-brush" width="11" height="3" patternUnits="userSpaceOnUse"><path d="M0 1H11" stroke="#fff0bc" stroke-width=".45" opacity=".2"/></pattern>
  <pattern id="eve-foil" width="51" height="41" patternUnits="userSpaceOnUse"><path d="M13 9l1.5-4 1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5Z" fill="#d4e4f2" opacity=".38"/><circle cx="39" cy="30" r=".75" fill="#e5eef7" opacity=".55"/></pattern>`);
+
+// Christmas Day: embossed champagne case and a broad cranberry velvet bow.
+Object.assign(constructions, {
+ christmasDay:{base:'M155 273L218 231L451 258L390 307V421L155 393Z',
+  lid:`<path d="M146 251L214 207L460 237L390 285Z" fill="url(#lid-front)" filter="url(#paper-fibre)"/>
+   <path d="M157 249L218 216L447 241L387 275Z" fill="url(#lid-top)"/>
+   <path d="M157 249L218 216L447 241L387 275Z" fill="url(#champagne-stars)"/>
+   <path d="M146 251L390 285V307L146 273Z" fill="url(#lid-front)"/><path d="M390 285L460 237V259L390 307Z" fill="url(#paper-side)"/>
+   <path d="M148 252L390 286L458 238M149 270L390 303L457 258" fill="none" stroke="#f8e3b4" stroke-width=".9" opacity=".8"/>
+   <path d="M157 249L218 216L447 241L387 275Z" fill="none" stroke="#ffefc9" stroke-width=".75" opacity=".65"/>
+   <path d="M167 247L222 222L432 245L384 269Z" fill="url(#paper-reflection)" opacity=".24"/>`,
+  body:`<path d="M155 278L390 307V421L155 393Z" fill="url(#paper-front)" filter="url(#paper-fibre)"/>
+   <path d="M390 307L451 265V378L390 421Z" fill="url(#paper-side)"/>
+   <path d="M155 278L390 307V421L155 393Z" fill="url(#paper-bloom)"/>
+   <path d="M162 284L383 312V412L162 386Z" fill="url(#champagne-stars)"/>
+   <path d="M155 278L162 284V386L155 393Z" fill="#f2dfb6" opacity=".35"/>
+   <path d="M162 386L383 412L390 421L155 393Z" fill="#856c48" opacity=".16"/>
+   <path d="M383 312L390 307V421L383 412Z" fill="#766145" opacity=".17"/>
+   <path d="M164 288L381 315V407L164 382Z" fill="none" stroke="#f4e0b4" stroke-width=".65" opacity=".6"/>
+   <path d="M158 391L389 418L448 377M393 311V414" fill="none" stroke="#f2dfb7" stroke-width=".8" opacity=".75"/>`}
+});
+Object.assign(designs, {
+ christmasDay:{shape:'christmasDay',scale:[1,1],material:'velvet',arrangement:'christmasVelvet',anchor:[297,248],ribbon:[[68,83,18],[18,35,16],[33,46,20]],palette:paper('#c4ad7f','#87714f','#e3ce9f','#d6bf8e'),title:'A deep champagne-gold Christmas box with beveled edges, embossed stars and a generous cranberry velvet bow with two long tails',note:'Christmas Day · Embossed champagne gold, a fitted beveled lid and layered cranberry velvet with two long tails.'}
+});
+Object.assign(arrangements, {
+ christmasVelvet:[strand(34,[[336,225],[321,231,308,241,297,248],[286,261,279,275,275,290],[275,331,275,375,275,408]],{flat:true}),
+  loop(297,248,-78,-49,32),loop(297,248,-51,-70,28),loop(297,248,-25,-81,22),
+  loop(297,248,80,-46,32),loop(297,248,53,-68,28),loop(297,248,26,-79,22),
+  strand(30,[[290,252],[260,281,267,344,231,414]],{bow:true}),strand(30,[[305,252],[337,285,328,357,364,417]],{bow:true}),
+  strand(27,[[287,237],[310,228,325,253,306,269],[282,271,274,248,287,237]],{flat:true})]
+});
+Object.assign(releasePlans, {
+ christmasVelvet:{loops:[[1,2,3],[4,5,6]],tails:[7,8],collars:[9],cross:[],
+  outerRelax:[250,1100],loopStarts:[[1550,2500,3300],[1350,2300,3100]],tailTug:[1450,2450],collarLoosen:[1050,1750],collarOpen:[1750,4400],
+  loopEnd:4500,peel:4800,edge:5900,settled:6800,lid:7050,sides:[137,468]}
+});
+document.querySelector('svg defs').insertAdjacentHTML('beforeend',`
+ <pattern id="champagne-stars" width="48" height="43" patternUnits="userSpaceOnUse">
+  <path d="M20 9l2.4 5.4 5.8.6-4.3 4 1.2 5.8-5.1-2.9-5.1 2.9 1.2-5.8-4.3-4 5.8-.6Z" transform="translate(.65 .8)" fill="none" stroke="#80653f" stroke-width=".8" opacity=".24"/>
+  <path d="M20 9l2.4 5.4 5.8.6-4.3 4 1.2 5.8-5.1-2.9-5.1 2.9 1.2-5.8-4.3-4 5.8-.6Z" fill="none" stroke="#fff1cf" stroke-width=".7" opacity=".43"/>
+ </pattern>`);
 
 // Opening waits for material to clear and settle. The original six retain
 // their existing 4.9-second timing; these six have construction-specific cues.

@@ -104,3 +104,7 @@ header,footer{position:relative;display:flex;justify-content:space-between;align
 .stage[data-shape=ivoryStripe] .present>path{fill:#766b52}
 .stage[data-shape=brassOval] .present>path{fill:#112c26}
 .stage[data-shape=christmasEve] .present>path{fill:#111d32}
+
+/* Christmas Day's fitted beveled lid uses the approved lift and card cues. */
+.is-opening[data-design=christmasDay] .box-lid{animation-name:octagonal-lid;transform-origin:300px 260px}
+.stage[data-shape=christmasDay] .present>path{fill:#766145}
