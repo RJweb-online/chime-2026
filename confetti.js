@@ -9,6 +9,7 @@ window.ChimeConfetti=(()=>{
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  const phone=matchMedia('(max-width:540px)');
  const colors=['#d6bb79','#eee2c6','#a76b69','#54755d','#c9b890'];
+ const champagne=['#e5c991','#f2dfb2','#d7b775'];
  let frame=0,timer=0,particles=[],cue=null;
  function reset(){
   clearTimeout(timer);cancelAnimationFrame(frame);timer=frame=0;
@@ -52,12 +53,14 @@ window.ChimeConfetti=(()=>{
   const ratio=Math.min(2,devicePixelRatio||1);
   canvas.width=Math.round(600*ratio);canvas.height=Math.round(490*ratio);
   // Deterministic variety gives every replay the same restrained flourish.
-  particles=Array.from({length:28},(_,i)=>({
+  // Christmas Day adds six champagne pieces without changing drift or clearance timing.
+  const christmasDay=stage.dataset.design==='christmasDay';
+  particles=Array.from({length:christmasDay?34:28},(_,i)=>({
    x:Math.sin(i*2.4)*24,spread:Math.sin(i*4.1)*132,
    lift:70+(i*19%61),delay:(i%5)*.009,phase:i*2.399,
    sway:16+i%11,waft:6+(i%5)*.65,fall:1.8+(i%4)*.18,
    end:.91+(i%7)*.015,fade:.18+(i%4)*.025,
-   turn:(i%2?1:-1)*(2+i%4),shape:i%11===0?2:i%3===0?0:1,color:colors[i%colors.length]
+   turn:(i%2?1:-1)*(2+i%4),shape:i%11===0?2:i%3===0?0:1,color:christmasDay&&i>=28?champagne[(i-28)%champagne.length]:colors[i%colors.length]
   }));
   timer=setTimeout(()=>{frame=requestAnimationFrame(draw);},Math.max(0,start-performance.now()));
  }

@@ -12,7 +12,7 @@ There is no testing bypass, testing switch, calendar-date rule or preview query-
 
 To release a finished gift, add its link to the sheet and refresh the calendar. Remove the link and refresh to lock it again. You do not need to change or publish any code to release songs.
 
-## Review Christmas Day locally
+## Review the day 09/22 swap and Christmas Day locally
 
 These changes are local and unpushed. Start the fixture server:
 
@@ -23,18 +23,20 @@ python3 tools/preview.py --test-data --bind 0.0.0.0 --port 8000
 | Preview | Mac | iPhone on the same Wi-Fi |
 | --- | --- | --- |
 | Calendar | http://127.0.0.1:8000/ | http://172.22.1.46:8000/ |
-| Christmas Day beside Christmas Eve | http://127.0.0.1:8000/previews/ | http://172.22.1.46:8000/previews/ |
+| Swapped gifts and Christmas Day | http://127.0.0.1:8000/previews/ | http://172.22.1.46:8000/previews/ |
 | First opening and replay captures | http://127.0.0.1:8000/previews/reveal-flow.html | http://172.22.1.46:8000/previews/reveal-flow.html |
 
-The Wi-Fi address can change. Tap day **25**, then its wrapped present. Use **Replay opening** to repeat the full sequence. Use **Reset opened gifts** on the local calendar to try a fresh first opening again. Earlier comparisons remain at `previews/boxes-13-16.html`, `previews/boxes-17-20.html` and `previews/boxes-21-24.html`.
+The Wi-Fi address can change. Tap day **09**, **22** or **25**, then its wrapped present. Use **Replay opening** to repeat the full sequence. Use **Reset opened gifts** on the local calendar to try a fresh first opening again. Earlier comparisons remain at `previews/boxes-13-16.html`, `previews/boxes-17-20.html` and `previews/boxes-21-24.html`.
 
-The fixture in **`preview/songs.json`** contains sample video links for days **13–25** and blank rows for days 1–12. These are sample assignments, not final songs. The server feeds them through the real sheet parser and release gate; it never edits Google Sheets and adds no public testing bypass. Edit a day’s URL in this JSON and reload to test another song or locking. Blank and invalid rows stay disabled, including for gifts already opened. To use another fixture, pass `--test-data /absolute/path/to/songs.json`.
+The fixture in **`preview/songs.json`** contains sample video links for day **9** and days **13–25**, with blank rows for days 1–8 and 10–12. These are sample assignments, not final songs. The server feeds them through the real sheet parser and release gate; it never edits Google Sheets and adds no public testing bypass. Edit a day’s URL in this JSON and reload to test another song or locking. Blank and invalid rows stay disabled, including for gifts already opened. To use another fixture, pass `--test-data /absolute/path/to/songs.json`.
 
 Running without `--test-data` reads the real Google Sheet, where Christmas Day requires its own valid Day 25 row. Stop the server with Ctrl+C.
 
-The Christmas bow’s outer loops relax from **0.25–1.1 seconds**, followed by staggered bight release and long-tail movement. The ribbon slips off the box from **4.8–5.9 seconds**, settles by **6.8 seconds**, and the fitted lid lifts at **7.05 seconds**. The approved sound and confetti controller remains in use. The card moves forward after the confetti completes, with a 48px **Watch on YouTube** button on its face. The video opens only when the button is tapped.
+The Christmas bow’s outer loops relax from **0.25–1.1 seconds**, followed by staggered bight release and long-tail movement. The ribbon slips off the box from **4.8–5.9 seconds**, settles by **6.8 seconds**, and the fitted lid lifts at **7.05 seconds**. The approved sound controller remains in use. Christmas Day has **34 confetti pieces** instead of the usual 28: six additional pieces in three champagne-gold shades. Their lift, downward drift, fade and completion timing use the existing particle motion. Other designs keep the original 28 pieces. A soft gold interior glow begins with the lid lift, lasts 2.4 seconds and fades fully before the readable card arrives. Reduced motion still reveals immediately. The card moves forward after the confetti completes, with a 48px **Watch on YouTube** button on its face. The video opens only when the button is tapped.
 
-Verification covers a full first opening and full replay at 390px, saved reloads and reduced-motion replay at 320px and 390px, blank/invalid row locking, updated links after reload, a real touch on the Watch button, and Christmas Day beside day 24 in the phone grid. The first 24 design records, SVG lid/body markup and 72 sampled ribbon frames match the pre-change baseline. Opening-review images are actual browser captures. These checks do not replace listening and tapping on a physical iPhone.
+Days **09** and **22** exchange entire design keys: day 09 is now **Ivory pinstripe** (warm ivory, fine gold rules, upright red silk bow); day 22 is now **Copper candlelight** (the tall copper tower with oversized ivory organza). Each design retains its own geometry, bow, release plan, lid timing, card rise and material sound settings. Sheet lookup, lock checks, saved openings and card dates still use the calendar day. No sheet songs are moved.
+
+Verification covers both swapped gifts’ full openings, Christmas Day’s first opening and full replay, 320px/390px saved reloads and reduced-motion replay, card dates and per-day song links, actual Watch taps, blank/invalid row locking and refreshed links. Canvas frames contain 28 pieces for days 09 and 22 and 34 for day 25; only day 25 includes the added champagne colors. The glow appears at lid lift and reaches zero opacity before the song card. The card waits for the actual confetti completion event in all three cases. The 24 earlier design records, SVG lid/body markup and 72 sampled ribbon frames match the captured baseline; Christmas Day’s artwork and ribbon renderer are unchanged. Review images are actual browser captures. These checks do not replace listening and tapping on a physical iPhone.
 
 ## Release or replace songs in Google Sheets
 
@@ -87,7 +89,7 @@ Browser checks cover loading-state taps, valid and blank sheet rows, invalid lin
 - **Emerald treasure:** compact octagonal construction, faceted sides, inset gilt rules, a petite champagne silk bow and a bronze seal on the lid.
 - **07 · A winter story:** a book-shaped navy cloth parcel with page edges and gilt spine details. Narrow burgundy tape closes in a minimal crossed knot, with no bow loops.
 - **08 · Frost & fold:** a flat square parcel in icy embossed snow-crystal paper, crossed blue grosgrain bands, a wide flat tailored bow and short notched tails.
-- **09 · Copper candlelight:** a very tall, slender metallic copper tower. Oversized ivory organza loops, translucent shading and long flowing streamers provide the decoration.
+- **09 · Ivory pinstripe:** a tall square in warm ivory with fine gold rules, a fitted lid and a small upright red silk bow at the front edge.
 - **10 · Rosewood carriage:** a tapered rose damask trunk with an antique clasp, diagonal wine velvet sash and a corner-mounted three-loop fan bow.
 - **11 · Winter pantry:** a folded hexagonal oatmeal-paper parcel with visible flecks, crossed jute twine, a loose rustic tie and dried orange. Its cord renderer uses twisted-line highlights rather than satin shading.
 - **12 · Peacock keepsake:** an elongated peacock-blue oval case with fine textured paper, a fitted gilt-edged lid, a CHIME plaque and an ivory silk butterfly bow.
@@ -102,7 +104,7 @@ Browser checks cover loading-state taps, valid and blank sheet rows, invalid lin
 - **20 · Evergreen hexagon:** a cream six-sided box with subtle sprigs, deep green grosgrain and a loose bow with long draped tails.
 
 - **21 · Mulberry velvet:** a wide low rectangle, subtle velvet nap, fitted lid and broad copper satin with one long tail.
-- **22 · Ivory pinstripe:** a tall square in warm ivory with fine gold rules, a fitted lid and a small upright red silk bow at the front edge.
+- **22 · Copper candlelight:** a very tall, slender metallic copper tower. Oversized ivory organza loops, translucent shading and long flowing streamers provide the decoration.
 - **23 · Evergreen oval:** a shallow deep-green oval, fitted brushed-brass rim, wide cream silk and a low flat bow.
 - **24 · Christmas Eve:** a deep clipped-corner midnight-blue box, softly beveled fitted lid, restrained silver foil and six layered silver-blue bow loops.
 
@@ -114,13 +116,13 @@ All materials are local SVG and Canvas artwork. The original paper detail, shado
 
 - `sheet-songs.js`: read-only Day / YouTube URL lookup for days 1–25, with per-day video-link validation.
 - `index.html`: shared layered SVG box and reveal card.
-- `calendar.js`: day-to-design data, calendar tiles, focused dialog, persistent opened-day flags and static opened snapshots. Days 1–24 stay in order; 25 adds the champagne-gold Christmas Day box. Each finished design requires its own valid sheet link.
+- `calendar.js`: day-to-design data, calendar tiles, focused dialog, persistent opened-day flags and static opened snapshots. Days 09 and 22 exchange ivory pinstripe and copper candlelight; all other assignments stay fixed, including Christmas Day on 25. Each finished design requires its own valid sheet link.
 - `calendar.css`: compact calendar layout and dialog styling, separate from the approved stage animation rules.
 - `style.css`: responsive preview, material treatments and shared lid/card animations.
 - `script.js`: design configurations, Canvas ribbon renderer, shared opening controller, reset, selection and reduced-motion handling.
 - `studies.js`: the additional constructions, material patterns and authored ribbon arrangements; extends the original collection and starts the preview after both scripts load.
 - `audio.js`: optional recorded-sound playback, material-specific filtering, cue scheduling and cancellation. Audio failures do not block the animation.
-- `confetti.js`: a reusable 28-piece Canvas flourish at the card reveal. Small muted festive shapes lift gently, drift downward and fade by the signature recording's end. It uses the audio playback cue and decoded duration, with an eight-second fallback when audio is unavailable. Reset, switching designs and hiding the page clear the overlay; reduced motion disables it. The overlay runs only during the flourish and does not change the present animation duration.
+- `confetti.js`: a reusable 28-piece Canvas flourish (34 on Christmas Day) at the card reveal. Small muted festive shapes lift gently, drift downward and fade by the signature recording's end. It uses the audio playback cue and decoded duration, with an eight-second fallback when audio is unavailable. Reset, switching designs and hiding the page clear the overlay; reduced motion disables it. The overlay runs only during the flourish and does not change the present animation duration.
 - `assets/audio/samples.js`: the five edited WAV recordings and supplied signature MP3 embedded as base64 for playback directly from disk, without fetching files.
 - `assets/audio/slide.wav`, `fall.wav`, `dry.wav`, `lid.wav` and `chime.wav`: the edited recordings retained alongside the embedded playback copy.
 - `assets/audio/LICENSES.md`: recording sources, attribution, licences and editing details. Keep this file with the audio assets when copying or publishing the preview.
@@ -141,7 +143,7 @@ The calendar overview uses static SVG snapshots of the actual gifts, including a
 
 Studies 01–06 keep their original 4.9-second sequence: box wiggle; tension and first-loop release (0.38–1.53 s); collar loosening (1.32–1.90 s); remaining loop release (1.90–2.78 s); ribbon peeling and settling (2.80–3.57 s); lid lift, glow and card reveal (3.60–4.90 s). Released ribbon remains visible below every gift.
 
-This is an authored 2.5D material animation, not a physical cloth simulation. It is designed for one viewing angle. The first twenty-four designs remain intact; Christmas Day completes all 25 gifts. Each day requires its own valid sheet row.
+This is an authored 2.5D material animation, not a physical cloth simulation. It is designed for one viewing angle. All 25 designs remain intact; only the day 09/22 assignments are exchanged. Each day requires its own valid sheet row.
 
 All twelve present designs, sounds and confetti have been manually tested and accepted by the project owner. The earlier calendar prototype browser checks covered all 25 selectable days, the twelve actual designs and their opened snapshots, placeholder state toggles, resetting, interrupted closing, focus restoration, tap targets and horizontal overflow. The same 96 checks passed at desktop width, 390 px, and 320 px with reduced motion enabled. Visual review covered the 390 px overview and the tall copper present's focused reveal. The original rendering/controller, audio, confetti and sound assets remain unchanged. New constructions extend studies.js and add design-scoped rules to style.css; the first twenty-four models and sampled ribbon frames match the captured baseline. Browser checks do not replace testing on physical touch devices.
 

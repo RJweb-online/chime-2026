@@ -108,3 +108,9 @@ header,footer{position:relative;display:flex;justify-content:space-between;align
 /* Christmas Day's fitted beveled lid uses the approved lift and card cues. */
 .is-opening[data-design=christmasDay] .box-lid{animation-name:octagonal-lid;transform-origin:300px 260px}
 .stage[data-shape=christmasDay] .present>path{fill:#766145}
+
+/* A brief interior glow on Christmas Day; it fades before the readable card arrives. */
+.stage[data-design=christmasDay] .inner-light{fill:url(#christmas-interior-light);transform-origin:300px 272px}
+.is-opening[data-design=christmasDay] .inner-light{animation-name:christmas-interior-glow;animation-duration:2.4s}
+@keyframes christmas-interior-glow{0%{opacity:0;transform:translateY(12px) scale(.85,.6)}35%{opacity:.7;transform:translateY(12px) scale(1,.8)}100%{opacity:0;transform:translateY(12px) scale(1.06,.9)}}
+@media(prefers-reduced-motion:reduce){.is-opening[data-design=christmasDay] .inner-light{animation-duration:1ms}}

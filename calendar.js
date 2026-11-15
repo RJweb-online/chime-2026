@@ -1,8 +1,9 @@
 'use strict';
 // The song sheet is the only release control for finished presents.
-// Calendar data is independent of the present renderers; the approved first twenty-four stay in order.
-// Temporary day assignments reuse the approved collection in its original order.
-const approvedPresentOrder=['crimson','ivory','midnight','plum','kraft','emerald','book','frost','copper','rose','citrus','oval','burgundy','forest','nocturne','cranberry','ivoryHatbox','glacier','plumStep','evergreen','mulberry','ivoryStripe','brassOval','christmasEve','christmasDay'];
+// Calendar assignments are independent of the approved present renderers.
+// Date controls songs, card text and saved flags; each design brings its own complete animation.
+// Days 09 and 22 intentionally exchange the ivory pinstripe and copper tower designs.
+const approvedPresentOrder=['crimson','ivory','midnight','plum','kraft','emerald','book','frost','ivoryStripe','rose','citrus','oval','burgundy','forest','nocturne','cranberry','ivoryHatbox','glacier','plumStep','evergreen','mulberry','copper','brassOval','christmasEve','christmasDay'];
 const calendarDays=Array.from({length:25},(_,index)=>({
  day:index+1,design:approvedPresentOrder[index]||null
 }));
