@@ -38,7 +38,7 @@ class Handler(SimpleHTTPRequestHandler):
             source = source.replace('script.src = source.href;', "script.src = '/__preview-song-feed.js?' + source.searchParams.toString();")
             self.send_text(source, 'text/javascript')
         elif fixture and path in ('/', '/index.html'):
-            source = (ROOT / 'index.html').read_text().replace('<body>', '<body><p class="local-preview">LOCAL TEST DATA · sample song links for presents 13–20 · your Google Sheet is unchanged</p>', 1)
+            source = (ROOT / 'index.html').read_text().replace('<body>', '<body><p class="local-preview">LOCAL TEST DATA · sample song links for presents 13–24 · your Google Sheet is unchanged</p>', 1)
             self.send_text(source, 'text/html')
         else:
             super().do_GET()

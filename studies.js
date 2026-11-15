@@ -1,5 +1,5 @@
 'use strict';
-// Studies 07–20 extend the original collection. Each owns its construction and
+// Studies 07–24 extend the original collection. Each owns its construction and
 // authored ribbon arrangement, while selection, replay and timing stay shared.
 const strand=(width,points,options={})=>({rows:points.map((p,i)=>i?[...p,width]:[...p,width]),...options});
 const band=(x,y,bottom=417,width=18)=>strand(width,[[x,y-19],[x,y+30,x,bottom-25,x,bottom]],{flat:true});
@@ -483,6 +483,74 @@ Object.assign(releasePlans, {
 document.querySelector('svg defs').insertAdjacentHTML('beforeend',`
  <pattern id="glacier-linen" width="7" height="7" patternUnits="userSpaceOnUse"><path d="M0 1H7M1 0V7" stroke="#f3f6ed" stroke-width=".65" opacity=".2"/><path d="M0 4H7M4 0V7" stroke="#355f70" stroke-width=".55" opacity=".12"/></pattern>
  <pattern id="evergreen-sprigs" width="58" height="50" patternUnits="userSpaceOnUse"><g fill="none" stroke="#45684c" stroke-width=".85" opacity=".23" stroke-linecap="round"><path d="M18 11L34 36M22 17l-9-2m12 7-12-2m15 7-12-1m15 6-11-1M23 18l3-9m0 14 4-12m-1 17 5-12m-2 17 6-10"/></g></pattern>`);
+
+// Days 21–24: solid fitted boxes; each tied ribbon uses the shared release renderer.
+Object.assign(constructions, {
+ mulberry:{base:'M153 323L214 282L458 313L407 357V416L153 386Z',
+  lid:`<path d="M142 305L203 263L470 294L407 337Z" fill="url(#lid-top)" filter="url(#paper-fibre)"/>
+   <path d="M142 305L203 263L470 294L407 337Z" fill="url(#mulberry-velvet)"/>
+   <path d="M142 305L407 337V355L142 323Z" fill="url(#lid-front)"/><path d="M407 337L470 294V312L407 355Z" fill="url(#paper-side)"/>
+   <path d="M144 306L407 338L468 295M145 320L407 352L467 311" fill="none" stroke="#bf839e" stroke-width=".8" opacity=".7"/>`,
+  body:`<path d="M153 327L407 357V416L153 386Z" fill="url(#paper-front)" filter="url(#paper-fibre)"/><path d="M407 357L458 323V382L407 416Z" fill="url(#paper-side)"/>
+   <path d="M153 327L407 357V416L153 386Z" fill="url(#paper-bloom)"/><path d="M153 327L407 357V416L153 386Z" fill="url(#mulberry-velvet)"/>
+   <path d="M156 330L406 360V364L156 334Z" fill="#341b2c" opacity=".32"/><path d="M157 383L405 412L455 380" fill="none" stroke="#b47b95" stroke-width=".7" opacity=".55"/>`},
+ ivoryStripe:{base:'M190 253L256 209L420 229L350 276V421L190 401Z',
+  lid:`<path d="M180 231L249 186L430 208L358 257Z" fill="url(#lid-top)" filter="url(#paper-fibre)"/><path d="M180 231L249 186L430 208L358 257Z" fill="url(#ivory-top-stripes)"/>
+   <path d="M180 231L358 257V279L180 253Z" fill="url(#lid-front)"/><path d="M358 257L430 208V230L358 279Z" fill="url(#paper-side)"/>
+   <path d="M182 232L358 258L428 209M182 250L358 276L428 229" fill="none" stroke="#fff6df" stroke-width=".9" opacity=".8"/>`,
+  body:`<path d="M190 256L350 280V421L190 401Z" fill="url(#paper-front)" filter="url(#paper-fibre)"/><path d="M350 280L420 233V374L350 421Z" fill="url(#paper-side)"/>
+   <path d="M190 256L350 280V421L190 401Z M350 280L420 233V374L350 421Z" fill="url(#ivory-pinstripe)"/>
+   <path d="M190 256L350 280V421L190 401Z" fill="url(#paper-bloom)"/><path d="M192 259L349 283V288L192 264Z" fill="#84765e" opacity=".2"/>
+   <path d="M194 397L348 417L417 372M353 285V414" fill="none" stroke="#fff4d8" stroke-width=".8" opacity=".7"/>`},
+ brassOval:{base:'M146 328C146 304 215 285 300 285S454 304 454 328V368C454 394 385 414 300 414S146 394 146 368Z',
+  lid:`<ellipse cx="300" cy="315" rx="164" ry="46" fill="url(#brass-rim)"/>
+   <path d="M136 315C136 340 209 361 300 361S464 340 464 315V329C464 355 391 377 300 377S136 355 136 329Z" fill="url(#brass-rim)"/>
+   <path d="M136 315C136 340 209 361 300 361S464 340 464 315V329C464 355 391 377 300 377S136 355 136 329Z" fill="url(#brass-brush)"/>
+   <ellipse cx="300" cy="313" rx="159" ry="42" fill="url(#lid-top)" filter="url(#paper-fibre)"/><ellipse cx="300" cy="313" rx="156" ry="39" fill="none" stroke="#b9a16b" stroke-width=".65" opacity=".65"/>
+   <path d="M139 331C151 355 218 374 300 374S449 355 461 331" fill="none" stroke="#e2cf9c" stroke-width=".9" opacity=".7"/>`,
+  body:`<path d="M146 334C146 359 215 379 300 379S454 359 454 334V368C454 394 385 414 300 414S146 394 146 368Z" fill="url(#paper-front)" filter="url(#paper-fibre)"/>
+   <path d="M146 334C146 359 215 379 300 379S454 359 454 334V368C454 394 385 414 300 414S146 394 146 368Z" fill="url(#paper-bloom)"/>
+   <path d="M151 372C162 394 224 410 300 410S438 394 449 372" fill="none" stroke="#759079" stroke-width=".8" opacity=".6"/>`},
+ christmasEve:{base:'M177 268L224 232L425 253L437 258V374L390 410L369 421L189 399L177 389Z',
+  lid:`<path d="M171 247L219 210L242 209L430 230L443 236L395 274L372 276L184 252Z" fill="url(#lid-front)" filter="url(#paper-fibre)"/>
+   <path d="M184 246L223 218L242 216L423 237L430 241L391 267L371 268L190 248Z" fill="url(#lid-top)"/>
+   <path d="M184 246L223 218L242 216L423 237L430 241L391 267L371 268L190 248Z" fill="url(#eve-foil)"/>
+   <path d="M443 236L395 274L372 276L184 252L171 247V269L184 274L372 298L395 296L443 258Z" fill="url(#lid-front)"/>
+   <path d="M395 274L443 236V258L395 296L372 298V276Z" fill="url(#paper-side)"/>
+   <path d="M173 247L185 253L372 277L395 275L441 237M174 267L185 272L372 295L394 293L440 257" fill="none" stroke="#b1c4db" stroke-width=".85" opacity=".7"/>
+   <path d="M184 246L223 218L242 216L423 237L430 241L391 267L371 268L190 248Z" fill="none" stroke="#bed0e3" stroke-width=".6" opacity=".5"/>`,
+  body:`<path d="M177 268L189 277L369 298L390 290L437 258V374L390 410L369 421L189 399L177 389Z" fill="url(#paper-front)" filter="url(#paper-fibre)"/>
+   <path d="M390 290L437 258V374L390 410L369 421V298Z" fill="url(#paper-side)"/><path d="M177 268L189 277V399L177 389Z" fill="#63728e" opacity=".2"/>
+   <path d="M189 277L369 298V421L189 399Z" fill="url(#paper-bloom)"/>
+   <path d="M200 292L359 311V407L200 388Z" fill="none" stroke="#9db6d0" stroke-width=".7" opacity=".42"/>
+   <path d="M204 301l2-5 2 6 5 2-5 1-2 5-2-6-5-2Z M349 392l2-5 2 6 5 2-5 1-2 5-2-6-5-2Z" fill="#c9d8e7" opacity=".65"/>
+   <path d="M191 395L369 417L389 407L434 373" fill="none" stroke="#849cba" stroke-width=".8" opacity=".7"/>`}
+});
+Object.assign(designs, {
+ mulberry:{shape:'mulberry',scale:[1,1],material:'satin',arrangement:'softCopper',anchor:[296,304],ribbon:[[105,112,24],[46,90,38],[21,66,45]],palette:paper('#6e314f','#3b2037','#955874','#b17a96'),title:'A wide low mulberry velvet box with broad copper satin and a soft bow with one long tail',note:'Mulberry velvet · A low fitted box, soft copper satin loops and one long flowing tail.'},
+ ivoryStripe:{shape:'ivoryStripe',scale:[1,1],material:'silk',arrangement:'frontRed',anchor:[284,243],ribbon:[[102,117,18],[10,32,14],[19,37,18]],palette:paper('#e1d8bf','#b2a38a','#f4ecd9','#c6b38e'),title:'A tall warm-ivory square box with fine gold pinstripes and a small upright red bow near the front edge',note:'Ivory pinstripe · Fine gold rules, a fitted square lid and narrow red silk tied upright at the front.'},
+ brassOval:{shape:'brassOval',scale:[1,1],material:'silk',arrangement:'flatCream',anchor:[296,307],ribbon:[[108,114,28],[100,110,32],[77,99,49]],palette:paper('#214c41','#102b26','#476a59','#84977a'),title:'A shallow deep-evergreen oval box with a brushed-brass rim, wide cream ribbon and a low flat bow',note:'Evergreen oval · A shallow fitted brass-edged lid, wide cream silk and flat laid loops.'},
+ christmasEve:{shape:'christmasEve',scale:[1,1],material:'silk',arrangement:'layeredEve',anchor:[300,237],ribbon:[[61,111,45],[82,118,39],[108,126,21]],palette:paper('#22354f','#101c32','#405774','#839bb9'),title:'A deep midnight-blue clipped-corner box with a beveled fitted lid, silver foil and a full layered silver-blue bow',note:'Christmas Eve · A softly beveled midnight box, quiet silver foil and a full six-loop silver-blue bow.'}
+});
+Object.assign(arrangements, {
+ softCopper:[strand(32,[[334,278],[322,285,306,297,296,304],[286,316,282,327,281,338],[281,360,281,385,281,405]],{flat:true}),loop(296,304,-65,-30,28),loop(296,304,73,-37,29),tail(291,309,-42,40,26),strand(29,[[301,309],[339,330,325,378,362,410]],{bow:true}),strand(25,[[289,293],[310,287,322,312,300,324],[280,323,277,302,289,293]],{flat:true})],
+ frontRed:[strand(10,[[337,202],[319,214,298,232,284,243],[283,247,283,252,283,255],[283,310,283,366,283,415]],{flat:true}),loop(284,243,-21,-39,10),loop(284,243,21,-37,10),tail(281,246,-17,35,9),tail(288,246,19,46,9),strand(8,[[281,237],[290,234,295,247,286,252],[278,251,275,242,281,237]],{flat:true})],
+ flatCream:[strand(31,[[334,276],[322,284,306,299,296,307],[285,322,276,342,270,356],[270,376,270,396,270,412]],{flat:true}),strand(28,[[296,307],[272,293,213,290,214,307],[222,327,273,315,296,307]],{flat:true,bow:true}),strand(28,[[296,307],[321,289,375,287,379,304],[372,323,319,316,296,307]],{flat:true,bow:true}),tail(291,311,-50,36,26),tail(302,311,53,35,26),strand(24,[[287,299],[303,294,315,312,303,320],[287,323,277,309,287,299]],{flat:true})],
+ layeredEve:[strand(25,[[337,219],[324,224,310,232,300,237],[290,248,284,259,280,267],[280,315,280,365,280,414]],{flat:true}),loop(300,237,-70,-50,26),loop(300,237,-46,-73,22),loop(300,237,-22,-82,18),loop(300,237,70,-50,26),loop(300,237,46,-73,22),loop(300,237,22,-82,18),tail(295,242,-51,95,24),tail(306,242,54,109,25),strand(23,[[291,226],[309,219,324,242,306,256],[285,258,279,237,291,226]],{flat:true})]
+});
+Object.assign(releasePlans, {
+ softCopper:{loops:[[1],[2]],tails:[3,4],collars:[5],cross:[],loopEnd:3450,peel:3700,edge:4850,settled:5750,lid:5950,sides:[135,471]},
+ frontRed:{loops:[[1],[2]],tails:[3,4],collars:[5],cross:[],loopEnd:2650,peel:2850,edge:3900,settled:4900,lid:5100,sides:[169,442]},
+ flatCream:{loops:[[1],[2]],tails:[3,4],collars:[5],cross:[],loopEnd:3000,peel:3250,edge:4400,settled:5350,lid:5550,sides:[126,475]},
+ layeredEve:{loops:[[1,2,3],[4,5,6]],tails:[7,8],collars:[9],cross:[],loopEnd:4800,peel:5000,edge:6100,settled:7000,lid:7250,sides:[155,456]}
+});
+document.querySelector('svg defs').insertAdjacentHTML('beforeend',`
+ <pattern id="mulberry-velvet" width="4" height="5" patternUnits="userSpaceOnUse"><path d="M1 0v2M3 3v2" stroke="#e9b6cc" stroke-width=".55" opacity=".13"/></pattern>
+ <pattern id="ivory-pinstripe" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M4 0V16" stroke="#af8c4c" stroke-width=".65" opacity=".42"/></pattern>
+ <pattern id="ivory-top-stripes" href="#ivory-pinstripe" patternTransform="rotate(55)"/>
+ <linearGradient id="brass-rim"><stop stop-color="#7b633e"/><stop offset=".27" stop-color="#d1bc87"/><stop offset=".53" stop-color="#ac8f58"/><stop offset=".76" stop-color="#c2aa70"/><stop offset="1" stop-color="#6c5736"/></linearGradient>
+ <pattern id="brass-brush" width="11" height="3" patternUnits="userSpaceOnUse"><path d="M0 1H11" stroke="#fff0bc" stroke-width=".45" opacity=".2"/></pattern>
+ <pattern id="eve-foil" width="51" height="41" patternUnits="userSpaceOnUse"><path d="M13 9l1.5-4 1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5Z" fill="#d4e4f2" opacity=".38"/><circle cx="39" cy="30" r=".75" fill="#e5eef7" opacity=".55"/></pattern>`);
 
 // Opening waits for material to clear and settle. The original six retain
 // their existing 4.9-second timing; these six have construction-specific cues.

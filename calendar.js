@@ -1,8 +1,8 @@
 'use strict';
 // The song sheet is the only release control for finished presents.
-// Calendar data is independent of the present renderers; the approved first sixteen stay in order.
+// Calendar data is independent of the present renderers; the approved first twenty stay in order.
 // Temporary day assignments reuse the approved collection in its original order.
-const approvedPresentOrder=['crimson','ivory','midnight','plum','kraft','emerald','book','frost','copper','rose','citrus','oval','burgundy','forest','nocturne','cranberry','ivoryHatbox','glacier','plumStep','evergreen'];
+const approvedPresentOrder=['crimson','ivory','midnight','plum','kraft','emerald','book','frost','copper','rose','citrus','oval','burgundy','forest','nocturne','cranberry','ivoryHatbox','glacier','plumStep','evergreen','mulberry','ivoryStripe','brassOval','christmasEve'];
 const calendarDays=Array.from({length:25},(_,index)=>({
  day:index+1,design:approvedPresentOrder[index]||null
 }));
@@ -48,12 +48,12 @@ const calendarDays=Array.from({length:25},(_,index)=>({
  document.querySelector('.edition').textContent='AN ADVENT OF LITTLE WONDERS';
  document.querySelector('.eyebrow').textContent='DECEMBER 1–25 · A LITTLE WONDER EVERY DAY';
  document.querySelector('.intro').textContent='Twenty-five little moments. Yours to unwrap.';
- document.querySelector('footer').innerHTML='<span>CHIME 2026 · TWENTY PRESENTS</span><span>Made for a little Christmas wonder.</span>';
+ document.querySelector('footer').innerHTML='<span>CHIME 2026 · TWENTY-FOUR PRESENTS</span><span>Made for a little Christmas wonder.</span>';
  source.hidden=true;source.classList.add('calendar-source');
  document.querySelectorAll('.preview-jump').forEach(link=>link.remove());
  const section=document.createElement('section');section.className='calendar';
  section.setAttribute('aria-label','December Advent calendar');
- section.innerHTML='<div class="calendar-heading"><span>DECEMBER <b>2026</b></span><span id="calendar-progress" role="status">December 1</span></div><div class="calendar-grid"></div><div class="calendar-tools"><p><strong id="unlock-status"></strong> <span>Days 1–20: finished presents. Days 21–25: designs to come.</span></p></div>';
+ section.innerHTML='<div class="calendar-heading"><span>DECEMBER <b>2026</b></span><span id="calendar-progress" role="status">December 1</span></div><div class="calendar-grid"></div><div class="calendar-tools"><p><strong id="unlock-status"></strong> <span>Days 1–24: finished presents. Day 25: design to come.</span></p></div>';
  main.insertBefore(section,source);
  if(local){
   const tools=document.createElement('nav');tools.className='local-preview';tools.setAttribute('aria-label','Local preview controls');

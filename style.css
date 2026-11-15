@@ -94,3 +94,13 @@ header,footer{position:relative;display:flex;justify-content:space-between;align
 .stage[data-shape=glacier] .present>path{fill:#3f5964}
 .stage[data-shape=plumStep] .present>path{fill:#2a1b2b}
 .stage[data-shape=evergreen] .present>path{fill:#686d53}
+
+/* Days 21–24: scoped fitted-lid silhouettes; shared opening and card cues. */
+.is-opening[data-design=mulberry] .box-lid{animation-name:slim-fitted-lid;transform-origin:300px 310px}
+.is-opening[data-design=ivoryStripe] .song-card{animation-name:hatbox-card}
+.is-opening[data-design=brassOval] .box-lid{animation-name:case-lid;transform-origin:300px 315px}
+.is-opening[data-design=christmasEve] .box-lid{animation-name:octagonal-lid;transform-origin:300px 250px}
+.stage[data-shape=mulberry] .present>path{fill:#341b2d}
+.stage[data-shape=ivoryStripe] .present>path{fill:#766b52}
+.stage[data-shape=brassOval] .present>path{fill:#112c26}
+.stage[data-shape=christmasEve] .present>path{fill:#111d32}
