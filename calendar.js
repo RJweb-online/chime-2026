@@ -1,8 +1,8 @@
 'use strict';
 // The song sheet is the only release control for finished presents.
-// Calendar data is independent of the twelve approved present renderers.
+// Calendar data is independent of the present renderers; the approved first twelve stay in order.
 // Temporary day assignments reuse the approved collection in its original order.
-const approvedPresentOrder=['crimson','ivory','midnight','plum','kraft','emerald','book','frost','copper','rose','citrus','oval'];
+const approvedPresentOrder=['crimson','ivory','midnight','plum','kraft','emerald','book','frost','copper','rose','citrus','oval','burgundy','forest','nocturne','cranberry'];
 const calendarDays=Array.from({length:25},(_,index)=>({
  day:index+1,design:approvedPresentOrder[index]||null
 }));
@@ -48,12 +48,12 @@ const calendarDays=Array.from({length:25},(_,index)=>({
  document.querySelector('.edition').textContent='AN ADVENT OF LITTLE WONDERS';
  document.querySelector('.eyebrow').textContent='DECEMBER 1–25 · A LITTLE WONDER EVERY DAY';
  document.querySelector('.intro').textContent='Twenty-five little moments. Yours to unwrap.';
- document.querySelector('footer').innerHTML='<span>CHIME 2026 · TWELVE PRESENTS</span><span>Made for a little Christmas wonder.</span>';
+ document.querySelector('footer').innerHTML='<span>CHIME 2026 · SIXTEEN PRESENTS</span><span>Made for a little Christmas wonder.</span>';
  source.hidden=true;source.classList.add('calendar-source');
  document.querySelectorAll('.preview-jump').forEach(link=>link.remove());
  const section=document.createElement('section');section.className='calendar';
  section.setAttribute('aria-label','December Advent calendar');
- section.innerHTML='<div class="calendar-heading"><span>DECEMBER <b>2026</b></span><span id="calendar-progress" role="status">December 1</span></div><div class="calendar-grid"></div><div class="calendar-tools"><p><strong id="unlock-status"></strong> <span>Days 1–12: approved presents. Days 13–25: designs to come.</span></p></div>';
+ section.innerHTML='<div class="calendar-heading"><span>DECEMBER <b>2026</b></span><span id="calendar-progress" role="status">December 1</span></div><div class="calendar-grid"></div><div class="calendar-tools"><p><strong id="unlock-status"></strong> <span>Days 1–16: finished presents. Days 17–25: designs to come.</span></p></div>';
  main.insertBefore(section,source);
  if(local){
   const tools=document.createElement('nav');tools.className='local-preview';tools.setAttribute('aria-label','Local preview controls');
@@ -151,7 +151,7 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   button.setAttribute('aria-label',`December ${day.day}, ${name}, ${isOpen?'opened':'wrapped'}${locked?songState==='loading'?', checking song release':', song not released':day.design?'':', design coming later'}`);
   const image=button.querySelector('img');if(image)image.src=(isOpen&&opened.get(day.day))||wrapped.get(day.design).image;
   button.querySelector('.day-state').textContent=locked?(songState==='loading'?'Loading…':'Locked'):isOpen?'Opened':day.design?'Tap to open':'Design to come';
-  document.getElementById('calendar-progress').textContent=`${calendarDays.filter(item=>unlocked(item)&&savedOpened.has(item.day)).length} of 12 unwrapped`;
+  document.getElementById('calendar-progress').textContent=`${calendarDays.filter(item=>unlocked(item)&&savedOpened.has(item.day)).length} of ${calendarDays.filter(item=>item.design).length} unwrapped`;
  }
  function openedSnapshot(){
   // Reuse the original snapshot, retaining its exact paper and construction.

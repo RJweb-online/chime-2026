@@ -2,15 +2,33 @@
 
 Public calendar: **https://rjweb-online.github.io/chime-2026/**
 
-The existing layout keeps all twelve approved presents on days **1–12**. Days **13–25** remain disabled placeholders until their designs are built. The original opening animations, sound, confetti and card timing remain unchanged. Songs are now read for **all days 1–25** from the sheet.
+The existing layout keeps the twelve approved presents on days **1–12** and adds four new designs on **13–16**. Days **17–25** remain disabled placeholders until their designs are built. The original opening animations, sound, confetti and card timing remain unchanged. Songs are now read for **all days 1–25** from the sheet.
 
 ## The sheet is the only release control
 
 Each finished present stays disabled until its own Day row contains one valid YouTube video URL. Loading, missing, blank, invalid or duplicate rows keep the gift locked. If the sheet cannot be read, all finished gifts stay disabled. Tapping a disabled tile does nothing: it does not open a dialog, start an animation, reveal a card or display an unavailable-song message.
 
-There is no testing bypass, testing switch, calendar-date rule or preview query-string override. Previously opened gifts must pass the same fresh sheet check after every reload. Days 13–25 remain unavailable until their designs are built, even if their song links are already present.
+There is no testing bypass, testing switch, calendar-date rule or preview query-string override. Previously opened gifts must pass the same fresh sheet check after every reload. Days 17–25 remain unavailable until their designs are built, even if their song links are already present.
 
 To release a finished gift, add its link to the sheet and refresh the calendar. Remove the link and refresh to lock it again. You do not need to change or publish any code to release songs.
+
+## Review presents 13–16 locally
+
+These changes are local and unpushed. Start the fixture server:
+
+```sh
+python3 tools/preview.py --test-data --port 8000
+```
+
+Open **http://127.0.0.1:8000/** to try days **13–16**, or **http://127.0.0.1:8000/previews/** to see all four closed boxes together at phone width, followed by their calendar-scale fit beside days 1–12. A linked opening-review page shows individual closed, opened and final-card views.
+
+The fixture in **`preview/songs.json`** contains sample video links for days 13–16 and blank rows for other days. All four are sample assignments, not final songs. The server feeds those rows through the real sheet parser and release gate; it never edits Google Sheets and does not add a public testing bypass. Blank or invalid fixture rows remain disabled. Edit this JSON and reload to test a different link or locking. To use another test file, pass `--test-data /absolute/path/to/songs.json`.
+
+For an iPhone on the same Wi-Fi, add `--bind 0.0.0.0` and use the Mac's current Wi-Fi address with port 8000. Stop the server with Ctrl+C. Running without `--test-data` reads the real Google Sheet, where days 13–16 need their own valid rows before opening.
+
+The replacement boxes use solid finishes with fine surface texture and shared material shading, without outer wrapping-paper patterns. Their ribbon widths, scale and fitted lid edges follow the existing collection. The original release → lid → sound/confetti → forward song-card flow remains in use. The first twelve design records, SVG lid/body markup and 36 sampled ribbon frames match the captured pre-change baseline.
+
+The four-up preview uses closed snapshots exported from the actual SVG/Canvas renderer. The replacement boxes passed full opening, sound/confetti, card timing, per-day Watch links, saved reload and reduced-motion checks at 320px and 390px; blank and invalid test rows still lock them. The opening-review page contains actual 390px browser captures: the middle view shows the fitted lid open while confetti is falling; the last view shows the forward card after it clears. Replay and saved reloads keep the same song-on-card behavior.
 
 ## Release or replace songs in Google Sheets
 
@@ -49,7 +67,7 @@ Run from this folder:
 python3 -m http.server 8000 --bind 0.0.0.0
 ```
 
-Open <http://127.0.0.1:8000/> on the Mac. The current Wi-Fi address for an iPhone on the same network is **http://172.22.1.46:8000/**; it may change when the Mac reconnects. The public Pages URL does not depend on the Mac server. Both use only the sheet to control releases. The local toolbar can **Reset opened gifts**, which does not override sheet-controlled release rules.
+Open <http://127.0.0.1:8000/> on the Mac. For an iPhone on the same Wi-Fi, use the Mac's current Wi-Fi IPv4 address with port 8000. The public Pages URL does not depend on the Mac server. Both use only the sheet to control releases. The local toolbar can **Reset opened gifts**, which does not override sheet-controlled release rules.
 
 Browser checks cover loading-state taps, valid and blank sheet rows, invalid links, old preview query strings, replacing a link on an already-opened card, and relocking after a link is removed. Controlled sheet-feed responses test changes without editing live sheet values. The live sheet is also read directly for linked and blank days.
 
@@ -68,17 +86,22 @@ Browser checks cover loading-state taps, valid and blank sheet rows, invalid lin
 - **11 · Winter pantry:** a folded hexagonal oatmeal-paper parcel with visible flecks, crossed jute twine, a loose rustic tie and dried orange. Its cord renderer uses twisted-line highlights rather than satin shading.
 - **12 · Peacock keepsake:** an elongated peacock-blue oval case with fine textured paper, a fitted gilt-edged lid, a CHIME plaque and an ivory silk butterfly bow.
 
+- **13 · Burgundy keepsake:** a deep square burgundy box with a fitted lid, broad ivory satin cross-ribbon and a generous centered bow.
+- **14 · Forest jewel case:** a slim rectangular forest-green box with a fitted lid, fine champagne silk and a small corner bow.
+- **15 · Midnight octagon:** a true eight-sided midnight-blue box with a fitted lid, silver ribbon and a sculpted, layered double-loop bow.
+- **16 · Cranberry round:** a low round cranberry box with a close-fitting circular lid, wide blush satin and an asymmetrical bow.
+
 All materials are local SVG and Canvas artwork. The original paper detail, shadows, perspective and continuous untying curves are retained.
 
 ## Files and shared animation
 
 - `sheet-songs.js`: read-only Day / YouTube URL lookup for days 1–25, with per-day video-link validation.
 - `index.html`: shared layered SVG box and reveal card.
-- `calendar.js`: day-to-design data, calendar tiles, focused dialog, persistent opened-day flags and static opened snapshots. Days 1–12 use the approved collection; days 13–25 stay unassigned. Each finished design requires its own valid sheet link.
+- `calendar.js`: day-to-design data, calendar tiles, focused dialog, persistent opened-day flags and static opened snapshots. Days 1–12 use the approved collection; 13–16 add the burgundy square, forest rectangle, midnight octagon and cranberry round; 17–25 stay unassigned. Each finished design requires its own valid sheet link.
 - `calendar.css`: compact calendar layout and dialog styling, separate from the approved stage animation rules.
 - `style.css`: responsive preview, material treatments and shared lid/card animations.
 - `script.js`: design configurations, Canvas ribbon renderer, shared opening controller, reset, selection and reduced-motion handling.
-- `studies.js`: the six additional constructions, material patterns and authored ribbon arrangements; extends the original collection and starts the preview after both scripts load.
+- `studies.js`: the additional constructions, material patterns and authored ribbon arrangements; extends the original collection and starts the preview after both scripts load.
 - `audio.js`: optional recorded-sound playback, material-specific filtering, cue scheduling and cancellation. Audio failures do not block the animation.
 - `confetti.js`: a reusable 28-piece Canvas flourish at the card reveal. Small muted festive shapes lift gently, drift downward and fade by the signature recording's end. It uses the audio playback cue and decoded duration, with an eight-second fallback when audio is unavailable. Reset, switching designs and hiding the page clear the overlay; reduced motion disables it. The overlay runs only during the flourish and does not change the present animation duration.
 - `assets/audio/samples.js`: the five edited WAV recordings and supplied signature MP3 embedded as base64 for playback directly from disk, without fetching files.
@@ -101,8 +124,8 @@ The calendar overview uses static SVG snapshots of the actual gifts, including a
 
 Studies 01–06 keep their original 4.9-second sequence: box wiggle; tension and first-loop release (0.38–1.53 s); collar loosening (1.32–1.90 s); remaining loop release (1.90–2.78 s); ribbon peeling and settling (2.80–3.57 s); lid lift, glow and card reveal (3.60–4.90 s). Released ribbon remains visible below every gift.
 
-This is an authored 2.5D material animation, not a physical cloth simulation. It is designed for one viewing angle. The twelve approved designs remain available in the rendering collection; days 1–12 have temporary assignments with openable, replayable reveals when their sheet rows contain valid song links.
+This is an authored 2.5D material animation, not a physical cloth simulation. It is designed for one viewing angle. The twelve approved designs remain intact, and four new designs extend the collection to day 16. All finished days require their own valid sheet rows; 17–25 remain placeholders.
 
-All twelve present designs, sounds and confetti have been manually tested and accepted by the project owner. The earlier calendar prototype browser checks covered all 25 selectable days, the twelve actual designs and their opened snapshots, placeholder state toggles, resetting, interrupted closing, focus restoration, tap targets and horizontal overflow. The same 96 checks passed at desktop width, 390 px, and 320 px with reduced motion enabled. Visual review covered the 390 px overview and the tall copper present's focused reveal. The approved rendering, animation, audio and confetti source files and assets remain unchanged. Browser checks do not replace testing on physical touch devices.
+All twelve present designs, sounds and confetti have been manually tested and accepted by the project owner. The earlier calendar prototype browser checks covered all 25 selectable days, the twelve actual designs and their opened snapshots, placeholder state toggles, resetting, interrupted closing, focus restoration, tap targets and horizontal overflow. The same 96 checks passed at desktop width, 390 px, and 320 px with reduced motion enabled. Visual review covered the 390 px overview and the tall copper present's focused reveal. The original rendering/controller, audio, confetti and sound assets remain unchanged. New constructions extend studies.js and add design-scoped rules to style.css; the twelve approved models and sampled ribbon frames match the captured baseline. Browser checks do not replace testing on physical touch devices.
 
 Changes in this workspace are not automatically committed, pushed, or deployed.

@@ -1,5 +1,5 @@
 'use strict';
-// Studies 07–12 extend the approved collection. Each owns its construction and
+// Studies 07–16 extend the original collection. Each owns its construction and
 // authored ribbon arrangement, while selection, replay and timing stay shared.
 const strand=(width,points,options={})=>({rows:points.map((p,i)=>i?[...p,width]:[...p,width]),...options});
 const band=(x,y,bottom=417,width=18)=>strand(width,[[x,y-19],[x,y+30,x,bottom-25,x,bottom]],{flat:true});
@@ -293,6 +293,97 @@ function drawArrangement(ms) {
  }
  stage.dataset.phase=ms<750?'tail-pull':ms<1350?'knot-loosening':ms<plan.peel?'loops-feeding':ms<plan.edge?'wrap-sliding':ms<plan.settled?'ribbon-settling':'reveal';
 }
+
+// Studies 13–16: fitted, unwrapped gift boxes using the approved material renderer.
+Object.assign(constructions, {
+ burgundy:{base:'M174 276L229 239L429 258L378 295V420L174 402Z',
+  lid:`<path d="M163 248L220 209L437 228L378 270Z" fill="url(#lid-top)" filter="url(#paper-fibre)"/>
+   <path d="M163 248L378 270V294L163 272Z" fill="url(#lid-front)"/>
+   <path d="M378 270L437 228V252L378 294Z" fill="url(#paper-side)"/>
+   <path d="M165 249L378 271L435 230M165 269L378 291L435 250" fill="none" stroke="#d398a1" stroke-width=".9" opacity=".7"/>
+   <path d="M183 244L224 216L418 233L376 262Z" fill="url(#paper-reflection)" opacity=".32"/>
+   <path d="M168 255L373 276" stroke="#e1b3b6" stroke-width=".6" opacity=".3"/>`,
+  body:`<path d="M174 276L378 295V421L174 402Z" fill="url(#paper-front)" filter="url(#paper-fibre)"/>
+   <path d="M378 295L429 258V382L378 421Z" fill="url(#paper-side)"/>
+   <path d="M174 276L378 295V421L174 402Z" fill="url(#paper-bloom)"/>
+   <path d="M175 282L377 301V306L175 287Z" fill="#2b1021" opacity=".35"/>
+   <path d="M181 289L370 307V411L181 394Z" fill="none" stroke="#c18591" stroke-width=".65" opacity=".3"/>
+   <path d="M181 292L220 296Q208 347 226 406L181 401Z" fill="url(#paper-reflection)" opacity=".35"/>
+   <path d="M176 397L376 417L426 380M380 301V417" fill="none" stroke="#bb7d8c" stroke-width=".8" opacity=".55"/>`},
+ forest:{base:'M148 336L212 293L454 320L393 361V416L148 392Z',
+  lid:`<path d="M136 313L207 268L464 294L393 340Z" fill="url(#lid-top)" filter="url(#paper-fibre)"/>
+   <path d="M136 313L393 340V359L136 332Z" fill="url(#lid-front)"/>
+   <path d="M393 340L464 294V313L393 359Z" fill="url(#paper-side)"/>
+   <path d="M139 314L393 341L461 296M139 329L392 356L461 311" fill="none" stroke="#8ba28e" stroke-width=".8" opacity=".75"/>
+   <path d="M159 309L211 276L440 298L389 332Z" fill="url(#paper-reflection)" opacity=".2"/>`,
+  body:`<path d="M148 336L393 361V416L148 392Z" fill="url(#paper-front)" filter="url(#paper-fibre)"/>
+   <path d="M393 361L454 320V377L393 416Z" fill="url(#paper-side)"/>
+   <path d="M149 339L392 364V369L149 344Z" fill="#081e19" opacity=".4"/>
+   <path d="M155 350L385 374V407L155 384Z" fill="none" stroke="#638471" stroke-width=".65" opacity=".4"/>
+   <path d="M151 345L193 350L199 396L151 391Z" fill="url(#paper-reflection)" opacity=".24"/>
+   <path d="M150 388L392 412L452 375M395 365V411" fill="none" stroke="#73907c" stroke-width=".8" opacity=".6"/>`},
+ nocturne:{base:'M299 249L381 256L418 287L384 326L302 349L218 342L182 309L216 270Z',
+  lid:`<path d="M299 233L386 240L422 273L388 312L302 335L215 328L178 295L212 256Z" fill="url(#lid-top)" filter="url(#paper-fibre)"/>
+   <path d="M422 273L388 312L302 335L215 328L178 295V313L215 346L302 353L388 330L422 291Z" fill="url(#lid-front)"/>
+   <path d="M388 312L422 273V291L388 330Z" fill="url(#paper-side)"/>
+   <path d="M301 242L381 249L411 274L382 305L301 326L220 319L189 294L219 263Z" fill="none" stroke="#b5c4d0" stroke-width=".8" opacity=".55"/>
+   <path d="M180 295L216 329L302 336L388 313L420 275M180 310L216 343L302 350L388 327L420 289" fill="none" stroke="#8d9fb7" stroke-width=".8" opacity=".75"/>`,
+  body:`<path d="M182 313L218 347L303 354L386 331L418 293V357L386 395L303 418L218 411L182 377Z" fill="url(#paper-front)" filter="url(#paper-fibre)"/>
+   <path d="M386 331L418 293V357L386 395Z" fill="url(#paper-side)"/>
+   <path d="M303 354L386 331V395L303 418Z" fill="#0c1b33" opacity=".18"/>
+   <path d="M182 313L218 347V411L182 377Z" fill="#8c9caf" opacity=".1"/>
+   <path d="M185 373L220 407L303 414L384 391L415 356M220 351V405M305 358V411" fill="none" stroke="#7c8fa9" stroke-width=".75" opacity=".6"/>
+   <path d="M225 355L248 357V410L225 408Z" fill="url(#paper-reflection)" opacity=".22"/>`},
+ cranberry:{base:'M162 331C162 302 223 280 300 280C377 280 438 302 438 331V371C438 404 376 424 300 424C224 424 162 404 162 371Z',
+  lid:`<ellipse cx="300" cy="310" rx="146" ry="55" fill="url(#lid-top)" filter="url(#paper-fibre)"/>
+   <path d="M154 310C154 340 219 365 300 365C381 365 446 340 446 310V328C446 358 381 382 300 382C219 382 154 358 154 328Z" fill="url(#lid-front)"/>
+   <ellipse cx="300" cy="310" rx="137" ry="48" fill="none" stroke="#dda3af" stroke-width=".7" opacity=".45"/>
+   <path d="M156 329C158 356 220 379 300 379C379 379 441 356 444 329" fill="none" stroke="#c98d9e" stroke-width="1" opacity=".75"/>
+   <path d="M176 296Q223 267 307 270Q240 281 213 310Z" fill="url(#paper-reflection)" opacity=".3"/>`,
+  body:`<path d="M162 331C170 360 228 380 300 380C372 380 430 360 438 331V371C438 404 376 424 300 424C224 424 162 404 162 371Z" fill="url(#paper-front)" filter="url(#paper-fibre)"/>
+   <path d="M162 331C170 360 228 380 300 380C372 380 430 360 438 331V371C438 404 376 424 300 424C224 424 162 404 162 371Z" fill="url(#paper-bloom)"/>
+   <path d="M390 365Q425 352 438 331V371Q436 396 390 412Z" fill="#321827" opacity=".2"/>
+   <path d="M175 359Q189 369 207 373L210 411Q190 405 177 393Z" fill="url(#paper-reflection)" opacity=".5"/>
+   <path d="M170 377C180 403 233 419 300 419C366 419 420 403 431 377" fill="none" stroke="#bc7c8f" stroke-width=".8" opacity=".65"/>`}
+});
+Object.assign(designs, {
+ burgundy:{shape:'burgundy',scale:[1,1],material:'satin',arrangement:'ivoryCross',anchor:[296,245],
+  ribbon:[[112,115,27],[104,114,30],[80,103,46]],palette:paper('#812f45','#451b2d','#ac6372','#c88c9a'),
+  title:'A deep square burgundy gift box with broad crossed ivory satin and a centered bow',note:'Burgundy keepsake · A deep square box, fitted lid and broad ivory satin crossed beneath a generous centered bow.'},
+ forest:{shape:'forest',scale:[1,1],material:'silk',arrangement:'cornerSilk',anchor:[376,322],
+  ribbon:[[99,116,31],[86,110,38],[56,98,54]],palette:paper('#2b5145','#142f28','#58786a','#799584'),
+  title:'A slim rectangular forest-green gift box with fine champagne ribbon and a small corner bow',note:'Forest jewel case · A slim rectangular box, fitted lid and fine champagne silk tied at the corner.'},
+ nocturne:{shape:'nocturne',scale:[1,1],material:'silk',arrangement:'silverSculpture',anchor:[300,282],
+  ribbon:[[60,119,64],[71,126,58],[88,133,34]],palette:paper('#293e60','#14223c','#536b89','#8193ad'),
+  title:'An octagonal midnight-blue gift box with silver ribbon and a sculpted double-loop bow',note:'Midnight octagon · Eight beveled corners, a fitted lid and a sculpted double-loop bow in silver silk.'},
+ cranberry:{shape:'cranberry',scale:[1,1],material:'satin',arrangement:'blushAsymmetry',anchor:[275,305],
+  ribbon:[[111,113,22],[72,101,39],[75,98,37]],palette:paper('#94374f','#552438','#bd7082','#ce98a6'),
+  title:'A low round cranberry gift box with wide blush satin and an asymmetrical bow',note:'Cranberry round · A low circular box, close-fitting lid and wide blush satin with an asymmetrical bow.'}
+});
+Object.assign(arrangements, {
+ ivoryCross:[strand(29,[[334,220],[321,228,308,237,296,245],[288,254,281,264,277,277],[277,321,277,368,277,414]],{flat:true}),
+  strand(28,[[185,235],[227,239,264,242,296,245],[338,250,378,251,411,253],[405,287,405,343,405,400]],{flat:true}),
+  loop(296,245,-69,-49,29),loop(296,245,70,-46,29),tail(293,250,-52,71,26),tail(300,250,51,76,26),
+  strand(25,[[292,234],[310,233,315,253,298,260],[282,258,279,242,292,234]],{flat:true})],
+ cornerSilk:[strand(9,[[429,298],[411,304,392,313,376,322],[369,329,363,337,357,347],[357,365,357,389,357,410]],{flat:true}),
+  loop(376,322,-34,-23,10),loop(376,322,32,-22,10),tail(374,325,-27,35,9),tail(379,325,27,32,9),
+  strand(8,[[374,316],[383,314,387,325,377,330],[369,329,367,320,374,316]],{flat:true})],
+ silverSculpture:[strand(19,[[344,239],[328,251,314,266,300,282],[289,300,278,317,269,334],[269,359,269,385,269,412]],{flat:true}),
+  loop(300,282,-64,-40,22),loop(300,282,-39,-58,18),loop(300,282,67,-38,22),loop(300,282,41,-58,18),
+  strand(19,[[296,286],[274,309,278,336,243,369]],{bow:true}),strand(19,[[305,286],[328,309,330,336,355,359]],{bow:true}),
+  strand(20,[[296,271],[313,269,318,288,303,297],[287,297,282,279,296,271]],{flat:true})],
+ blushAsymmetry:[strand(30,[[328,272],[310,284,291,293,275,305],[260,322,249,339,244,358],[244,375,244,394,244,414]],{flat:true}),
+  loop(275,305,-74,-34,30),loop(275,305,58,-66,28),
+  strand(27,[[270,309],[243,332,248,367,219,396]],{bow:true}),strand(25,[[281,310],[308,330,317,370,343,389]],{bow:true}),
+  strand(25,[[272,293],[291,288,298,311,279,321],[262,321,257,302,272,293]],{flat:true})]
+});
+// Keep the established release -> settled cloth -> fitted lid -> card sequence.
+Object.assign(releasePlans, {
+ ivoryCross:{loops:[[2],[3]],tails:[4,5],collars:[6],cross:[1],loopEnd:2950,peel:3150,edge:4050,settled:5050,lid:5250,sides:[153,448]},
+ cornerSilk:{loops:[[1],[2]],tails:[3,4],collars:[5],cross:[],loopEnd:2500,peel:2700,edge:3650,settled:4600,lid:4750,sides:[143,454]},
+ silverSculpture:{loops:[[1,2],[3,4]],tails:[5,6],collars:[7],cross:[],loopEnd:4300,peel:4520,edge:5650,settled:6500,lid:6700,sides:[164,438]},
+ blushAsymmetry:{loops:[[1],[2]],tails:[3,4],collars:[5],cross:[],loopEnd:4600,peel:4800,edge:5800,settled:6600,lid:6800,sides:[143,457]}
+});
 
 // Opening waits for material to clear and settle. The original six retain
 // their existing 4.9-second timing; these six have construction-specific cues.
