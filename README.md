@@ -38,7 +38,7 @@ December 25 has its own finale timeline after the approved velvet bow releases:
 2. Hold that cracked pose visibly still for **three full seconds**, keeping the seam lit throughout.
 3. Lift smoothly over **1 second**, spreading a soft fan of light upward and outward behind the gift. The fan stays behind the box so its gold finish and embossed stars remain legible.
 4. Just after the lid is fully open (**11.28s**), launch the confetti and the existing signature recording. The original lid recording starts with the main lift at **10.25s**; the original signature recording starts with the burst at **11.28s**. Fabric recordings remain on their approved bow-release cues.
-5. Keep the original gentle fall and fade. Move the readable song card forward only when the last particle clears. Its 48px **Watch on YouTube** button stays on the face of the card.
+5. Keep the gentle fall and fade; a few final pieces linger 1.8 seconds into the added Christmas recording. Move the readable song card forward only when the last particle clears. Its 48px **Watch on YouTube** button stays on the face of the card.
 
 The finale uses the visible reveal area: **288 pieces with 24 gold stars on desktop**, **90 pieces with 9 stars on phones**. Cranberry and ivory pieces fill the space above and to either side of the gift. Stars measure **38px across on desktop** and **24px on phones**, independent of the gift’s scaling. The desktop dialog widens to 1100px for day 25 only; the box keeps the approved scale. Other days, including December 24, retain their original 28-piece flourish, sounds and timing. The existing interior glows are retained. Reduced motion reveals immediately without the held lid animation, seam, fan or confetti.
 
@@ -46,7 +46,41 @@ The linked opening-review page compares December 24 and 25 at **1440 × 1000** a
 
 Days **09** and **22** exchange entire design keys: day 09 is now **Ivory pinstripe** (warm ivory, fine gold rules, upright red silk bow); day 22 is now **Copper candlelight** (the tall copper tower with oversized ivory organza). Each design retains its own geometry, bow, release plan, lid timing, card rise and material sound settings. Sheet lookup, lock checks, saved openings and card dates still use the calendar day. No sheet songs are moved.
 
-Verification compares Christmas Eve and Christmas Day back-to-back on desktop and phone, including a full first opening and replay. It checks the three-second stationary hold from its actual animation keyframes and samples the live pose and seam light throughout the pause, light before the full lift, confetti starting after the fully open pose, actual particle counts and on-screen star diameters, side-to-side coverage and unchanged fall duration. It also checks saved reloads and reduced-motion replay at 320px, 390px and 1440px, sheet locking, refreshed song URLs and Watch button taps. The earlier 24 design records, SVG lid/body markup and 72 sampled ribbon frames match the captured baseline. Review images are actual browser captures; physical iPhone playback still needs listening and tapping on the device.
+Verification compares Christmas Eve and Christmas Day back-to-back on desktop and phone, including a full first opening and replay. It checks the three-second stationary hold from its actual animation keyframes and samples the live pose and seam light throughout the pause, light before the full lift, confetti starting after the fully open pose, actual particle counts and on-screen star diameters, side-to-side coverage and the approved fall motion. It also checks saved reloads and reduced-motion replay at 320px, 390px and 1440px, sheet locking, refreshed song URLs and Watch button taps. The earlier 24 design records, SVG lid/body markup and 72 sampled ribbon frames match the captured baseline. Review images are actual browser captures; physical iPhone playback still needs listening and tapping on the device.
+
+## December 25 music
+
+The supplied **We Wish You a Merry Christmas.m4a** is copied unchanged to
+`assets/audio/we-wish-you-a-merry-christmas.m4a`. Its exact bytes are embedded in
+`assets/audio/christmas-music.js` for local and direct-from-disk previews. The full
+**10.496-second** recording plays at normal speed, with no trim or EQ.
+
+Only an explicit December 25 opening or **Replay opening** schedules the clip.
+It follows the complete existing reveal chime on the same gesture-unlocked
+Web Audio context. The chime still begins when the lid is fully open. At the
+owner’s request, the last confetti pieces linger **1.8 seconds into the music**;
+the card advances when those pieces clear, independently of music playback.
+The three-second lid hold, light, particle counts, stars and sound recordings
+are otherwise retained. Other days have no added music or linger.
+
+**Watch on YouTube** fades the clip to zero over **45ms** and follows the native
+link immediately. Closing the dialog, returning to the calendar, changing gifts,
+replaying or hiding the page cancels both active and future playback. Generation
+checks prevent a late AAC decode from starting music after cancellation. An
+already-opened gift restores silently; only pressing Replay starts audio again.
+Reduced motion keeps the card immediate while explicit opening/Replay audio
+still plays in order.
+
+Desktop (1440 × 1000) and iPhone-sized Chrome (390 × 844) checks instrument the
+actual Web Audio source and gain nodes: the clip starts at the signature buffer’s
+end, plays all 10.496 seconds at rate 1, and has one source per explicit run.
+They verify the card arrives 1.8 seconds into music, Watch fades in 45ms and opens
+its native link immediately, replay/closing cancel current and future sources,
+restoration creates no audio context, and late AAC decoding cannot escape
+cancellation. The optional music also stays out of December 24. Physical iPhone
+Safari playback still needs listening on the device using the Wi-Fi URL above.
+ The optional recording cannot block the reveal if decoding
+fails. See `assets/audio/LICENSES.md` for the supplied-file attribution.
 
 ## Release or replace songs in Google Sheets
 
