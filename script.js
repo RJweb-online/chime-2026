@@ -398,7 +398,7 @@ function openGift() {
  started=performance.now();
  const design=designs[selected];
  const plan=design.arrangement?releasePlans[design.arrangement]:null;
- window.ChimeSound?.begin({material:design.material||'satin',reduced:reducedMotion.matches,arranged:!!plan,loopEnd:plan?.loopEnd,slide:plan?.peel,edge:plan?.edge,lid:design.lidSoundDelay??(design.lidDelay||3600),reveal:design.revealDelay},()=>started);
+ window.ChimeSound?.begin({material:design.material||'satin',reduced:reducedMotion.matches,arranged:!!plan,loopEnd:plan?.loopEnd,slide:plan?.peel,edge:plan?.edge,lid:design.lidSoundDelay??(design.lidDelay||3600),reveal:design.revealDelay,music:selected==='christmasDay'},()=>started);
  stage.classList.add('is-opening');started=performance.now();
  if(!reducedMotion.matches)window.ChimeConfetti?.schedule({start:started+(design.revealDelay??(design.lidDelay||3600)+250),duration:8000});
  if(reducedMotion.matches) finish(); else frame=requestAnimationFrame(tick);

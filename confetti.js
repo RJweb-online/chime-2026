@@ -84,7 +84,8 @@ window.ChimeConfetti=(()=>{
    lift:christmasDay?(phone.matches?Math.min(headroom,130+(i*19%80)):headroom*(.52+.48*((i*53)%count)/(count-1))):70+(i*19%61),
    delay:(i%5)*.009,phase:i*2.399,
    sway:16+i%11,waft:6+(i%5)*.65,fall:1.8+(i%4)*.18,
-   end:.91+(i%7)*.015,fade:.18+(i%4)*.025,
+   // A few finale pieces linger 1.8s into the Christmas recording.
+   end:.91+(i%7)*.015+(christmasDay&&i%4===0?1800/cue.duration:0),fade:.18+(i%4)*.025,
    turn:(i%2?1:-1)*(2+i%4),
    shape:christmasDay?(i%starEvery===0?3:i%3===0?0:1):(i%11===0?2:i%3===0?0:1),
    color:christmasDay?(i%starEvery===0?champagne[(i/starEvery)%champagne.length]:christmasColors[i%christmasColors.length]):colors[i%colors.length]

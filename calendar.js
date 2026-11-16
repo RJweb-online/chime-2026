@@ -82,6 +82,11 @@ const calendarDays=Array.from({length:25},(_,index)=>({
  readable.innerHTML='<p class="reveal-kicker">A LITTLE MOMENT OF WONDER</p><h3>Your December 1 song</h3><p class="reveal-artist">CHIME 2026 · December 1</p><div class="card-song"></div><p class="reveal-caption">THE MAGIC IS IN THE MAKING</p>';
  revealStage.append(readable);
  const cardSong=readable.querySelector('.card-song');
+ // Keep the native link action inside this gesture: Safari can open it immediately.
+ // Fade only the optional Christmas recording; never wait before following the link.
+ cardSong.addEventListener('click',event=>{
+  if(event.target.closest('.watch-youtube'))window.ChimeSound?.stopMusic();
+ });
  function updateCard(){
   const title=`Your December ${activeDay?.day||1} song`;
   const artist=`CHIME 2026 · December ${activeDay?.day||1}`;

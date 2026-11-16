@@ -60,3 +60,17 @@ reveal, including its natural decay. Reset, design switching or hiding the
 page still cancels playback. No third-party licence is inferred for this
 supplied recording. Its exact bytes are also embedded in `samples.js` for
 direct-from-disk previews.
+
+## Christmas Day recording: we-wish-you-a-merry-christmas.m4a
+
+Supplied by the project owner as **We Wish You a Merry Christmas.m4a**.
+Copied byte for byte; full 10.496-second, 48kHz mono AAC recording. No trimming,
+resynthesis, EQ or playback-rate changes. A minimal 8ms runtime attack avoids a
+start click; gain is 0.5 through the existing 0.8 master. Exact source bytes are
+also embedded in `christmas-music.js` for direct-from-disk previews.
+
+Only December 25's explicit opening or Replay schedules the recording, after
+the full signature reveal sound. Restoring an opened gift is silent. Closing,
+changing designs, replaying or hiding the page cancels current and scheduled
+playback. Watch on YouTube fades it in 45ms without delaying the native link.
+No third-party licence is inferred for this supplied recording.

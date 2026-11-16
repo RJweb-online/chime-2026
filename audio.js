@@ -2,7 +2,7 @@
 // Recorded, local foley. See assets/audio/LICENSES.md for sources and edits.
 // Audio is optional: no failed decode/resume can hold up the animation.
 window.ChimeSound=(()=>{
- let context=null,master=null,decoded=null,generation=0;
+ let context=null,master=null,decoded=null,musicDecoded=null,generation=0,musicGeneration=0;
  const voices=new Set();
  // These local assets are short PCM WAVs. Read their samples without opening
  // an audio device, so the first tap need not wait for an asynchronous codec.
@@ -26,12 +26,19 @@ window.ChimeSound=(()=>{
   linen:{sample:'dry',rate:.96,lowpass:4300,highpass:95,gain:.22},
   twine:{sample:'dry',rate:.94,lowpass:3600,highpass:140,gain:.20}
  };
+ function stopMusic(){
+  musicGeneration++;
+  cancelVoices(voice=>voice.sample==='christmasMusic');
+ }
  function stop(){
-  generation++;
+  generation++;musicGeneration++;
+  cancelVoices(()=>true);
+ }
+ function cancelVoices(matches){
   if(!context)return;
   const now=context.currentTime;
   for(const voice of voices){
-   if(voice.cancelled)continue;
+   if(voice.cancelled||!matches(voice))continue;
    voice.cancelled=true;
    // Per-voice fades also silence future scheduled sources. A new opening has
    // its own gains, so cancelling the previous gift cannot mute the new one.
@@ -67,6 +74,13 @@ window.ChimeSound=(()=>{
   });
   return Promise.all([resume,decoded]).then(([,buffers])=>context.state==='running'?buffers:null);
  }
+ function prepareMusic(){
+  if(!musicDecoded)musicDecoded=Promise.resolve().then(()=>{
+   const bytes=Uint8Array.from(atob(window.CHIME_CHRISTMAS_MUSIC),c=>c.charCodeAt(0));
+   return context.decodeAudioData(bytes.buffer);
+  }).catch(()=>null);
+  return musicDecoded;
+ }
  function play(buffers,cue,epoch){
   const now=context.currentTime,when=epoch+cue.at/1000;
   // Do not bunch late effects together after a slow decode or a background tab.
@@ -77,20 +91,21 @@ window.ChimeSound=(()=>{
   const high=context.createBiquadFilter(),low=context.createBiquadFilter();
   high.type='highpass';high.frequency.value=cue.highpass||65;high.Q.value=.5;
   low.type='lowpass';low.frequency.value=cue.lowpass||8000;low.Q.value=.5;
-  const signature=cue.sample==='reveal';
-  if(signature)source.connect(gain);
+  const signature=cue.sample==='reveal',music=cue.sample==='christmasMusic';
+  if(signature||music)source.connect(gain);
   else {source.connect(high);high.connect(low);low.connect(gain);}
   gain.connect(master);
   const start=Math.max(now+.005,when),duration=Math.min(cue.duration??Infinity,source.buffer.duration/source.playbackRate.value);
-  const attack=signature?0:Math.min(.025,duration*.15),fade=signature?0:Math.min(.11,duration*.3);
+  const attack=signature?0:music ? .008 : Math.min(.025,duration*.15),fade=signature||music?0:Math.min(.11,duration*.3);
   gain.gain.setValueAtTime(0,start);
   gain.gain.linearRampToValueAtTime(cue.gain,start+attack);
   gain.gain.setValueAtTime(cue.gain,Math.max(start+attack,start+duration-fade));
   gain.gain.linearRampToValueAtTime(0,start+duration);
-  const voice={source,gain,cancelled:false,start,duration,attack,fade,level:cue.gain};voices.add(voice);
+  const voice={sample:cue.sample,source,gain,cancelled:false,start,duration,attack,fade,level:cue.gain};voices.add(voice);
   source.onended=()=>{source.disconnect();high.disconnect();low.disconnect();gain.disconnect();voices.delete(voice)};
   source.start(start);source.stop(start+duration+.015);
   if(signature)window.dispatchEvent(new CustomEvent('chime-reveal-cue',{detail:{start:performance.now()+(start-now)*1000,duration:duration*1000}}));
+  return voice;
  }
  function cuesFor(options){
   if(options.reduced)return [{at:30,sample:'reveal',gain:.24}];
@@ -108,13 +123,26 @@ window.ChimeSound=(()=>{
   return cues;
  }
  function begin(options,started){
-  stop();const token=generation;
+  stop();const token=generation,musicToken=musicGeneration;
   try{
    return prepare().then(buffers=>{
     if(!buffers||token!==generation||document.hidden)return false;
     const visualStart=typeof started==='function'?started():started;
     const epoch=context.currentTime-(performance.now()-visualStart)/1000;
-    cuesFor(options).forEach(cue=>play(buffers,cue,epoch));return true;
+    // Schedule once on the same unlocked context, after the full signature buffer.
+    // No timer or confetti/card callback can restart or postpone the recording.
+    let signature=null;
+    for(const cue of cuesFor(options)){
+     const voice=play(buffers,cue,epoch);
+     if(cue.sample==='reveal')signature=voice;
+    }
+    if(options.music&&signature)prepareMusic().then(buffer=>{
+     if(!buffer||token!==generation||musicToken!==musicGeneration||signature.cancelled)return;
+     const next=signature.start+signature.duration;
+     // A slow optional decode may start late, but still plays the complete clip.
+     play({christmasMusic:buffer},{at:0,sample:'christmasMusic',gain:.5},Math.max(next,context.currentTime));
+    });
+    return true;
    }).catch(()=>false);
   }catch{return Promise.resolve(false)}
  }
@@ -125,5 +153,5 @@ window.ChimeSound=(()=>{
   decoded.then(buffers=>{if(buffers&&token===generation)play(buffers,{at:15,sample:'reveal',gain:.24},context.currentTime)}).catch(()=>{});
  }
  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop()});
- return Object.freeze({begin,stop,reduce});
+ return Object.freeze({begin,stop,stopMusic,reduce});
 })();
