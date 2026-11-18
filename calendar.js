@@ -209,7 +209,7 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   dialog.setAttribute('aria-labelledby','day-title');
   dialog.showModal();document.body.classList.add('calendar-dialog-open');
   if(day.design){
-   stage.querySelector('.card-title').textContent=`CHIME Day ${day.day}`;
+   stage.querySelector('.card-day').textContent=`Day ${day.day}`;
    selectDesign(day.design);updateCard();sizeRibbon();
    openButton.setAttribute('aria-label',`Unwrap your December ${day.day} present`);
    document.getElementById('gift-desc').textContent=`The bow unties, the ribbon slips away, and the lid lifts to reveal your December ${day.day} card.`;
