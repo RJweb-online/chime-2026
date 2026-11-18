@@ -46,10 +46,8 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   return ''; // Locked gifts never open a card or an unavailable-song message.
  }
  document.body.classList.add('calendar-page');
- document.querySelector('.edition').textContent='AN ADVENT OF LITTLE WONDERS';
- document.querySelector('.eyebrow').textContent='DECEMBER 1–25 · A LITTLE WONDER EVERY DAY';
- document.querySelector('.intro').textContent='Twenty-five little moments. Yours to unwrap.';
- document.querySelector('footer').innerHTML='<span>CHIME 2026 · TWENTY-FIVE PRESENTS</span><span>Made for a little Christmas wonder.</span>';
+ document.querySelector('.edition').textContent='A CHRISTMAS MUSIC COLLECTION';
+ document.querySelector('footer').innerHTML='<span>CHIME 2026 · DECEMBER 1–25</span><span>A song behind every present.</span>';
  source.hidden=true;source.classList.add('calendar-source');
  document.querySelectorAll('.preview-jump').forEach(link=>link.remove());
  const section=document.createElement('section');section.className='calendar';
@@ -68,9 +66,9 @@ const calendarDays=Array.from({length:25},(_,index)=>({
  dialog.innerHTML='<div class="dialog-top"><button type="button" class="return-calendar" autofocus>← Calendar</button><span id="day-date"></span></div><h2 id="day-title"></h2><div class="live-present"></div>';
  document.body.append(dialog);
  const live=dialog.querySelector('.live-present');
- // Keep the description outside the gift/card positioning area.
+ // Keep renderer descriptions out of the song reveal.
  const designNote=document.getElementById('design-note');
- if(designNote)live.before(designNote);
+ if(designNote)designNote.hidden=true;
  const revealStage=document.createElement('div');revealStage.className='reveal-stage';
  revealStage.append(stage);
  live.append(revealStage,document.querySelector('.under-gift'));
@@ -79,7 +77,7 @@ const calendarDays=Array.from({length:25},(_,index)=>({
  const phone=matchMedia('(max-width:540px)');
  const readable=document.createElement('article');readable.className='readable-card';readable.hidden=true;
  readable.setAttribute('aria-label','Your daily song');
- readable.innerHTML='<p class="reveal-kicker">A LITTLE MOMENT OF WONDER</p><h3>Your December 1 song</h3><p class="reveal-artist">CHIME 2026 · December 1</p><div class="card-song"></div><p class="reveal-caption">THE MAGIC IS IN THE MAKING</p>';
+ readable.innerHTML='<p class="christmas-greeting" hidden></p><h3></h3><p class="reveal-artist" hidden></p><div class="card-song"></div>';
  revealStage.append(readable);
  const cardSong=readable.querySelector('.card-song');
  // Keep the native link action inside this gesture: Safari can open it immediately.
@@ -88,14 +86,26 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   if(event.target.closest('.watch-youtube'))window.ChimeSound?.stopMusic();
  });
  function updateCard(){
-  const title=`Your December ${activeDay?.day||1} song`;
-  const artist=`CHIME 2026 · December ${activeDay?.day||1}`;
+  const metadata=songs.metadata?.get(activeDay?.day);
+  const title=metadata?.title||`Your December ${activeDay?.day||1} song.`;
+  const artist=metadata?.artist||'';
   readable.querySelector('h3').textContent=title;
   readable.querySelector('.reveal-artist').textContent=artist;
+  readable.querySelector('.reveal-artist').hidden=!artist;
+  const greeting=readable.querySelector('.christmas-greeting');
+  greeting.textContent=document.getElementById('christmas-greeting').content.textContent.trim();
+  greeting.hidden=activeDay?.day!==25;
   readable.setAttribute('aria-label',`Your December ${activeDay?.day} song`);
   cardSong.innerHTML=songAction();
-  stage.querySelector('.card-title').textContent=title;
-  stage.querySelector('.card-artist').textContent=artist;
+  // The small rising SVG is a preview of the same title; long titles fit its face.
+  const svgTitle=stage.querySelector('.card-title');
+  svgTitle.textContent=title;
+  svgTitle.removeAttribute('textLength');
+  if(svgTitle.getComputedTextLength()>200){svgTitle.setAttribute('textLength','200');svgTitle.setAttribute('lengthAdjust','spacingAndGlyphs');}
+  const svgArtist=stage.querySelector('.card-artist');
+  svgArtist.textContent=artist;
+  svgArtist.removeAttribute('textLength');
+  if(svgArtist.getComputedTextLength()>200){svgArtist.setAttribute('textLength','200');svgArtist.setAttribute('lengthAdjust','spacingAndGlyphs');}
  }
  window.ChimeSongs.load().then(loadedSongs=>{
   songs=loadedSongs;songState='ready';
@@ -109,17 +119,19 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   console.warn('CHIME songs:',error.message);
  });
  openButton.querySelector('span').innerHTML='Tap to unwrap <span aria-hidden="true">↗</span>';
- replayButton.hidden=false;
+ replayButton.hidden=true;
  replayButton.innerHTML='<span aria-hidden="true">↻</span> Replay opening';
  let cardAnimation=null,instantCard=false;
  function clearCard(){
   cardAnimation?.cancel();cardAnimation=null;readable.hidden=true;
   live.classList.remove('has-readable-card');
+  replayButton.hidden=true;
  }
  function showCard(animate){
   if(!dialog.open||!activeDay?.design||!readable.hidden)return;
   const start=stage.querySelector('.song-card').getBoundingClientRect();
-  readable.hidden=false;
+  readable.hidden=false;replayButton.hidden=false;
+  if(keyboardOpening)replayButton.focus({preventScroll:true});
   const end=readable.getBoundingClientRect();
   live.classList.add('has-readable-card');
   if(animate&&!reducedMotion.matches){
@@ -151,12 +163,13 @@ const calendarDays=Array.from({length:25},(_,index)=>({
  function update(day){
   const button=grid.querySelector(`[data-day="${day.day}"]`),isOpen=unlocked(day)&&savedOpened.has(day.day);
   button.classList.toggle('day-opened',isOpen);
-  const name=day.design?wrapped.get(day.design).name:'Coming later';
+  const name='Christmas song';
   const locked=!!day.design&&!unlocked(day);
   button.disabled=!day.design||locked;
+  button.classList.toggle('day-available',!locked&&!!day.design&&!isOpen);
   button.setAttribute('aria-label',`December ${day.day}, ${name}, ${isOpen?'opened':'wrapped'}${locked?songState==='loading'?', checking song release':', song not released':day.design?'':', design coming later'}`);
   const image=button.querySelector('img');if(image)image.src=(isOpen&&opened.get(day.day))||wrapped.get(day.design).image;
-  button.querySelector('.day-state').textContent=locked?(songState==='loading'?'Loading…':'Locked'):isOpen?'Opened':day.design?'Tap to open':'Design to come';
+  button.querySelector('.day-state').textContent=locked?(songState==='loading'?'Loading…':'Locked'):isOpen?'Opened':day.design?'Unwrap':'Design to come';
   document.getElementById('calendar-progress').textContent=`${calendarDays.filter(item=>unlocked(item)&&savedOpened.has(item.day)).length} of ${calendarDays.filter(item=>item.design).length} unwrapped`;
  }
  function openedSnapshot(){
@@ -199,10 +212,10 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   if(!day.design||!unlocked(day))return;
   clearCard();
   activeDay=day;returnTarget=button;restoreAttempted=true;
-  dialog.querySelector('#day-date').textContent=`DECEMBER ${day.day}`;
+  dialog.querySelector('#day-date').hidden=true;
   const title=dialog.querySelector('#day-title');
-  if(title)title.textContent=day.design?wrapped.get(day.design).name:'A wonder yet to come';
-  dialog.setAttribute('aria-labelledby',title&&!title.hidden?'day-date day-title':'day-date');
+  if(title)title.textContent=day.day===25?'Christmas Day':`December ${day.day}`;
+  dialog.setAttribute('aria-labelledby','day-title');
   dialog.showModal();document.body.classList.add('calendar-dialog-open');
   if(day.design){
    selectDesign(day.design);updateCard();sizeRibbon();

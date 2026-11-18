@@ -84,12 +84,14 @@ fails. See `assets/audio/LICENSES.md` for the supplied-file attribution.
 
 ## Release or replace songs in Google Sheets
 
-CHIME reads the existing [CHIME 2026 sheet](https://docs.google.com/spreadsheets/d/1aoxQ8YMaAwwdBJ2q1_nhkWKNjov7l331GBV_GTV7R9M/edit) whenever the calendar loads. The source is **Sheet1**, gid **0**, range **A1:B26**:
+CHIME reads the existing [CHIME 2026 sheet](https://docs.google.com/spreadsheets/d/1aoxQ8YMaAwwdBJ2q1_nhkWKNjov7l331GBV_GTV7R9M/edit) whenever the calendar loads. The source is **Sheet1**, gid **0**, range **A1:D26**:
 
 | Column | Header | Contents |
 | --- | --- | --- |
 | A | Day | A number from 1 to 25, once per day |
 | B | YouTube URL | That day's full HTTPS YouTube video link, or blank to keep it unreleased |
+| C | Title | Optional song title; blank uses “Your December [day] song.” |
+| D | Artist | Optional artist; blank omits the artist line |
 
 Keep the header row and one row for each day you want to release within rows 2–26. The Day value determines the gift; row order does not. To release day 2, enter `2` in its Day cell and its song URL in the same row's YouTube URL cell. Wait for Sheets to save, then refresh CHIME. Removing that URL locks the gift again after refresh.
 
@@ -192,3 +194,12 @@ This is an authored 2.5D material animation, not a physical cloth simulation. It
 All twelve present designs, sounds and confetti have been manually tested and accepted by the project owner. The earlier calendar prototype browser checks covered all 25 selectable days, the twelve actual designs and their opened snapshots, placeholder state toggles, resetting, interrupted closing, focus restoration, tap targets and horizontal overflow. The same 96 checks passed at desktop width, 390 px, and 320 px with reduced motion enabled. Visual review covered the 390 px overview and the tall copper present's focused reveal. The original rendering/controller, audio, confetti and sound assets remain unchanged. New constructions extend studies.js and add design-scoped rules to style.css; the first twenty-four models and sampled ribbon frames match the captured baseline. Browser checks do not replace testing on physical touch devices.
 
 Changes in this workspace are not automatically committed, pushed, or deployed.
+
+## Editing the welcome and song reveal
+
+- Welcome: edit `#calendar-welcome` in `index.html`.
+- Christmas Day greeting: edit the `#christmas-greeting` template directly beneath it (starts as “Merry Christmas!”).
+- Sheet: keep **Day** in A1 and **YouTube URL** in B1. Optionally add **Title** in C1 and **Artist** in D1. The read range is now A1:D26. Existing two-column sheets still work. Blank titles use “Your December [day] song.”; blank artists are omitted. Metadata never releases a day without a valid YouTube URL, and duplicate days still remain locked.
+- Local fixtures: `tools/preview.py --test-data path/to/fixture.json` also accepts an optional `headers` array, e.g. `["Day", "YouTube URL", "Title", "Artist"]`, alongside the existing `rows` array.
+
+The existing saved-browser progress and Sheet-only release rules are retained. Opening, Christmas Day lid pause, light, confetti, and audio timing remain unchanged; the readable song card still comes forward after the confetti completes.

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#102c27">
-  <title>CHIME 2026 — An Advent of little wonders</title>
+  <title>CHIME 2026 — Christmas, unwrapped.</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="calendar.css">
   <script src="assets/audio/samples.js" defer></script>
@@ -19,9 +19,12 @@
 <body>
   <header><a class="wordmark" href="./" aria-label="CHIME 2026 home">CHIME<span>2026</span></a><span class="edition">DEVELOPMENT PREVIEW</span></header>
   <main>
-    <p class="eyebrow">THE WRAPPING ROOM · TWENTY-FIVE PRESENT STUDIES</p>
+    <p class="eyebrow">Christmas Holiday Inspirational Music Experience</p>
     <h1>Christmas, <em>unwrapped.</em></h1>
-    <p class="intro">A collection of little wonders. Find your favourite wrapping.</p>
+    <!-- Edit the calendar welcome here. -->
+    <p class="intro" id="calendar-welcome">Welcome to CHIME 2026! There’s a Christmas song behind every present.</p>
+    <!-- Edit the December 25 greeting here. -->
+    <template id="christmas-greeting">Merry Christmas!</template>
     <div class="design-picker" id="present-studies" role="group" aria-label="Choose a present">
       <button data-design="crimson" aria-pressed="true"><i class="swatch crimson"></i><span><b>01 · Crimson botanical</b><small>Foil paper / gold satin</small></span></button>
       <button data-design="ivory" aria-pressed="false"><i class="swatch ivory"></i><span><b>02 · Woodland parcel</b><small>Ivory paper / forest weave</small></span></button>
@@ -111,10 +114,10 @@
             <rect x="197" y="233" width="207" height="181" rx="5" fill="#faf2df"/>
             <rect x="205" y="241" width="191" height="165" rx="2" fill="none" stroke="#c6aa71" stroke-width=".7"/>
             <path d="M289 259h23m-18-5 6 5-6 5m12-10-6 5 6 5" fill="none" stroke="#a8874a" stroke-width="1"/>
-            <text x="300" y="283" class="card-kicker">A LITTLE MOMENT OF WONDER</text>
+
             <text x="300" y="316" class="card-title">Beautifully unwrapped.</text>
             <text x="300" y="341" class="card-artist">CHIME 2026 · Present study</text>
-            <text x="300" y="376" class="card-kicker">THE MAGIC IS IN THE MAKING</text>
+
           </g>
           <g class="box-body">
             <path d="M405 292L439 263V391Q439 394 436 397L405 420Z" fill="url(#paper-side)" filter="url(#paper-fibre)"/>

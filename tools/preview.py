@@ -27,8 +27,8 @@ class Handler(SimpleHTTPRequestHandler):
             try:
                 rows = json.loads(fixture.read_text())
                 response = {'status': 'ok', 'table': {
-                    'cols': [{'label': 'Day', 'type': 'number'}, {'label': 'YouTube URL', 'type': 'string'}],
-                    'rows': [{'c': [{'v': row[0]}, {'v': row[1]}]} for row in rows['rows']],
+                    'cols': [{'label': label} for label in rows.get('headers', ['Day', 'YouTube URL'])],
+                    'rows': [{'c': [{'v': value} for value in row]} for row in rows['rows']],
                 }}
                 self.send_text('window.__chimeSheetSongs(' + json.dumps(response) + ');', 'text/javascript')
             except (OSError, ValueError, KeyError, IndexError) as error:

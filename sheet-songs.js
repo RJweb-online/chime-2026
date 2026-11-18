@@ -1,10 +1,11 @@
 'use strict';
-// SONG RELEASE SOURCE — Sheet1: Day and YouTube URL, with headers in row 1.
+// SONG RELEASE SOURCE — Sheet1: Day, YouTube URL; optional Title and Artist.
+// Headers in row 1. Existing two-column sheets remain supported.
 // Edit the sheet to release songs. Share as Anyone with the link → Viewer.
 window.CHIME_SONG_SHEET = Object.freeze({
   spreadsheetId: '1aoxQ8YMaAwwdBJ2q1_nhkWKNjov7l331GBV_GTV7R9M',
   sheetId: '0',
-  range: 'A1:B26',
+  range: 'A1:D26',
 });
 
 window.ChimeSongs = (() => {
@@ -33,6 +34,9 @@ window.ChimeSongs = (() => {
     }
     const labels = response.table.cols.map(column => (column.label || '').toLowerCase().replace(/[^a-z]/g, ''));
     const dayColumn = labels.indexOf('day'), urlColumn = labels.indexOf('youtubeurl');
+    const titleColumn = labels.indexOf('title'), artistColumn = labels.indexOf('artist');
+    const metadata = new Map();
+    const text = (row, column) => column < 0 ? '' : String(row.c?.[column]?.v ?? '').trim();
     if (dayColumn < 0 || urlColumn < 0) throw new Error('The song sheet needs Day and YouTube URL headers.');
     const songs = new Map(), seen = new Set();
     for (const row of response.table.rows) {
@@ -41,12 +45,18 @@ window.ChimeSongs = (() => {
       if (seen.has(day)) {
         // Ambiguous rows never release a song, even if one has a valid link.
         songs.delete(day);
+        metadata.delete(day);
         continue;
       }
       seen.add(day);
       const url = youtubeUrl(row.c?.[urlColumn]?.v);
-      if (url) songs.set(day, url);
+      if (url) {
+        songs.set(day, url);
+        metadata.set(day, {title: text(row, titleColumn), artist: text(row, artistColumn)});
+      }
     }
+    // Retain the URL Map contract: release checks and existing callers stay intact.
+    songs.metadata = metadata;
     return songs;
   }
 

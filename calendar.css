@@ -82,3 +82,27 @@
 
 /* Give the Christmas finale's overlay the available space beside the shared gift. */
 @media(min-width:541px){.present-dialog:has(.stage[data-design=christmasDay]){width:min(1100px,calc(100% - 24px))}}
+/* Music collection copy and readable, compact five-column calendar. */
+.calendar-page .eyebrow{text-transform:uppercase;line-height:1.6;letter-spacing:1.5px}
+.calendar-page .intro{max-width:460px;font-size:14px;line-height:1.65}
+.calendar-day{width:100%;max-width:100%}
+.calendar-day.day-available{border-color:#cbb77c}
+.calendar-day:disabled .calendar-present{opacity:.85}
+.day-number{font-size:15px;color:#f3e4bd}
+.day-state{font-size:10px;color:#e0ddc8;letter-spacing:0}
+.day-opened{border-color:#8cae97;background:#9bb59c18}
+.day-opened .day-state{color:#d0e4cd}
+.present-dialog button.return-calendar{min-width:104px;min-height:48px;padding:12px 16px;border:1px solid #c5bc8f55;border-radius:6px;text-align:left}
+.present-dialog .design-note{display:none}
+.present-dialog .under-gift{min-height:48px}
+.present-dialog #status{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.christmas-greeting{font:italic 18px/1.4 Georgia,serif;color:#7b673e;margin:0 0 16px}
+.readable-card h3{font-size:clamp(24px,4vw,30px)}
+@media(max-width:540px){
+ .calendar-page .intro{font-size:13px;max-width:350px}
+ .calendar-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+ .calendar-day .day-number{font-size:13px;left:6px}
+ .calendar-day .day-state{font-size:9px}
+}
+/* Decorative SVG bounds must not widen the scrollable phone dialog. */
+.reveal-stage{overflow-x:clip;overflow-y:visible}
