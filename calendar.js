@@ -97,15 +97,6 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   greeting.hidden=activeDay?.day!==25;
   readable.setAttribute('aria-label',`Your December ${activeDay?.day} song`);
   cardSong.innerHTML=songAction();
-  // The small rising SVG is a preview of the same title; long titles fit its face.
-  const svgTitle=stage.querySelector('.card-title');
-  svgTitle.textContent=title;
-  svgTitle.removeAttribute('textLength');
-  if(svgTitle.getComputedTextLength()>200){svgTitle.setAttribute('textLength','200');svgTitle.setAttribute('lengthAdjust','spacingAndGlyphs');}
-  const svgArtist=stage.querySelector('.card-artist');
-  svgArtist.textContent=artist;
-  svgArtist.removeAttribute('textLength');
-  if(svgArtist.getComputedTextLength()>200){svgArtist.setAttribute('textLength','200');svgArtist.setAttribute('lengthAdjust','spacingAndGlyphs');}
  }
  window.ChimeSongs.load().then(loadedSongs=>{
   songs=loadedSongs;songState='ready';
@@ -218,6 +209,7 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   dialog.setAttribute('aria-labelledby','day-title');
   dialog.showModal();document.body.classList.add('calendar-dialog-open');
   if(day.design){
+   stage.querySelector('.card-title').textContent=`CHIME Day ${day.day}`;
    selectDesign(day.design);updateCard();sizeRibbon();
    openButton.setAttribute('aria-label',`Unwrap your December ${day.day} present`);
    document.getElementById('gift-desc').textContent=`The bow unties, the ribbon slips away, and the lid lifts to reveal your December ${day.day} card.`;
