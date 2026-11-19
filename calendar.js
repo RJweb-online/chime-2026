@@ -120,6 +120,7 @@ const calendarDays=Array.from({length:25},(_,index)=>({
  }
  window.ChimeSongs.load().then(loadedSongs=>{
   songs=loadedSongs;songState='ready';
+  restoreOpenedImages();
   refreshLocks();
   if(activeDay){updateCard();if(stage.classList.contains('is-open'))updateOpenedStatus();}
   restoreOpenedGift();
@@ -183,10 +184,10 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   button.querySelector('.day-state').textContent=locked?(songState==='loading'?'Loading…':'Coming soon'):isOpen?'Opened':day.design?'Unwrap':'Design to come';
   document.getElementById('calendar-progress').textContent=`${calendarDays.filter(item=>unlocked(item)&&savedOpened.has(item.day)).length} of ${calendarDays.filter(item=>item.design).length} unwrapped`;
  }
- function openedSnapshot(){
+ function openedSnapshot(design){
   // Reuse the original snapshot, retaining its exact paper and construction.
   // Only substitute the released ribbon and the live lid's final transform.
-  const xml=decodeURIComponent(wrapped.get(activeDay.design).image.split(',').slice(1).join(','));
+  const xml=decodeURIComponent(wrapped.get(design).image.split(',').slice(1).join(','));
   const svg=new DOMParser().parseFromString(xml,'image/svg+xml').documentElement;
   svg.setAttribute('viewBox','60 45 480 445');
   svg.querySelector('image').setAttribute('href',ribbonCanvas.toDataURL());
@@ -194,9 +195,34 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   lid.style.transform=pose.transform;lid.style.transformOrigin=pose.transformOrigin;lid.style.transformBox='view-box';
   return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(new XMLSerializer().serializeToString(svg));
  }
+ function restoreOpenedImages(){
+  const days=calendarDays.filter(day=>savedOpened.has(day.day)&&unlocked(day));
+  if(!days.length)return;
+  const previousDesign=selected;
+  const snapshotHost=document.createElement('div');
+  // The closed dialog has no rendered lid to sample. Keep the stage invisible
+  // while drawing only the final ribbon and lid positions for the saved tiles.
+  snapshotHost.style.cssText='position:fixed;top:0;left:0;width:600px;visibility:hidden';
+  snapshotHost.inert=true;
+  document.body.append(snapshotHost);
+  snapshotHost.append(stage);
+  try{
+   for(const day of days){
+    selectDesign(day.design);
+    drawRibbon(designs[day.design].duration||DURATION);
+    stage.classList.add('is-opening');
+    stage.querySelector('.box-lid').getAnimations().forEach(animation=>animation.finish());
+    opened.set(day.day,openedSnapshot(day.design));
+   }
+  }finally{
+   selectDesign(previousDesign);
+   revealStage.prepend(stage);
+   snapshotHost.remove();
+  }
+ }
  function rememberOpened(){
   if(!dialog.open||!activeDay?.design||!stage.classList.contains('is-open'))return;
-  opened.set(activeDay.day,openedSnapshot());saveOpened(activeDay.day,true);update(activeDay);
+  opened.set(activeDay.day,openedSnapshot(activeDay.design));saveOpened(activeDay.day,true);update(activeDay);
   updateOpenedStatus();
  }
  function updateOpenedStatus(){
