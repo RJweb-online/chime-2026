@@ -46,7 +46,6 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   return ''; // Locked gifts never open a card or an unavailable-song message.
  }
  document.body.classList.add('calendar-page');
- document.querySelector('footer').innerHTML='<span>CHIME 2026 · DECEMBER 1–25</span><span>A song behind every present.</span>';
  source.hidden=true;source.classList.add('calendar-source');
  document.querySelectorAll('.preview-jump').forEach(link=>link.remove());
  const section=document.createElement('section');section.className='calendar';
@@ -60,6 +59,9 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   tools.querySelector('button').addEventListener('click',()=>{savedOpened.clear();opened.clear();lastOpenedDay=null;persistOpened();location.reload();});
  }
  const grid=section.querySelector('.calendar-grid');
+ const footer=document.querySelector('footer');
+ footer.innerHTML='<p>A Christmas advent calendar of music. Check back each day in the lead up to Christmas for a new song. Enjoy!</p>';
+ grid.after(footer);
  const dialog=document.createElement('dialog');dialog.className='present-dialog';
  dialog.setAttribute('aria-labelledby','day-title');
  dialog.innerHTML='<div class="dialog-top"><button type="button" class="return-calendar" autofocus>← Calendar</button><span id="day-date"></span></div><h2 id="day-title"></h2><div class="live-present"></div>';
