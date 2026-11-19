@@ -1,6 +1,6 @@
 /* Page shell only: approved stage materials and animation rules stay in style.css. */
-.calendar-page header{height:68px}
-.calendar-page .eyebrow{margin:22px 10px 10px;font-size:8px}
+.calendar-page main{padding-top:clamp(18px,4vw,32px)}
+.calendar-page .eyebrow{margin:6px 10px 0;font-size:8px}
 .calendar-page h1{font-size:clamp(31px,5vw,46px)}
 .calendar-page .intro{margin:10px auto 22px;font-size:12px;max-width:none;padding:0 12px}
 .calendar-source{display:none!important}
@@ -43,8 +43,8 @@
 .future-present p{font:italic 19px Georgia,serif}
 .future-present small{display:block;font-size:11px;margin-bottom:16px}
 .present-dialog [hidden]{display:none!important}
-@media(max-width:540px){.calendar{padding:0 10px}.calendar-grid{gap:5px}.calendar-day{min-height:76px;aspect-ratio:.85;padding:17px 0 12px}.day-number{font-size:11px;left:7px;top:6px}.calendar-page header{height:59px}.calendar-page .eyebrow{margin-top:19px;font-size:6.5px;letter-spacing:1.5px}.calendar-page .intro{margin-bottom:18px;font-size:11px}.calendar-heading{font-size:8px}.calendar-tools p{font-size:10px}.calendar-tools button{font-size:10px;white-space:nowrap}.present-dialog{padding:12px}.present-dialog h2{margin-top:12px}.present-dialog .design-note{font-size:11px}.prototype-controls span{font-size:8px;max-width:120px}.calendar-page footer{font-size:7px}.calendar-day .day-state{font-size:7px}}
-@media(max-width:339px){.calendar-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.calendar-day{aspect-ratio:1}.calendar-heading{letter-spacing:1px}.calendar-page .edition{font-size:6px}}
+@media(max-width:540px){.calendar{padding:0 10px}.calendar-grid{gap:5px}.calendar-day{min-height:76px;aspect-ratio:.85;padding:17px 0 12px}.day-number{font-size:11px;left:7px;top:6px}.calendar-page .eyebrow{font-size:6.5px}.calendar-page .intro{margin-bottom:18px;font-size:11px}.calendar-heading{font-size:8px}.calendar-tools p{font-size:10px}.calendar-tools button{font-size:10px;white-space:nowrap}.present-dialog{padding:12px}.present-dialog h2{margin-top:12px}.present-dialog .design-note{font-size:11px}.prototype-controls span{font-size:8px;max-width:120px}.calendar-page footer{font-size:7px}.calendar-day .day-state{font-size:7px}}
+@media(max-width:339px){.calendar-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.calendar-day{aspect-ratio:1}.calendar-heading{letter-spacing:1px}}
 @media(max-height:550px){.present-dialog .stage{width:min(360px,100%)}.present-dialog .design-note{display:none}}
 /* The forward card and its link share one animated surface on every screen. */
 .present-dialog .live-present{position:relative}

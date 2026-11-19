@@ -46,7 +46,6 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   return ''; // Locked gifts never open a card or an unavailable-song message.
  }
  document.body.classList.add('calendar-page');
- document.querySelector('.edition').textContent='A CHRISTMAS MUSIC COLLECTION';
  document.querySelector('footer').innerHTML='<span>CHIME 2026 · DECEMBER 1–25</span><span>A song behind every present.</span>';
  source.hidden=true;source.classList.add('calendar-source');
  document.querySelectorAll('.preview-jump').forEach(link=>link.remove());
