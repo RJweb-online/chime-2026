@@ -1,6 +1,6 @@
 'use strict';
 // Paste the 2026 YouTube playlist URL between these quotes.
-const playlist2026Url='';
+const playlist2026Url='https://www.youtube.com/playlist?list=PLUGA-tJiAPWc';
 
 // The song sheet is the only release control for finished presents.
 // Calendar assignments are independent of the approved present renderers.
