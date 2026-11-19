@@ -57,7 +57,6 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   <div class="calendar-grid"></div>
   <p class="calendar-note">A Christmas advent calendar of music. Check back each day in the lead up to Christmas for a new song. Enjoy!</p>
   <nav class="calendar-playlists" aria-label="Playlists">
-   <a class="playlist-featured" target="_blank" rel="noopener noreferrer" hidden>Play the 2026 playlist</a>
    <div class="playlist-history">
     <span>Past playlists</span><span aria-hidden="true">·</span>
     <a href="https://www.youtube.com/playlist?list=PLMDBGN7e5CghqvgZROXUwxwy0AFFdWMjh" target="_blank" rel="noopener noreferrer">2025</a><span aria-hidden="true">·</span>
@@ -75,9 +74,6 @@ const calendarDays=Array.from({length:25},(_,index)=>({
  }
  const grid=section.querySelector('.calendar-grid');
  const loadError=section.querySelector('.calendar-load-error');
- const playlistLink=section.querySelector('.playlist-featured');
- const playlistUrl=playlist2026Url.trim();
- if(playlistUrl)playlistLink.href=playlistUrl;
  const dialog=document.createElement('dialog');dialog.className='present-dialog';
  dialog.setAttribute('aria-labelledby','day-title');
  dialog.innerHTML='<div class="dialog-top"><button type="button" class="return-calendar" autofocus>← Calendar</button><span id="day-date"></span></div><h2 id="day-title"></h2><div class="live-present"></div>';
@@ -90,17 +86,24 @@ const calendarDays=Array.from({length:25},(_,index)=>({
  revealStage.append(stage);
  live.append(revealStage,document.querySelector('.under-gift'));
  // The SVG card keeps its authored rise. After the confetti, its final pose
- // hands off to one readable card with the song link attached to its face.
+ // hands off to one readable card with the links attached to its face.
  const phone=matchMedia('(max-width:540px)');
  const readable=document.createElement('article');readable.className='readable-card';readable.hidden=true;
  readable.setAttribute('aria-label','Your daily song');
- readable.innerHTML='<p class="christmas-greeting" hidden></p><h3></h3><p class="reveal-artist" hidden></p><div class="card-song"></div>';
+ readable.innerHTML=`<p class="christmas-greeting" hidden></p><h3></h3><p class="reveal-artist" hidden></p><div class="card-song"></div>
+  <a class="card-playlist" target="_blank" rel="noopener noreferrer" hidden>Listen to CHIME 2026 so far</a>`;
  revealStage.append(readable);
  const cardSong=readable.querySelector('.card-song');
+ const playlistUrl=playlist2026Url.trim();
+ if(playlistUrl){
+  const playlistLink=readable.querySelector('.card-playlist');
+  playlistLink.href=playlistUrl;
+  playlistLink.hidden=false;
+ }
  // Keep the native link action inside this gesture: Safari can open it immediately.
  // Fade only the optional Christmas recording; never wait before following the link.
- cardSong.addEventListener('click',event=>{
-  if(event.target.closest('.watch-youtube'))window.ChimeSound?.stopMusic();
+ readable.addEventListener('click',event=>{
+  if(event.target.closest('.watch-youtube,.card-playlist'))window.ChimeSound?.stopMusic();
  });
  function updateCard(){
   const metadata=songs.metadata?.get(activeDay?.day);
@@ -251,7 +254,6 @@ const calendarDays=Array.from({length:25},(_,index)=>({
  });
  function refreshLocks(){
   loadError.textContent=songState==='error'?'Songs couldn’t load. Reload to try again.':'';
-  playlistLink.hidden=!playlistUrl||!unlocked(calendarDays[0]);
   calendarDays.forEach(update);
  }
  function restoreOpenedGift(){
