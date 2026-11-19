@@ -50,7 +50,10 @@ const calendarDays=Array.from({length:25},(_,index)=>({
  document.querySelectorAll('.preview-jump').forEach(link=>link.remove());
  const section=document.createElement('section');section.className='calendar';
  section.setAttribute('aria-label','December Advent calendar');
- section.innerHTML='<div class="calendar-heading"><span>DECEMBER <b>2026</b></span><span id="calendar-progress" role="status">December 1</span></div><div class="calendar-grid"></div><div class="calendar-tools"><p><strong id="unlock-status"></strong> <span>Days 1–25: finished presents. Songs release when their links are added.</span></p></div>';
+ section.innerHTML=`<div class="calendar-heading"><span>DECEMBER <b>2026</b></span><span id="calendar-progress" role="status">December 1</span></div>
+  <div class="calendar-grid"></div>
+  <p class="calendar-note">A Christmas advent calendar of music. Check back each day in the lead up to Christmas for a new song. Enjoy!</p>
+  <p class="calendar-load-error" role="alert"></p>`;
  main.insertBefore(section,source);
  if(local){
   const tools=document.createElement('nav');tools.className='local-preview';tools.setAttribute('aria-label','Local preview controls');
@@ -59,9 +62,7 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   tools.querySelector('button').addEventListener('click',()=>{savedOpened.clear();opened.clear();lastOpenedDay=null;persistOpened();location.reload();});
  }
  const grid=section.querySelector('.calendar-grid');
- const footer=document.querySelector('footer');
- footer.innerHTML='<p>A Christmas advent calendar of music. Check back each day in the lead up to Christmas for a new song. Enjoy!</p>';
- grid.after(footer);
+ const loadError=section.querySelector('.calendar-load-error');
  const dialog=document.createElement('dialog');dialog.className='present-dialog';
  dialog.setAttribute('aria-labelledby','day-title');
  dialog.innerHTML='<div class="dialog-top"><button type="button" class="return-calendar" autofocus>← Calendar</button><span id="day-date"></span></div><h2 id="day-title"></h2><div class="live-present"></div>';
@@ -234,7 +235,7 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   }
  });
  function refreshLocks(){
-  document.getElementById('unlock-status').textContent=songState==='loading'?'Checking released songs…':songState==='error'?'Songs couldn’t load. Reload to try again.':'Presents open when their songs are released.';
+  loadError.textContent=songState==='error'?'Songs couldn’t load. Reload to try again.':'';
   calendarDays.forEach(update);
  }
  function restoreOpenedGift(){
