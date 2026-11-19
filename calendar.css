@@ -29,7 +29,7 @@
 .present-dialog::backdrop{background:#061b16d9;backdrop-filter:blur(5px)}
 @media(min-width:541px){
  .present-dialog::backdrop{background:#0b231bb5}
- .present-dialog .stage .halo{inset:7% -3% 0;background:radial-gradient(ellipse at 50% 44%,#dfa44b30,#d9a0571a 38%,transparent 73%)}
+ .present-dialog .stage .halo{inset:7% -3% 0;background:radial-gradient(ellipse 56% 52% at 50% 45%,#dfa44b30,#d9a0571a 38%,transparent 85%)}
 }
 .calendar-dialog-open{overflow:hidden}
 .dialog-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
