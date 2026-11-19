@@ -159,7 +159,7 @@ const calendarDays=Array.from({length:25},(_,index)=>({
   button.classList.toggle('day-available',!locked&&!!day.design&&!isOpen);
   button.setAttribute('aria-label',`December ${day.day}, ${name}, ${isOpen?'opened':'wrapped'}${locked?songState==='loading'?', checking song release':', song not released':day.design?'':', design coming later'}`);
   const image=button.querySelector('img');if(image)image.src=(isOpen&&opened.get(day.day))||wrapped.get(day.design).image;
-  button.querySelector('.day-state').textContent=locked?(songState==='loading'?'Loading…':'Locked'):isOpen?'Opened':day.design?'Unwrap':'Design to come';
+  button.querySelector('.day-state').textContent=locked?(songState==='loading'?'Loading…':'Coming soon'):isOpen?'Opened':day.design?'Unwrap':'Design to come';
   document.getElementById('calendar-progress').textContent=`${calendarDays.filter(item=>unlocked(item)&&savedOpened.has(item.day)).length} of ${calendarDays.filter(item=>item.design).length} unwrapped`;
  }
  function openedSnapshot(){
