@@ -27,6 +27,10 @@
 .calendar-load-error:not(:empty){margin:0 8px 16px}
 .present-dialog{color:#eee7d7;background:radial-gradient(ellipse at 50% 48%,#294b3c,#102c25 75%);border:1px solid #a99c694f;border-radius:12px;padding:18px 22px;width:min(680px,calc(100% - 24px));max-height:calc(100dvh - 24px);overflow:auto;overscroll-behavior:contain;text-align:center;box-shadow:0 25px 100px #0007}
 .present-dialog::backdrop{background:#061b16d9;backdrop-filter:blur(5px)}
+@media(min-width:541px){
+ .present-dialog::backdrop{background:#0b231bb5}
+ .present-dialog .stage .halo{inset:7% -3% 0;background:radial-gradient(ellipse at 50% 44%,#dfa44b30,#d9a0571a 38%,transparent 73%)}
+}
 .calendar-dialog-open{overflow:hidden}
 .dialog-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
 #day-date{font-size:9px;letter-spacing:2px;color:#bfb080}
