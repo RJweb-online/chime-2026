@@ -23,6 +23,12 @@
 .day-opened .day-placeholder{border-style:solid;transform:rotate(-5deg);color:#deca94}
 .present-dialog button:not(.open-gift){font:11px Arial,sans-serif;color:#dfcc9b;background:transparent;border:0;border-bottom:1px solid #d3bd7945;padding:10px 2px;cursor:pointer;min-height:40px}
 .calendar-note{margin:16px 8px;text-align:center;font:14px/1.6 Arial,sans-serif;color:#b8c2b4}
+.calendar-playlists{padding-bottom:12px}
+.playlist-featured{display:inline-flex;align-items:center;justify-content:center;min-height:48px;margin-bottom:4px;padding:10px 22px;border:1px solid #dfc896;border-radius:5px;background:#dfc896;color:#17382e;font:600 15px/1.4 Arial,sans-serif;text-decoration:none}
+.playlist-featured:hover{background:#f1dfb3}
+.playlist-history{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:0 3px;color:#b8c2b4;font:14px/1.4 Arial,sans-serif}
+.playlist-history a{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;color:#e2d4ac;text-underline-offset:3px}
+.playlist-history a:hover{color:#fff1c7}
 .calendar-load-error{margin:0;font:13px/1.6 Arial,sans-serif;color:#e2d4ac}
 .calendar-load-error:not(:empty){margin:0 8px 16px}
 .present-dialog{color:#eee7d7;background:radial-gradient(ellipse at 50% 48%,#294b3c,#102c25 75%);border:1px solid #a99c694f;border-radius:12px;padding:18px 22px;width:min(680px,calc(100% - 24px));max-height:calc(100dvh - 24px);overflow:auto;overscroll-behavior:contain;text-align:center;box-shadow:0 25px 100px #0007}

@@ -1,4 +1,7 @@
 'use strict';
+// Paste the 2026 YouTube playlist URL between these quotes.
+const playlist2026Url='';
+
 // The song sheet is the only release control for finished presents.
 // Calendar assignments are independent of the approved present renderers.
 // Date controls songs, card text and saved flags; each design brings its own complete animation.
@@ -53,6 +56,15 @@ const calendarDays=Array.from({length:25},(_,index)=>({
  section.innerHTML=`<div class="calendar-heading"><span>DECEMBER <b>2026</b></span><span id="calendar-progress" role="status">December 1</span></div>
   <div class="calendar-grid"></div>
   <p class="calendar-note">A Christmas advent calendar of music. Check back each day in the lead up to Christmas for a new song. Enjoy!</p>
+  <nav class="calendar-playlists" aria-label="Playlists">
+   <a class="playlist-featured" target="_blank" rel="noopener noreferrer" hidden>Play the 2026 playlist</a>
+   <div class="playlist-history">
+    <span>Past playlists</span><span aria-hidden="true">·</span>
+    <a href="https://www.youtube.com/playlist?list=PLMDBGN7e5CghqvgZROXUwxwy0AFFdWMjh" target="_blank" rel="noopener noreferrer">2025</a><span aria-hidden="true">·</span>
+    <a href="https://www.youtube.com/playlist?list=PLMDBGN7e5CgjUIr5U47ORDAtL2WIajVWp" target="_blank" rel="noopener noreferrer">2024</a><span aria-hidden="true">·</span>
+    <a href="https://www.youtube.com/playlist?list=PLMDBGN7e5CggtKk-NH0PS4wgtfDRPjQTi" target="_blank" rel="noopener noreferrer">2023</a>
+   </div>
+  </nav>
   <p class="calendar-load-error" role="alert"></p>`;
  main.insertBefore(section,source);
  if(local){
@@ -63,6 +75,9 @@ const calendarDays=Array.from({length:25},(_,index)=>({
  }
  const grid=section.querySelector('.calendar-grid');
  const loadError=section.querySelector('.calendar-load-error');
+ const playlistLink=section.querySelector('.playlist-featured');
+ const playlistUrl=playlist2026Url.trim();
+ if(playlistUrl)playlistLink.href=playlistUrl;
  const dialog=document.createElement('dialog');dialog.className='present-dialog';
  dialog.setAttribute('aria-labelledby','day-title');
  dialog.innerHTML='<div class="dialog-top"><button type="button" class="return-calendar" autofocus>← Calendar</button><span id="day-date"></span></div><h2 id="day-title"></h2><div class="live-present"></div>';
@@ -236,6 +251,7 @@ const calendarDays=Array.from({length:25},(_,index)=>({
  });
  function refreshLocks(){
   loadError.textContent=songState==='error'?'Songs couldn’t load. Reload to try again.':'';
+  playlistLink.hidden=!playlistUrl||!unlocked(calendarDays[0]);
   calendarDays.forEach(update);
  }
  function restoreOpenedGift(){
